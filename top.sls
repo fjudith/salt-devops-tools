@@ -13,6 +13,7 @@ base:
     - pulumi.cli
     - kubernetes.cli
     - kubernetes.helm
+    - kubernetes.k9s
     - kubernetes.azure.kubelogin
     - ldap
     - aquasecurity.trivy

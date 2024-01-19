@@ -35,6 +35,8 @@ kubernetes:
   azure:
     kubelogin:
       enabled: true
+  k9s:
+    enabled: true
 
 ldap:
   enabled: true
