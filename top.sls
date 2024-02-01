@@ -32,3 +32,4 @@ base:
     - fluxcd.cli
     - weave.flamingo.cli
     - weave.gitops.cli
+    - pixie.cli

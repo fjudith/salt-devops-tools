@@ -38,6 +38,10 @@ kubernetes:
   k9s:
     enabled: true
 
+pixie:
+  cli:
+    enabled: false
+
 ldap:
   enabled: true
 
