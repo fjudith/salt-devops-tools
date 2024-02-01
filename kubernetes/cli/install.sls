@@ -10,4 +10,4 @@
 
 kubectl:
   pkg.{{ pkgState }}:
-    - version: {{ kubectl.version }}-00
+    - version: {{ kubectl.version }}-1.1

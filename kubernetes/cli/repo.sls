@@ -9,22 +9,17 @@
 {% endif %}
 
 {%- if grains['os_family']|lower in ('debian',) %}
-  {%- if grains['os']|lower in ('ubuntu',) %}
-    {% set url = 'https://apt.kubernetes.io/ ' ~ 'kubernetes' ~ '-' ~ 'xenial' ~ ' main' %}
-  {% else %}
-    {% set url = 'https://apt.kubernetes.io/ ' ~ 'kubernetes' ~ '-' ~ grains["oscodename"] ~ ' main' %}
-  {% endif %}
 
 kubernetes-repo:
   cmd.run:
     - name: |
-        curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg \
+        curl -fsSL https://pkgs.k8s.io/core:/stable:/v{{ kubectl.minor_version }}/deb/Release.key \
         | gpg --yes --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
   pkgrepo.{{ repoState }}:
     - require:
       - cmd: kubernetes-repo
     - humanname: {{ grains["os"] }} {{ grains["oscodename"] | capitalize }} Kubernetes Package Repository
-    - name: deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] {{ url }}
+    - name: deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v{{ kubectl.minor_version }}/deb/ /
     - file: /etc/apt/sources.list.d/kubernetes.list
     - aptkey: False
     - clean_file: True
@@ -41,10 +36,10 @@ kubernetes-repo:
   pkgrepo.{{ repoState }}:
     - name: kubernetes
     - humanname: {{ grains["os"] }} {{ grains["oscodename"] | capitalize }} Kubernetes Package Repository
-    - base_url: {{ url }}
+    - base_url: https://pkgs.k8s.io/core:/stable:/v{{ kubectl.minor_version }}/rpm/
     - enabled: 1
     - gpgcheck: 1
-    - gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg
+    - gpgkey: https://pkgs.k8s.io/core:/stable:/v{{ kubectl.minor_version}}/rpm/repodata/repomd.xml.key
     - file: kubernetes.repo
     {%- if grains['saltversioninfo'] >= [2018, 3, 0] %}
     - refresh: True
