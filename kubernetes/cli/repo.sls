@@ -30,7 +30,6 @@ kubernetes-repo:
     {%- endif %}
 
 {%- elif grains['os_family']|lower in ('redhat',) %}
-{% set url = 'https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64' %}
 
 kubernetes-repo:
   pkgrepo.{{ repoState }}:
