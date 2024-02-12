@@ -8,6 +8,10 @@ sops:
   cli:
     enabled: true
 
+opa:
+  cli:
+    enabled: true
+
 yq:
   cli:
     enabled: true

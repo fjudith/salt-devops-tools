@@ -33,3 +33,4 @@ base:
     - weave.flamingo.cli
     - weave.gitops.cli
     - pixie.cli
+    - openpolicyagent.cli

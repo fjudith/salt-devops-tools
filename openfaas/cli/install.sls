@@ -11,11 +11,11 @@ openfaas-binary:
     - makedirs: true
     - user: root
     - group: root
-    - mode: 755
+    - mode: '0755'
     - unless: ls /usr/local/openfaas/{{ openfaas.version }}
 
 openfaas:
   file.symlink:
     - name: /usr/local/bin/faas-cli
     - target: /usr/local/openfaas/{{ openfaas.version }}/faas-cli
-    - mode: 755
+    - mode: '0755'

@@ -1,0 +1,4 @@
+opa:
+  enabled: true
+  version: 0.61.0
+  
