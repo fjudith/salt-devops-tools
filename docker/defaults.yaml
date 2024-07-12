@@ -30,7 +30,7 @@ docker:
   
   containerd:
     enabled: true
-    version: 1.7.19
+    version: 1.7.18
   
   buildx_plugin:
     enabled: true
