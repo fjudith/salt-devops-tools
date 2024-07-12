@@ -22,11 +22,11 @@ docker:
 
   daemon:
     enabled: true
-    version: 24.0.9
+    version: 27.0.3
   
   cli:
     enabled: true
-    version: 24.0.9
+    version: 27.0.3
   
   containerd:
     enabled: true
