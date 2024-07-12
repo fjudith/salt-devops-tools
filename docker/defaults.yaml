@@ -22,15 +22,15 @@ docker:
 
   daemon:
     enabled: true
-    version: 24.0.6
+    version: 24.0.9
   
   cli:
     enabled: true
-    version: 24.0.6
+    version: 24.0.9
   
   containerd:
     enabled: true
-    version: 1.6.24
+    version: 1.7.19
   
   buildx_plugin:
     enabled: true
