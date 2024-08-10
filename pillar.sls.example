@@ -17,8 +17,12 @@ yq:
     enabled: true
 
 aquasecurity:
+  falco:
+    enabled: false
   trivy:
     enabled: true
+
+falcosecurity:
   falco:
     enabled: false
 

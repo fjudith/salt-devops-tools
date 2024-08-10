@@ -15,10 +15,10 @@ falco-repo:
   cmd.run:
     - name: |
         curl -fsSL https://falco.org/repo/falcosecurity-packages.asc \
-        | gpg --yes --dearmor -o /usr/share/keyrings/falco-archive-keyring.gpg
+        | gpg --yes --dearmor -o /etc/apt/keyrings/falco-archive-keyring.gpg
   pkgrepo.{{ repoState }}:
     - humanname: {{ grains["os"] }} {{ grains["oscodename"] | capitalize }} Falco Security Package Repository
-    - name: deb [signed-by=/usr/share/keyrings/falco-archive-keyring.gpg arch={{ grains["osarch"] }}] {{ url }}
+    - name: deb [signed-by=/etc/apt/keyrings/falco-archive-keyring.gpg arch={{ grains["osarch"] }}] {{ url }}
     - aptkey: False
     - file: /etc/apt/sources.list.d/falcosecurity.list
     {%- if grains['saltversioninfo'] >= [2018, 3, 0] %}

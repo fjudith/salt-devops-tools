@@ -5,4 +5,4 @@
 {% import_yaml tpldir ~ "/defaults.yaml" or {} as defaults %}
 
 {#- Merge in salt pillar #}
-{% set falco = salt['pillar.get']('aquasecurity:falco', default=defaults['falco'], merge=True) %}
+{% set falco = salt['pillar.get']('falcosecurity.falco', default=defaults['falco'], merge=True) %}

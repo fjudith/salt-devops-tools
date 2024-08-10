@@ -17,7 +17,7 @@ base:
     - kubernetes.azure.kubelogin
     - ldap
     - aquasecurity.trivy
-    - aquasecurity.falco
+    - falcosecurity.falco
     - argo.cd.cli
     - argo.workflows.cli
     - openfaas.cli
