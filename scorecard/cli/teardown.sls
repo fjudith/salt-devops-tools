@@ -10,3 +10,7 @@ scorecard-archive:
 scorecard:
   file.absent:
     - name: /usr/local/bin/scorecard
+
+scorecard-completion:
+  file.absent:
+    - name: /etc/bash_completion.d/scorecard

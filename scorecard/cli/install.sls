@@ -19,3 +19,9 @@ scorecard:
   file.symlink:
     - name: /usr/local/bin/scorecard
     - target: /usr/local/scorecard/{{ scorecard.version }}/scorecard-linux-amd64
+
+scorecard-completion:
+  cmd.run:
+    - require:
+      - file: scorecard
+    - name: /usr/local/bin/scorecard completion bash | tee /etc/bash_completion.d/scorecard
