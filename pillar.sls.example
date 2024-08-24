@@ -4,6 +4,10 @@
 common:
   enabled: true
 
+scorecard:
+  cli:
+    enabled: true
+
 sops:
   cli:
     enabled: true
