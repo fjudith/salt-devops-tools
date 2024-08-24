@@ -5,7 +5,7 @@
 
 scorecard-archive:
   file.absent:
-    - name: /usr/local/hetzner/{{ scorecard.version }}
+    - name: /usr/local/scorecard/{{ scorecard.version }}
 
 scorecard:
   file.absent:

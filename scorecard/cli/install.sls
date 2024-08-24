@@ -18,4 +18,4 @@ scorecard-archive:
 scorecard:
   file.symlink:
     - name: /usr/local/bin/scorecard
-    - target: /usr/local/scorecard/{{ scorecard.version }}/scorecard
+    - target: /usr/local/scorecard/{{ scorecard.version }}/scorecard-linux-amd64
