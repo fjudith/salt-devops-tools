@@ -35,3 +35,4 @@ base:
     - weave.gitops.cli
     - pixie.cli
     - openpolicyagent.cli
+    - sloth.cli

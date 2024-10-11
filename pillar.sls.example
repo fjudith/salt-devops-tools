@@ -130,3 +130,6 @@ weave:
     cli:
       enabled: false
   
+sloth:
+  cli:
+    enabled: false
