@@ -12,6 +12,7 @@ base:
     - scaleway.cli
     - hashicorp.terraform.cli
     - pulumi.cli
+    - kubernetes.bom
     - kubernetes.cli
     - kubernetes.helm
     - kubernetes.k9s

@@ -133,3 +133,7 @@ weave:
 sloth:
   cli:
     enabled: false
+
+bom:
+  cli:
+    enabled: true
