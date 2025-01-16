@@ -19,3 +19,9 @@ fluxcd:
   file.symlink:
     - name: /usr/local/bin/flux
     - target: /usr/local/fluxcd/{{ fluxcd.version }}/flux
+
+fluxcd-completion:
+  cmd.run:
+    - require:
+      - file: fluxcd
+    - name: /usr/local/bin/flux completion bash | tee /etc/bash_completion.d/flux
