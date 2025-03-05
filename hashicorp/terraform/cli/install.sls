@@ -10,4 +10,4 @@
 
 terraform:
   pkg.{{ pkgState }}:
-    - version: {{ terraform.version }}
+    - version: {{ terraform.version }}-1
