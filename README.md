@@ -15,10 +15,13 @@ EOF
 ## Install Salt
 
 ```bash
-sudo curl -fsSL -o /etc/apt/keyrings/salt-archive-keyring-2023.gpg \
-     https://repo.saltproject.io/salt/py3/ubuntu/22.04/amd64/SALT-PROJECT-GPG-PUBKEY-2023.gpg \
-&& echo "deb [signed-by=/etc/apt/keyrings/salt-archive-keyring-2023.gpg arch=amd64] https://repo.saltproject.io/salt/py3/ubuntu/22.04/amd64/latest jammy main" \
-   | sudo tee /etc/apt/sources.list.d/salt.list \
+cat <<EOF | sudo tee /etc/apt/preferences.d/salt-pin-1001
+echo 'Package: salt-*
+Pin: version 3006.*
+Pin-Priority: 1001'
+EOF
+curl -fsSL https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public | sudo tee /etc/apt/keyrings/salt-archive-keyring.pgp
+&& curl -fsSL https://github.com/saltstack/salt-install-guide/releases/latest/download/salt.sources | sudo tee /etc/apt/sources.list.d/salt.list
 && sudo apt-get update -y \
 && sudo apt-get install -y git salt-minion
 ```
