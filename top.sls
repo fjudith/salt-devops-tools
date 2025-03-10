@@ -17,6 +17,7 @@ base:
     - kubernetes.helm
     - kubernetes.k9s
     - kubernetes.azure.kubelogin
+    - kubernetes.kubestack
     - ldap
     - aquasecurity.trivy
     - falcosecurity.falco

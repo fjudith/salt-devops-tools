@@ -1,0 +1,4 @@
+kubestack:
+  enabled: false
+  version: 0.2.1
+  

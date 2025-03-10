@@ -24,4 +24,4 @@ pixie-completion:
   cmd.run:
     - require:
       - file: pixie-binary
-    - name: /usr/local/bin/px completion bash | tee /etc/bash_completion.d/pixie
+    - name: /usr/local/bin/px completion bash > /etc/bash_completion.d/pixie

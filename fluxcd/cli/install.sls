@@ -24,4 +24,4 @@ fluxcd-completion:
   cmd.run:
     - require:
       - file: fluxcd
-    - name: /usr/local/bin/flux completion bash | tee /etc/bash_completion.d/flux
+    - name: /usr/local/bin/flux completion bash > /etc/bash_completion.d/flux
