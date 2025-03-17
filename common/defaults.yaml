@@ -17,7 +17,7 @@ common:
     - openssh-server
     - apt-file
     - at
-    - xdg-utils
+    # - xdg-utils
   redhat:
     - python3-devel
     - cronie-anacron
