@@ -16,16 +16,14 @@ EOF
 
 ```bash
 cat <<EOF | sudo tee /etc/apt/preferences.d/salt-pin-1001
-echo 'Package: salt-*
+Package: salt-*
 Pin: version 3006.*
-Pin-Priority: 1001'
+Pin-Priority: 1001
 EOF
 curl -fsSL https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public \
 | sudo tee /etc/apt/keyrings/salt-archive-keyring.pgp \
-&& curl -fsSL https://github.com/saltstack/salt-install-guide/releases/latest/download/salt.sources \
-| sudo tee /etc/apt/sources.list.d/salt.list \
-&& sudo apt-get update -y \
-&& sudo apt-get install -y git salt-minion
+&& echo "deb [signed-by=/etc/apt/keyrings/salt-archive-keyring.pgp arch=amd64]  https://packages.broadcom.com/artifactory/saltproject-deb stable main" \
+| sudo tee /etc/apt/sources.list.d/salt.list
 ```
 
 ## Clone this repo
