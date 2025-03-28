@@ -2,6 +2,7 @@ base:
   "*":
     - common
     - scorecard.cli
+    - go-task.cli
     - docker
     - aws.cli
     - aws.nuke

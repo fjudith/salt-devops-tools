@@ -4,6 +4,10 @@
 common:
   enabled: true
 
+gotask:
+  cli:
+    enabled: true
+
 scorecard:
   cli:
     enabled: true
