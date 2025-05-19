@@ -39,3 +39,4 @@ base:
     - pixie.cli
     - openpolicyagent.cli
     - sloth.cli
+    - openslo.oslo.cli

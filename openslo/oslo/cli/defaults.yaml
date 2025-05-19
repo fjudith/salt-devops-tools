@@ -1,0 +1,4 @@
+oslo:
+  enabled: true
+  version: 0.12.0
+  

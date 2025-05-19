@@ -24,6 +24,11 @@ yq:
   cli:
     enabled: true
 
+openslo:
+  oslo:
+    cli:
+      enabled: true
+
 aquasecurity:
   falco:
     enabled: false
