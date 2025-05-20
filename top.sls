@@ -38,5 +38,6 @@ base:
     - weave.gitops.cli
     - pixie.cli
     - openpolicyagent.cli
+    - prometheus.cli
     - sloth.cli
     - openslo.oslo.cli

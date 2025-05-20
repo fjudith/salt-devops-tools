@@ -29,6 +29,10 @@ openslo:
     cli:
       enabled: true
 
+prometheus:
+  cli:
+    enabled: false
+
 aquasecurity:
   falco:
     enabled: false
