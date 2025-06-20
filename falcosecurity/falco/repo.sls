@@ -23,9 +23,9 @@ falco-repo:
     - file: /etc/apt/sources.list.d/falcosecurity.list
     {%- if grains['saltversioninfo'] >= [2018, 3, 0] %}
     - refresh: True
-        {%- else %}
+    {%- else %}
     - refresh_db: True
-        {%- endif %}
+    {%- endif %}
 
 {%- elif grains['os_family']|lower in ('redhat',) %}
 {% set url = 'https://download.falco.org/packages/rpm' %}
