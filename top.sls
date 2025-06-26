@@ -16,6 +16,7 @@ base:
     - kubernetes.bom
     - kubernetes.cli
     - kubernetes.helm
+    - kubernetes.istio
     - kubernetes.k9s
     - kubernetes.azure.kubelogin
     - kubernetes.kubestack
