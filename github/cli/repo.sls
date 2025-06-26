@@ -12,14 +12,14 @@
   {% set url = 'https://cli.github.com/packages ' ~ 'stable' ~ ' main' %}
 
 githubcli-repo:
-  file.managed:
-    - name: /etc/apt/keyrings/githubcli-archive-keyring.gpg
-    - source: https://cli.github.com/packages/githubcli-archive-keyring.gpg
-    - skip_verify: true
-    - makedirs: true
+  cmd.run:
+    - name: |
+        out=$(mktemp) \
+        && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+        && cat $out | tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+        && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
     - user: root
     - group: root
-    - mode: '0644'
   pkgrepo.{{ repoState }}:
     - resuire:
       - file: githubcli-repo
