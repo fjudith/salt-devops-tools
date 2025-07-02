@@ -42,3 +42,4 @@ base:
     - prometheus.cli
     - sloth.cli
     - openslo.oslo.cli
+    - istio.cli
