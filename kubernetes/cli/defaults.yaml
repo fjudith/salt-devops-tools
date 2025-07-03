@@ -1,4 +1,4 @@
 kubectl:
   enabled: false
-  minor_version: 1.32
-  version: 1.32.1
+  minor_version: 1.31
+  version: 1.31.6
