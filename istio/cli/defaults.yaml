@@ -1,4 +1,0 @@
-istio:
-  enabled: false
-  version: 1.26.2
-  
