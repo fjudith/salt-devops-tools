@@ -60,10 +60,11 @@ kubernetes:
   azure:
     kubelogin:
       enabled: true
-  istio:
-    enabled: true
   k9s:
     enabled: true
+
+istio:
+  enabled: true
 
 pixie:
   cli:

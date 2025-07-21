@@ -5,4 +5,4 @@
 {% import_yaml tpldir ~ "/defaults.yaml" or {} as defaults %}
 
 {#- Merge in salt pillar #}
-{% set istio = salt['pillar.get']('kubernetes:istio', default=defaults['istio'], merge=True) %}
+{% set istio = salt['pillar.get']('istio', default=defaults['istio'], merge=True) %}
