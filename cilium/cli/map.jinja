@@ -5,4 +5,4 @@
 {% import_yaml tpldir ~ "/defaults.yaml" or {} as defaults %}
 
 {#- Merge in salt pillar #}
-{% set cilium = salt['pillar.get']('cilium', default=defaults['cilium'], merge=True) %}
+{% set cilium = salt['pillar.get']('cilium:cli', default=defaults['cilium'], merge=True) %}

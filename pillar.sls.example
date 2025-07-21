@@ -64,10 +64,12 @@ kubernetes:
     enabled: true
 
 istio:
-  enabled: true
+  cli:
+    enabled: true
 
 cilium:
-  enabled: true
+  cli:
+    enabled: true
 
 pixie:
   cli:
