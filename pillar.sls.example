@@ -62,6 +62,8 @@ kubernetes:
       enabled: true
   k9s:
     enabled: true
+  kind:
+    enabled: true
 
 istio:
   cli:

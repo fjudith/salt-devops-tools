@@ -43,3 +43,4 @@ base:
     - openslo.oslo.cli
     - istio.cli
     - cilium.cli
+    - kubernetes.kind
