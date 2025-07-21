@@ -66,6 +66,9 @@ kubernetes:
 istio:
   enabled: true
 
+cilium:
+  enabled: true
+
 pixie:
   cli:
     enabled: false

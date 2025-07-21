@@ -16,7 +16,6 @@ base:
     - kubernetes.bom
     - kubernetes.cli
     - kubernetes.helm
-    - istio
     - kubernetes.k9s
     - kubernetes.azure.kubelogin
     - kubernetes.kubestack
@@ -42,3 +41,5 @@ base:
     - prometheus.cli
     - sloth.cli
     - openslo.oslo.cli
+    - istio
+    - cilium
