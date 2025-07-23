@@ -19,3 +19,9 @@ hubble:
   file.symlink:
     - name: /usr/local/bin/hubble
     - target: /usr/local/hubble/{{ hubble.version }}/hubble
+
+hubble-completion:
+  cmd.run:
+    - require:
+      - file: hubble
+    - name: /usr/local/bin/hubble completion bash | tee /etc/bash_completion.d/hubble

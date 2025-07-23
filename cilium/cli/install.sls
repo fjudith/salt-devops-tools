@@ -19,3 +19,9 @@ cilium:
   file.symlink:
     - name: /usr/local/bin/cilium
     - target: /usr/local/cilium/{{ cilium.version }}/cilium
+
+cilium-completion:
+  cmd.run:
+    - require:
+      - file: cilium
+    - name: /usr/local/bin/cilium completion bash | tee /etc/bash_completion.d/cilium
