@@ -71,7 +71,9 @@ istio:
 
 cilium:
   cli:
-    enabled: true
+    enabled: false
+  hubble:
+    enabled: false
 
 pixie:
   cli:
