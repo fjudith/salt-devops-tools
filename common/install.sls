@@ -42,3 +42,11 @@ redhat-packages:
       - {{ item }}
       {% endfor %}
 {% endif %}
+
+fs.inotify.max_user_watches:
+  sysctl.present:
+    - value: 1048576
+
+fs.inotify.max_user_instances:
+  sysctl.present:
+    - value: 512
