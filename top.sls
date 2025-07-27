@@ -45,3 +45,4 @@ base:
     - cilium.cli
     - cilium.hubble
     - kubernetes.kind
+    - kyverno.cli

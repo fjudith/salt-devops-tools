@@ -67,12 +67,16 @@ kubernetes:
 
 istio:
   cli:
-    enabled: true
+    enabled: false
 
 cilium:
   cli:
     enabled: false
   hubble:
+    enabled: fasle
+
+kyverno:
+  cli:
     enabled: false
 
 pixie:
