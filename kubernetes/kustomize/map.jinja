@@ -1,0 +1,8 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{#- Start imports #}
+{% import_yaml tpldir ~ "/defaults.yaml" or {} as defaults %}
+
+{#- Merge in salt pillar #}
+{% set kustomize = salt['pillar.get']('kubernetes:kustomize', default=defaults['kustomize'], merge=True) %}

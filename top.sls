@@ -46,3 +46,4 @@ base:
     - cilium.hubble
     - kubernetes.kind
     - kyverno.cli
+    - kubernetes.kustomize

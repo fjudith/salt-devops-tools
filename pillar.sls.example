@@ -64,6 +64,8 @@ kubernetes:
     enabled: true
   kind:
     enabled: true
+  kustomize:
+    enabled: true
 
 istio:
   cli:
