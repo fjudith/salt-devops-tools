@@ -47,3 +47,4 @@ base:
     - kubernetes.kind
     - kyverno.cli
     - kubernetes.kustomize
+    - openpolicyagent.conftest

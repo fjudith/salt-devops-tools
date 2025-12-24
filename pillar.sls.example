@@ -19,6 +19,8 @@ sops:
 opa:
   cli:
     enabled: true
+  conftest:
+    enable: true
 
 yq:
   cli:
