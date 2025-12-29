@@ -21,7 +21,6 @@ azure-cli-repo:
       - cmd: azure-cli-repo
     - humanname: {{ grains["os"] }} {{ grains["oscodename"] | capitalize }} Azure CLI Package Repository
     - name: deb [arch={{ grains["osarch"] }} signed-by=/etc/apt/keyrings/microsoft-archive-keyring.gpg] {{ url }}
-    # - key_url: https://packages.microsoft.com/keys/microsoft.asc
     - aptkey: False
     - file: /etc/apt/sources.list.d/azure-cli.list
     {%- if grains['saltversioninfo'] >= [2018, 3, 0] %}

@@ -45,6 +45,10 @@ falcosecurity:
   falco:
     enabled: false
 
+opentofu:
+  cli:
+    enabled: true
+
 hashicorp:
   terraform:
     cli:

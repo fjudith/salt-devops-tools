@@ -48,3 +48,4 @@ base:
     - kyverno.cli
     - kubernetes.kustomize
     - openpolicyagent.conftest
+    - opentofu.cli

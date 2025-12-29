@@ -21,7 +21,6 @@ trivy-repo:
       - cmd: trivy-repo
     - humanname: {{ grains["os"] }} {{ grains["oscodename"] | capitalize }} Trivy Package Repository
     - name: deb [signed-by=/etc/apt/keyrings/trivy-archive-keyring.gpg] {{ url }}
-    # - key_url: https://aquasecurity.github.io/trivy-repo/deb/public.key
     - aptkey: False
     - file: /etc/apt/sources.list.d/trivy.list
     - clean_file: True

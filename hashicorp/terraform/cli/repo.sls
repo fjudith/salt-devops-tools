@@ -21,7 +21,6 @@ hashicorp-repo:
       - cmd: hashicorp-repo
     - humanname: {{ grains["os"] }} {{ grains["oscodename"] | capitalize }} Hashicorp Package Repository
     - name: deb [arch={{ grains["osarch"] }} signed-by=/etc/apt/keyrings/hashicorp-archive-keyring.gpg] {{ url }}
-    - key_url: https://apt.releases.hashicorp.com/gpg
     - file: /etc/apt/sources.list.d/hashicorp.list
     - aptkey: False
     - clean_file: True

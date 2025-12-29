@@ -19,7 +19,6 @@ gcloud-repo:
   pkgrepo.{{ repoState }}:
     - humanname: {{ grains["os"] }} {{ grains["oscodename"] | capitalize }} Google Cloud SDK Package Repository
     - name: deb [arch={{ grains["osarch"] }} signed-by=/etc/apt/keyrings/cloud-google-keyring.gpg] {{ url }}
-    - key_url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     - aptkey: False
     - file: /etc/apt/sources.list.d/google-cloud-sdk.list
     {%- if grains['saltversioninfo'] >= [2018, 3, 0] %}

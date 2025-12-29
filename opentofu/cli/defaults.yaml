@@ -1,0 +1,4 @@
+opentofu:
+  enabled: true
+  version: 1.11.2
+  
