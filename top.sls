@@ -49,3 +49,4 @@ base:
     - kubernetes.kustomize
     - openpolicyagent.conftest
     - opentofu.cli
+    - aws.eksctl

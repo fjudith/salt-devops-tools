@@ -101,6 +101,8 @@ aws:
     enabled: false
   samcli:
     enabled: false
+  eksctl:
+    enabled: false
 
 microsoft:
   azure:
