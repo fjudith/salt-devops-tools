@@ -176,3 +176,7 @@ sloth:
 bom:
   cli:
     enabled: true
+
+crossplane:
+  cli:
+    enabled: false

@@ -50,3 +50,4 @@ base:
     - openpolicyagent.conftest
     - opentofu.cli
     - aws.eksctl
+    - crossplane.cli
