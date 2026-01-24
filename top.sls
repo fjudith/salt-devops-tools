@@ -51,3 +51,4 @@ base:
     - opentofu.cli
     - aws.eksctl
     - crossplane.cli
+    - terraform-docs.cli

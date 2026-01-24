@@ -180,3 +180,7 @@ bom:
 crossplane:
   cli:
     enabled: false
+
+terraform_docs:
+  cli:
+    enabled: true

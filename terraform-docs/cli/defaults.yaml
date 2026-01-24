@@ -1,0 +1,3 @@
+terraform_docs:
+  enabled: false
+  version: 0.21.0
