@@ -184,3 +184,7 @@ crossplane:
 terraform_docs:
   cli:
     enabled: true
+
+terragrunt:
+  cli:
+    enabled: true

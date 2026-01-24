@@ -1,0 +1,3 @@
+terragrunt:
+  enabled: false
+  version: 0.98.0

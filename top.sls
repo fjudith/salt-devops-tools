@@ -52,3 +52,4 @@ base:
     - aws.eksctl
     - crossplane.cli
     - terraform-docs.cli
+    - terragrunt.cli
