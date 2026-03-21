@@ -1,8 +1,8 @@
 go:
   enabled: false
-  version: 1.20.3
+  version: 1.26.1
   platform: linux
   architecture: amd64
-  checksum: 979694c2c25c735755bf26f4f45e19e64e4811d661dd07b8c010f7a8e18adfca
+  checksum: 031f088e5d955bab8657ede27ad4e3bc5b7c1ba281f05f245bcc304f327c987a
   
   
