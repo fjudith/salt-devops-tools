@@ -188,3 +188,7 @@ terraform_docs:
 terragrunt:
   cli:
     enabled: true
+
+firecracker-microvm:
+  firecracker:
+    enabled: true

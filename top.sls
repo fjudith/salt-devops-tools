@@ -53,3 +53,4 @@ base:
     - crossplane.cli
     - terraform-docs.cli
     - terragrunt.cli
+    - firecracker-microvm.firecracker
