@@ -24,8 +24,8 @@ curl -fsSL https://packages.broadcom.com/artifactory/api/security/keypair/SaltPr
 | sudo tee /etc/apt/keyrings/salt-archive-keyring.pgp \
 && echo "deb [signed-by=/etc/apt/keyrings/salt-archive-keyring.pgp arch=amd64]  https://packages.broadcom.com/artifactory/saltproject-deb stable main" \
 | sudo tee /etc/apt/sources.list.d/salt.list \
-| sudo apt-get update -yqq \
-| sudo apt-get install -yqq salt-minion
+&& sudo apt-get update -yqq \
+&& sudo apt-get install -yqq salt-minion
 ```
 
 ## Clone this repo
