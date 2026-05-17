@@ -192,3 +192,7 @@ terragrunt:
 firecracker-microvm:
   firecracker:
     enabled: true
+
+opencost:
+  cli:
+    enabled: true

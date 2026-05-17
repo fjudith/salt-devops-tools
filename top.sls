@@ -54,3 +54,4 @@ base:
     - terraform-docs.cli
     - terragrunt.cli
     - firecracker-microvm.firecracker
+    - opencost.cli
