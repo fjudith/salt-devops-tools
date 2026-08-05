@@ -55,3 +55,4 @@ base:
     - terragrunt.cli
     - firecracker-microvm.firecracker
     - opencost.cli
+    - multica.cli

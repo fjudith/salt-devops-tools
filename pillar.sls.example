@@ -196,3 +196,7 @@ firecracker-microvm:
 opencost:
   cli:
     enabled: true
+
+multica:
+  cli:
+    enabled: true
