@@ -56,3 +56,4 @@ base:
     - firecracker-microvm.firecracker
     - opencost.cli
     - multica.cli
+    - rclone.cli

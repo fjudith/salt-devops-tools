@@ -1,0 +1,3 @@
+rclone:
+  enabled: true
+  version: 1.75.0

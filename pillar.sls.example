@@ -200,3 +200,7 @@ opencost:
 multica:
   cli:
     enabled: true
+
+rclone:
+  cli:
+    enabled: true
