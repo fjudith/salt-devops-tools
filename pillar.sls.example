@@ -211,5 +211,9 @@ rclone:
   cli:
     enabled: true
 
+nvm:
+  cli:
+    enabled: false
+
 agentgateway:
-  enabled: true
+  enabled: false

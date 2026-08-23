@@ -59,4 +59,5 @@ base:
     - rclone.cli
     - kiro.cli
     - kiro.crew
+    - nvm.cli
     - agentgateway
