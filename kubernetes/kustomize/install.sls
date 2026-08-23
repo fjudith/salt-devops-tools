@@ -16,8 +16,8 @@ kustomize-archive:
     - unless: ls /usr/local/kustomize/{{ kustomize.version }}
 
 kustomize:
-  require:
-    - archive: kustomize-archive
   file.symlink:
     - name: /usr/local/bin/kustomize
     - target: /usr/local/kustomize/{{ kustomize.version }}/kustomize
+    - require:
+      - archive: kustomize-archive

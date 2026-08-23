@@ -25,7 +25,7 @@ agentgateway-teardown-install-dir:
 agentgateway-teardown-user:
   user.absent:
     - name: {{ agentgateway.user }}
-    - purge: true
+    - purge: false
     - require:
       - service: agentgateway-teardown-service
 

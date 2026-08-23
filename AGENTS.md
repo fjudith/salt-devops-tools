@@ -12,7 +12,7 @@ Target audience: platform engineers and DevOps practitioners who want a reproduc
 
 ### Core Technology
 
-- **SaltStack** (salt-minion 3007.x) — configuration management framework
+- **SaltStack** (salt-minion 3008.x) — configuration management framework
 - **Jinja2** — templating language used in `.sls` state files and `map.jinja`
 - **YAML** — data format for defaults, pillar, and top files
 

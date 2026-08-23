@@ -1,0 +1,27 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+ira:
+  enabled: enabled
+  ca_dir: /etc/pki/rolesanywhere
+  ca_key:
+    bits: 4096
+  ca_cert:
+    cn: "IAM Roles Anywhere CA"
+    O: "Organization"
+    OU: "Platform Engineering"
+    C: "US"
+    ST: "California"
+    L: "San Francisco"
+    days_valid: 3650
+    days_remaining: 90
+  signing_helper:
+    version: 1.8.4
+    base_url: https://rolesanywhere.amazonaws.com/releases
+    install_dir: /usr/local/aws-signing-helper
+    bin_dir: /usr/local/bin
+  certificates: {}
+  # certificates:
+  #   workload-name:
+  #     cn: "workload-name.example.com"
+  #     days_valid: 365
+  #     days_remaining: 30

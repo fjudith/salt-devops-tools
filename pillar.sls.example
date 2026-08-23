@@ -103,6 +103,21 @@ aws:
     enabled: false
   eksctl:
     enabled: false
+  rolesanywhere:
+    ca:
+      enabled: false
+      ca_cert:
+        cn: "My Org IAM Roles Anywhere CA"
+        O: "My Organization"
+        OU: "Platform Engineering"
+        C: "US"
+        ST: "California"
+        L: "San Francisco"
+      certificates:
+        example-workload:
+          cn: "workload.example.com"
+          days_valid: 365
+          days_remaining: 30
 
 kiro:
   cli:
@@ -217,3 +232,16 @@ nvm:
 
 agentgateway:
   enabled: false
+  iam_roles_anywhere:
+    enabled: false
+    profile_name: agentgateway
+    trust_anchor_arn: "arn:aws:rolesanywhere:us-east-1:123456789012:trust-anchor/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    profile_arn: "arn:aws:rolesanywhere:us-east-1:123456789012:profile/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    role_arn: "arn:aws:iam::123456789012:role/MyRolesAnywhereRole"
+    ca_dir: /etc/pki/rolesanywhere
+    certificate:
+      cn: "agentgateway"
+      bits: 2048
+      days_valid: 365
+      days_remaining: 30
+    region: us-east-1

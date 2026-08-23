@@ -1,14 +1,21 @@
 [Unit]
 Description=Agentgateway - AI-native proxy for MCP & A2A
 Documentation=https://agentgateway.dev/docs
-After=network-online.target
+After=network-online.target agentgateway-credentials.service
 Wants=network-online.target
+{% if credential_server_port is defined and credential_server_port -%}
+Requires=agentgateway-credentials.service
+{% endif -%}
 
 [Service]
 Type=simple
 User={{ user }}
 Group={{ group }}
 ExecStart={{ bin_dir }}/agentgateway -f /home/{{ user }}/.config/agentgateway/config.yaml
+Environment=HOME=/home/{{ user }}
+{% if credential_server_port is defined and credential_server_port -%}
+Environment=AWS_EC2_METADATA_SERVICE_ENDPOINT=http://127.0.0.1:{{ credential_server_port }}
+{% endif -%}
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65536

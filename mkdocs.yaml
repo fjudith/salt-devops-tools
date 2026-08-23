@@ -1,0 +1,13 @@
+site_name: Salt Ubuntu DevOps Tools
+site_description: SaltStack formula collection for provisioning DevOps workstations
+
+repo_url: https://github.com/fjudith/salt-ubuntu-devops-tools
+
+plugins:
+  - techdocs-core
+
+nav:
+  - Home: index.md
+  - WSL2 Setup: WSL2.md
+
+docs_dir: docs

@@ -7,6 +7,7 @@ include:
   {%- if agentgateway.enabled %}
   - .install
   - .config
+  - .aws-iam-roles-anywhere
   {%- elif not agentgateway.enabled %}
   - .teardown
   {% endif %}

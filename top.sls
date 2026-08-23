@@ -50,6 +50,7 @@ base:
     - openpolicyagent.conftest
     - opentofu.cli
     - aws.eksctl
+    - aws.iamrolesanywhere.ca
     - crossplane.cli
     - terraform-docs.cli
     - terragrunt.cli

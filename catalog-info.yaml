@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: salt-ubuntu-devops-tools
+  title: Salt Ubuntu DevOps Tools
+  description: >
+    SaltStack formula collection that automates the installation and management
+    of DevOps CLI tools on Ubuntu/Linux workstations.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: fjudith/salt-ubuntu-devops-tools
+  tags:
+    - saltstack
+    - devops
+    - workstation
+    - infrastructure-as-code
+    - cli-tools
+  links:
+    - url: https://github.com/fjudith/salt-ubuntu-devops-tools
+      title: GitHub Repository
+      icon: github
+spec:
+  type: library
+  lifecycle: production
+  owner: platform-engineering

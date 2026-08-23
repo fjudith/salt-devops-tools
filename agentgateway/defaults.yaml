@@ -12,3 +12,17 @@ agentgateway:
     admin_addr: 0.0.0.0:15000
     stats_addr: 0.0.0.0:15020
     readiness_addr: 0.0.0.0:15021
+  iam_roles_anywhere:
+    enabled: false
+    profile_name: agentgateway
+    trust_anchor_arn: ""
+    profile_arn: ""
+    role_arn: ""
+    ca_dir: /etc/pki/rolesanywhere
+    credential_server_port: 9911
+    certificate:
+      cn: "agentgateway"
+      bits: 2048
+      days_valid: 365
+      days_remaining: 30
+    region: us-east-1
