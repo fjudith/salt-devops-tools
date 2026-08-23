@@ -59,3 +59,4 @@ base:
     - rclone.cli
     - kiro.cli
     - kiro.crew
+    - agentgateway

@@ -210,3 +210,6 @@ multica:
 rclone:
   cli:
     enabled: true
+
+agentgateway:
+  enabled: true

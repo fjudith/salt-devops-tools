@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "warpnet.saltstack-extension-pack",
-        "artymaury.template-finder"
+        "artymaury.template-finder",
+        "warpnet.salt-lint"
     ]
 }

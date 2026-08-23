@@ -1,0 +1,14 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+agentgateway:
+  enabled: true
+  version: 1.4.1
+  base_url: https://github.com/agentgateway/agentgateway/releases/download
+  user: agentgateway
+  group: agentgateway
+  install_dir: /usr/local/agentgateway
+  bin_dir: /usr/local/bin
+  config:
+    admin_addr: 0.0.0.0:15000
+    stats_addr: 0.0.0.0:15020
+    readiness_addr: 0.0.0.0:15021
