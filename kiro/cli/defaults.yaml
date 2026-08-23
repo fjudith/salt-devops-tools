@@ -1,0 +1,8 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+kirocli:
+  enabled: true
+  channel: stable
+  base_url: https://prod.download.cli.kiro.dev
+  install_dir: /usr/local/kirocli
+  bin_dir: /usr/local/bin

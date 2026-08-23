@@ -57,3 +57,5 @@ base:
     - opencost.cli
     - multica.cli
     - rclone.cli
+    - kiro.cli
+    - kiro.crew

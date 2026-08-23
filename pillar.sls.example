@@ -104,6 +104,12 @@ aws:
   eksctl:
     enabled: false
 
+kiro:
+  cli:
+    enabled: false
+  crew:
+    enabled: false
+
 microsoft:
   azure:
     cli:
