@@ -17,7 +17,7 @@ EOF
 ```bash
 cat <<EOF | sudo tee /etc/apt/preferences.d/salt-pin-1001
 Package: salt-*
-Pin: version 3007.*
+Pin: version 3008.*
 Pin-Priority: 1001
 EOF
 curl -fsSL https://packages.broadcom.com/artifactory/api/security/keypair/SaltProjectKey/public \
