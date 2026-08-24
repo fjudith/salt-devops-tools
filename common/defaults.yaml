@@ -2,7 +2,6 @@ common:
   enabled: true
   common:
     - wireguard-tools
-    - httpie
     - iotop
     - bonnie++
     - git
@@ -22,3 +21,8 @@ common:
     - python3-devel
     - python3-cryptography
     - cronie-anacron
+  pip:
+    - httpie
+    - pre-commit
+    - salt-lint
+    - yamllint
