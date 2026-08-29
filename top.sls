@@ -30,6 +30,7 @@ base:
     - microsoft.mssql.cli
     - minio.cli
     - github.cli
+    - gitlab.cli
     - go.sdk
     - sops.cli
     - yq.cli
