@@ -2,5 +2,5 @@
 # vim: ft=yaml
 kirocrew:
   enabled: true
-  version: 0.4.0-insider.5
+  version: 0.4.1
   base_url: https://github.com/kirodotdev/KiroCrew/releases/download
