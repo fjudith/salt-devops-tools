@@ -1,3 +1,4 @@
 cilium:
   enabled: false
+  # renovate: datasource=github-releases depName=cilium/cilium-cli
   version: 0.18.5

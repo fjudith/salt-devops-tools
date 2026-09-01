@@ -1,4 +1,5 @@
 flamingo:
   enabled: false
+  # renovate: datasource=github-releases depName=flux-subsystem-argo/flamingo
   version: 0.10.2
   

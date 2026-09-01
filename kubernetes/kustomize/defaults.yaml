@@ -1,4 +1,5 @@
 kustomize:
   enabled: true
+  # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize versioning=loose extractVersion=^kustomize/v(?<version>.+)$
   version: 5.7.1
   

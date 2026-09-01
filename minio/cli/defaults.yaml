@@ -1,4 +1,6 @@
 mcli:
   enabled: false
+  # renovate: not managed — MinIO `mc` uses RELEASE.<timestamp> tags that do not
+  # map to this numeric build string, so it is intentionally excluded.
   version: 20250408153949.0.0
   

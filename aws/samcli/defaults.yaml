@@ -1,4 +1,5 @@
 samcli:
   enabled: false
+  # renovate: datasource=github-releases depName=aws/aws-sam-cli
   version: 1.76.0
   

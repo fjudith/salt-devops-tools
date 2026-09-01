@@ -1,4 +1,5 @@
 opentofu:
   enabled: true
+  # renovate: datasource=github-releases depName=opentofu/opentofu
   version: 1.11.2
   

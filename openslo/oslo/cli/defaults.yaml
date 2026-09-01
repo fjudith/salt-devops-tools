@@ -1,4 +1,5 @@
 oslo:
   enabled: true
+  # renovate: datasource=github-releases depName=OpenSLO/oslo
   version: 0.12.0
   

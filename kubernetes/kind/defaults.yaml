@@ -1,4 +1,5 @@
 kind:
   enabled: false
+  # renovate: datasource=github-releases depName=kubernetes-sigs/kind
   version: 0.29.0
   

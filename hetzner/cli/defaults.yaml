@@ -1,4 +1,5 @@
 hcloud:
   enabled: false
+  # renovate: datasource=github-releases depName=hetznercloud/cli
   version: 1.30.3
   

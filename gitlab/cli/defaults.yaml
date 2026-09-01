@@ -1,3 +1,4 @@
 glab:
   enabled: false
+  # renovate: datasource=gitlab-releases depName=gitlab-org/cli
   version: 1.53.0

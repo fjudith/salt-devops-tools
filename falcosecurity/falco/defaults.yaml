@@ -1,4 +1,5 @@
 falco:
   enabled: false
+  # renovate: datasource=github-releases depName=falcosecurity/falco
   version: 0.38.1
   

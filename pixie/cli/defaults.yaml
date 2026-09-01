@@ -1,4 +1,5 @@
 pixie:
   enabled: false
+  # renovate: datasource=github-releases depName=pixie-io/pixie versioning=loose extractVersion=^release/cli/v(?<version>.+)$
   version: 0.8.2
   

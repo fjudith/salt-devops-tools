@@ -2,6 +2,7 @@
 # vim: ft=yaml
 agentgateway:
   enabled: true
+  # renovate: datasource=github-releases depName=agentgateway/agentgateway
   version: 1.4.1
   base_url: https://github.com/agentgateway/agentgateway/releases/download
   user: agentgateway

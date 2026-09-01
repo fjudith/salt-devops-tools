@@ -1,4 +1,5 @@
 argo:
   enabled: false
+  # renovate: datasource=github-releases depName=argoproj/argo-workflows
   version: 3.4.1
   

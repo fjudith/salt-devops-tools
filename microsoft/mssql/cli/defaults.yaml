@@ -1,5 +1,8 @@
 mssql:
   enabled: false
+  # renovate: not managed — mssql-tools ships as apt/yum packages with 4-part
+  # (17.x / 18.x) versions from packages.microsoft.com, which has no Renovate
+  # datasource. Bump these manually when Microsoft publishes new tool builds.
   17:
     version: 17.10.1.1
     minor: 17.10

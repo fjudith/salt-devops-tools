@@ -1,0 +1,37 @@
+{
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits"
+  ],
+  "timezone": "UTC",
+  "labels": ["dependencies"],
+  "commitMessagePrefix": "chore(deps):",
+  "separateMinorPatch": true,
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 4,
+  "customManagers": [
+    {
+      "description": "Update `version:` fields in each formula's defaults.yaml from inline renovate annotations",
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)defaults\\.yaml$/"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(?:\\s+versioning=(?<versioning>\\S+))?(?:\\s+extractVersion=(?<extractVersion>\\S+))?[^\\n]*\\r?\\n\\s*(?:minor_version:[^\\n]*\\r?\\n\\s*)?version:\\s*['\"]?(?<currentValue>[^'\"\\s]+)['\"]?"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver-coerced{{/if}}",
+      "extractVersionTemplate": "{{#if extractVersion}}{{{extractVersion}}}{{else}}^v?(?<version>.+)${{/if}}"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Group all Docker Engine components into a single PR",
+      "matchFileNames": ["docker/defaults.yaml"],
+      "groupName": "docker engine"
+    },
+    {
+      "description": "Group the two argo formulas",
+      "matchPackageNames": ["argoproj/argo-cd", "argoproj/argo-workflows"],
+      "groupName": "argo"
+    }
+  ]
+}

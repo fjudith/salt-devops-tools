@@ -1,5 +1,6 @@
 go:
   enabled: false
+  # renovate: datasource=golang-version depName=golang
   version: 1.26.1
   platform: linux
   architecture: amd64

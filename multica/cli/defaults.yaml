@@ -1,3 +1,4 @@
 multica:
   enabled: false
+  # renovate: datasource=github-releases depName=multica-ai/multica
   version: 0.4.18

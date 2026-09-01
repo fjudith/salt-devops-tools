@@ -1,4 +1,5 @@
 scorecard:
   enabled: true
+  # renovate: datasource=github-releases depName=ossf/scorecard
   version: 5.0.0
   

@@ -1,4 +1,5 @@
 openfaas:
   enabled: false
+  # renovate: datasource=github-releases depName=openfaas/faas-cli
   version: 0.14.8
   

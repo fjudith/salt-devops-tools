@@ -1,3 +1,4 @@
 gcloud:
   enabled: false
+  # renovate: datasource=github-tags depName=GoogleCloudPlatform/cloud-sdk-docker
   version: 405.0.0

@@ -1,3 +1,4 @@
 terraform_docs:
   enabled: false
+  # renovate: datasource=github-releases depName=terraform-docs/terraform-docs
   version: 0.21.0

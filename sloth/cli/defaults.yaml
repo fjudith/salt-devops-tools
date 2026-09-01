@@ -1,4 +1,5 @@
 sloth:
   enabled: false
+  # renovate: datasource=github-releases depName=slok/sloth
   version: 0.13.0
   

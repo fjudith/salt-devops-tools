@@ -1,4 +1,5 @@
 opa:
   enabled: true
+  # renovate: datasource=github-releases depName=open-policy-agent/opa
   version: 1.12.1
   

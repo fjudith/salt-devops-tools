@@ -1,3 +1,4 @@
 istio:
   enabled: false
+  # renovate: datasource=github-releases depName=istio/istio
   version: 1.26.2

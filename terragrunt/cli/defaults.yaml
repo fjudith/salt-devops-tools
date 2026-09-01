@@ -1,3 +1,4 @@
 terragrunt:
   enabled: false
+  # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
   version: 0.98.0

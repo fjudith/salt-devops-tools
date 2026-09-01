@@ -1,3 +1,4 @@
 rclone:
   enabled: true
+  # renovate: datasource=github-releases depName=rclone/rclone
   version: 1.75.0

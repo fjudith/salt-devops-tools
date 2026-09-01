@@ -1,4 +1,5 @@
 aws_nuke:
   enabled: false
+  # renovate: datasource=github-releases depName=rebuy-de/aws-nuke
   version: 2.22.1
   

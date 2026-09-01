@@ -1,4 +1,5 @@
 sops:
   enabled: false
+  # renovate: datasource=github-releases depName=getsops/sops
   version: 3.10.2
   

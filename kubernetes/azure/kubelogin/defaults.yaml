@@ -1,4 +1,5 @@
 azurekubelogin:
   enabled: true
+  # renovate: datasource=github-releases depName=Azure/kubelogin
   version: 0.2.17
   

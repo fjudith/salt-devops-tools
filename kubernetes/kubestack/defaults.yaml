@@ -1,4 +1,5 @@
 kubestack:
   enabled: false
+  # renovate: datasource=github-releases depName=kbst/kbst
   version: 0.2.1
   

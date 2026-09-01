@@ -1,4 +1,5 @@
 helm:
   enabled: false
+  # renovate: datasource=github-releases depName=helm/helm
   version: 3.17.0
   

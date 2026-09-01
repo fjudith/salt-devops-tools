@@ -1,4 +1,5 @@
 pulumi:
   enabled: false
+  # renovate: datasource=github-releases depName=pulumi/pulumi
   version: 3.42.0
   

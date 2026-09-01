@@ -1,3 +1,4 @@
 trivy:
   enabled: true
+  # renovate: datasource=github-releases depName=aquasecurity/trivy
   version:  0.73.0

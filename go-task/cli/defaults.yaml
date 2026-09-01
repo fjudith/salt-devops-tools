@@ -1,4 +1,5 @@
 gotask:
   enabled: true
+  # renovate: datasource=github-releases depName=go-task/task
   version: 3.49.1
   

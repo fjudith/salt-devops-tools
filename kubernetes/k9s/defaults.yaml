@@ -1,4 +1,5 @@
 k9s:
   enabled: false
+  # renovate: datasource=github-releases depName=derailed/k9s
   version: 0.31.7
   

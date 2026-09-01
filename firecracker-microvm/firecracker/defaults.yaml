@@ -1,4 +1,5 @@
 firecracker:
   enabled: false
+  # renovate: datasource=github-releases depName=firecracker-microvm/firecracker
   version: 1.12.1
   
