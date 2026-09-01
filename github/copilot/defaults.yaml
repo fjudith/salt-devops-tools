@@ -1,0 +1,12 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+
+githubcopilot:
+  enabled: false
+  # renovate: not managed — tracks the rolling `latest` AppImage, no pinned version.
+  version: latest
+  source_url: https://gh.io/copilot-app-linux
+  install_dir: /opt/github-copilot
+  app_path: /opt/github-copilot/GitHub-Copilot-linux-x64.AppImage
+  bin_dir: /usr/local/bin
+  launcher: /usr/local/bin/github-copilot

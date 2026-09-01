@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{% import_yaml tpldir ~ "/defaults.yaml" or {} as defaults %}
+
+{% set githubcopilot = salt['pillar.get']('github:copilot', default=defaults['githubcopilot'], merge=True) %}

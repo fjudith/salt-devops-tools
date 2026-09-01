@@ -173,6 +173,8 @@ minio:
 github:
   cli:
     enabled: true
+  copilot:
+    enabled: false
 
 gitlab:
   cli:
