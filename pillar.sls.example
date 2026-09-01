@@ -251,3 +251,7 @@ agentgateway:
       days_valid: 365
       days_remaining: 30
     region: us-east-1
+
+oh-my-pi:
+  cli:
+    enabled: false

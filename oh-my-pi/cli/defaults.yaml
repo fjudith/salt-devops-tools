@@ -1,0 +1,10 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+omp:
+  enabled: false
+  # renovate: datasource=github-releases depName=can1357/oh-my-pi
+  version: 18.1.2
+  base_url: https://github.com/can1357/oh-my-pi/releases/download
+  install_dir: /usr/local/oh-my-pi
+  bin_dir: /usr/local/bin
+  completion: true

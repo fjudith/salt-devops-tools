@@ -64,3 +64,4 @@ base:
     - kiro.crew
     - nvm.cli
     - agentgateway
+    - oh-my-pi.cli
