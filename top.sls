@@ -65,3 +65,4 @@ base:
     - nvm.cli
     - agentgateway
     - oh-my-pi.cli
+    - vllm

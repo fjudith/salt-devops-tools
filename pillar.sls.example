@@ -4,6 +4,10 @@
 common:
   enabled: true
 
+vllm:
+  enabled: false
+  mode: gpu
+
 gotask:
   cli:
     enabled: true
@@ -124,6 +128,16 @@ kiro:
     enabled: false
   crew:
     enabled: false
+    service:
+      enabled: false
+      mode: native
+      user: your-user
+      bin: kirocrew
+      docker:
+        image: ghcr.io/kirodotdev/kirocrew:stable
+        container: kirocrew
+        volume: kirocrew-home
+        port: 5476
 
 microsoft:
   azure:
@@ -195,7 +209,7 @@ weave:
   gitops:
     cli:
       enabled: false
-  
+
 sloth:
   cli:
     enabled: false

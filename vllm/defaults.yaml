@@ -1,0 +1,7 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+
+vllm:
+  enabled: false
+  mode: gpu
+  version: latest
