@@ -6,6 +6,7 @@
 include:
   {%- if multica.enabled %}
   - .install
+  - .config
   {%- elif not multica.enabled %}
   - .teardown
   {% endif %}

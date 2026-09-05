@@ -1,0 +1,17 @@
+[Unit]
+Description=Multica agent daemon
+Documentation=https://multica.ai/docs/daemon-runtimes
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User={{ user }}
+Group={{ group }}
+Environment=HOME={{ home }}
+ExecStart=/usr/local/bin/multica daemon start --foreground
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -226,7 +226,12 @@ opencost:
 
 multica:
   cli:
-    enabled: true
+    enabled: false
+    service:
+      enabled: false
+      user: root
+      group: root
+      home: /root
 
 rclone:
   cli:

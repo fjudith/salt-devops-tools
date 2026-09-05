@@ -10,3 +10,14 @@ multica-archive:
 multica:
   file.absent:
     - name: /usr/local/bin/multica
+
+multica-service:
+  service.dead:
+    - name: multica
+    - enable: false
+
+multica-service-unit:
+  file.absent:
+    - name: /etc/systemd/system/multica.service
+    - require:
+      - service: multica-service
