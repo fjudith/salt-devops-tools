@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{% import_yaml tpldir ~ "/defaults.yaml" or {} as defaults %}
+
+{% set cloud_hypervisor = salt['pillar.get']('cloud-hypervisor:cloud-hypervisor', default=defaults['cloud_hypervisor'], merge=True) %}

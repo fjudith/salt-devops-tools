@@ -56,7 +56,7 @@ base:
     - crossplane.cli
     - terraform-docs.cli
     - terragrunt.cli
-    - firecracker-microvm.firecracker
+    - cloud-hypervisor.cloud-hypervisor
     - opencost.cli
     - multica.cli
     - rclone.cli

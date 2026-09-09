@@ -1,0 +1,7 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+cloud_hypervisor:
+  enabled: false
+  # renovate: datasource=github-releases depName=cloud-hypervisor/cloud-hypervisor
+  version: 53.0
+  base_url: https://github.com/cloud-hypervisor/cloud-hypervisor/releases/download
