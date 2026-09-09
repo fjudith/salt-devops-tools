@@ -22,6 +22,17 @@ common:
     - python3-devel
     - python3-cryptography
     - cronie-anacron
+  virtio:
+    enabled: true
+    modules:
+      - virtio
+      - virtio_pci
+      - virtio_blk
+      - virtio_net
+      - virtio_scsi
+      - virtio_balloon
+      - virtio_console
+      - virtio_rng
   pip:
     - httpie
     - pre-commit

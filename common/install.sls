@@ -73,6 +73,22 @@ redhat-packages:
       {% endfor %}
 {% endif %}
 
+{%- if common.virtio.enabled %}
+{%- for mod in common.virtio.modules %}
+virtio-module-{{ mod }}:
+  kmod.present:
+    - name: {{ mod }}
+    - persist: True
+{% endfor %}
+{% else %}
+{%- for mod in common.virtio.modules %}
+virtio-module-{{ mod }}:
+  kmod.absent:
+    - name: {{ mod }}
+    - persist: True
+{% endfor %}
+{% endif %}
+
 fs.inotify.max_user_watches:
   sysctl.present:
     - value: 1048576
