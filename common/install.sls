@@ -19,6 +19,36 @@ common-packages:
       - {{ item }}
       {% endfor %}
 
+{% if common.enabled %}
+cni-default-config:
+  file.managed:
+    - name: /etc/cni/net.d/99-default.conf
+    - makedirs: True
+    - contents: |
+        {
+          "cniVersion": "0.3.1",
+          "name": "default",
+          "plugins": [
+            {
+              "type": "bridge"
+            },
+            {
+              "type": "portmap",
+              "capabilities": {
+                "portMappings": true
+              }
+            },
+            {
+              "type": "loopback"
+            }
+          ]
+        }
+{% else %}
+cni-default-config:
+  file.absent:
+    - name: /etc/cni/net.d/99-default.conf
+{% endif %}
+
 {%- if grains['os_family']|lower in ('debian',) %}
 debian-packages:
   pkg.{{ repoState }}:
