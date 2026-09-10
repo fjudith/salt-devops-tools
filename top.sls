@@ -57,6 +57,8 @@ base:
     - terraform-docs.cli
     - terragrunt.cli
     - cloud-hypervisor.cloud-hypervisor
+    - kata-containers.kata-containers
+    - containerd.nerdctl
     - opencost.cli
     - multica.cli
     - rclone.cli

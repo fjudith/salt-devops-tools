@@ -4,3 +4,64 @@ kirocrew:
   enabled: true
   version: 0.4.1
   base_url: https://github.com/kirodotdev/KiroCrew/releases/download
+  service:
+    enabled: false
+    mode: native
+    user: null
+    bin: kirocrew
+    docker:
+      image: ghcr.io/kirodotdev/kirocrew:stable
+      container: kirocrew
+      volume: kirocrew-home
+      port: 5476
+      host_ip: 127.0.0.1
+      # systemd unit that manages the container lifecycle.
+      service: kirocrew-docker
+      # Optional host workspace directory bind-mounted into the container.
+      # Leave shared_dir null to skip the mount. Must NOT be /home/kirocrew,
+      # which is the home volume.
+      shared_dir: null
+      guest_mount: /workspace
+      # Run the container in the host user namespace (uid inside == uid on the
+      # host). Required for read/write access to host bind-mounts like
+      # shared_dir when the daemon uses userns-remap. Set false to keep
+      # Docker's userns-remap isolation (host bind-mounts become read-only to
+      # the remapped uid). uid/gid are the container user the files map to.
+      userns_host: true
+      uid: 1000
+      gid: 1000
+      seccomp_profile: /etc/kirocrew/kirocrew-seccomp.json
+      seccomp_url: https://raw.githubusercontent.com/kirodotdev/KiroCrew/main/docker/seccomp/kirocrew-seccomp.json
+    kata:
+      # Run the KiroCrew OCI image inside a Kata Containers micro-VM using the
+      # Cloud Hypervisor (clh) backend. Requires the kata-containers formula.
+      image: ghcr.io/kirodotdev/kirocrew:stable
+      container: kirocrew
+      # Dashboard port inside the container (KiroCrew binds 0.0.0.0:5476) and
+      # the host address it is published on via CNI portmap.
+      port: 5476
+      host_ip: 127.0.0.1
+      # containerd runtime handler registered by the kata-containers formula.
+      runtime: io.containerd.kata-clh.v2
+      # containerd namespace the workstation service runs the container in.
+      namespace: kirocrew
+      service: kirocrew-kata
+      # Dedicated CNI network for the KiroCrew container. nerdctl creates it
+      # (bridge + IPAM + portmap) so the dashboard port can be published from
+      # the guest to the host. Requires the containerd.nerdctl formula.
+      network: kirocrew
+      subnet: 10.88.0.0/24
+      # Host directory shared into the guest (over virtio-fs by Kata), and the
+      # path it is mounted at inside the guest. Must NOT shadow the container
+      # home (/home/kirocrew), which the entrypoint needs to write to.
+      shared_dir: /var/lib/kirocrew/shared
+      guest_mount: /workspace
+      # Persistent home for the container user. Holds KiroCrew state and the
+      # kiro-cli login credentials so they survive restarts. Bind-mounted to
+      # /home/kirocrew (the guest home) which the entrypoint writes to.
+      home_dir: /var/lib/kirocrew/home
+      home_mount: /home/kirocrew
+      # UID/GID the container's kirocrew user runs as; the host home_dir is
+      # chowned to this so the guest user can write to it.
+      home_uid: 1000
+      home_gid: 1000

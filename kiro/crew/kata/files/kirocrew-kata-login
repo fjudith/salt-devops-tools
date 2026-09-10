@@ -1,0 +1,57 @@
+#!/bin/bash
+# -*- coding: utf-8 -*-
+# Managed by Salt (kiro/crew kata mode).
+#
+# One-time interactive helper to authenticate kiro-cli for the KiroCrew Kata
+# service. Credentials are written into the persistent home directory
+# ({{ home_dir }}) which the kirocrew-kata service bind-mounts on every start,
+# so the login survives container restarts and VM reboots.
+#
+# The login itself runs under Docker (see note below) for reliable networking.
+#
+# Usage: sudo kirocrew-kata-login
+set -euo pipefail
+
+IMAGE="{{ image }}"
+HOME_DIR="{{ home_dir }}"
+HOME_MOUNT="{{ home_mount }}"
+SERVICE="{{ service }}"
+LOGIN_CONTAINER="{{ container }}-login"
+
+if [ "$(id -u)" -ne 0 ]; then
+  echo "This helper must run as root (use sudo)." >&2
+  exit 1
+fi
+
+echo "Stopping ${SERVICE} so the login container can use the persistent home..."
+systemctl stop "${SERVICE}" 2>/dev/null || true
+
+# Clean up any leftover login container from a previous attempt.
+docker rm --force "${LOGIN_CONTAINER}" >/dev/null 2>&1 || true
+
+# The login runs under Docker (runc), not Kata. Reason: kiro-cli login needs
+# working outbound networking, and on some hosts (notably WSL2) the Kata
+# micro-VM cannot plumb a network interface into the guest. Docker's host-
+# backed networking always works, and credentials are just files written into
+# the persistent home (${HOME_DIR}) that the Kata service mounts on start, so
+# the runtime that performs the login does not matter.
+echo "Launching interactive login container (Docker runtime for reliable network)..."
+echo "The container has no browser, so this uses the device-code flow:"
+echo "  1. A verification URL and code will be printed below."
+echo "  2. Open the URL in a browser ON YOUR HOST and enter the code."
+echo "  3. Once approved, the container writes credentials and exits."
+# --userns=host disables Docker's userns-remap for this container so its uid
+# 1000 maps directly to host uid 1000 — matching the ownership of HOME_DIR.
+# Without it, remapped uids cannot access the 0700 home and container init
+# fails with "chdir ... permission denied".
+docker run --rm -it \
+  --name "${LOGIN_CONTAINER}" \
+  --userns=host \
+  -v "${HOME_DIR}:${HOME_MOUNT}" \
+  --entrypoint kiro-cli \
+  "${IMAGE}" \
+  login --use-device-flow
+
+echo "Login complete. Restarting ${SERVICE}..."
+systemctl start "${SERVICE}"
+echo "Done. Check status with: systemctl status ${SERVICE}"

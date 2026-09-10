@@ -1,0 +1,111 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{% from "kiro/crew/map.jinja" import kirocrew with context %}
+
+{% set kata = kirocrew.service.kata %}
+
+kirocrew-kata-shared-directory:
+  file.directory:
+    - name: {{ kata.shared_dir }}
+    - user: root
+    - group: root
+    - mode: '0755'
+
+# Persistent home for the container's kirocrew user (uid/gid {{ kata.home_uid }}).
+# Holds KiroCrew state and kiro-cli login credentials so they survive restarts.
+kirocrew-kata-home-directory:
+  file.directory:
+    - name: {{ kata.home_dir }}
+    - user: {{ kata.home_uid }}
+    - group: {{ kata.home_gid }}
+    - mode: '0700'
+    - makedirs: true
+
+# One-time interactive login helper. kiro-cli login is an interactive OAuth
+# flow, so it cannot run inside a state apply; this drops a helper on PATH that
+# runs the login against the persistent home. Run `sudo kirocrew-kata-login`.
+kirocrew-kata-login-helper:
+  file.managed:
+    - name: /usr/local/bin/kirocrew-kata-login
+    - source: salt://kiro/crew/kata/files/kirocrew-kata-login
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: '0755'
+    - context:
+        image: {{ kata.image }}
+        home_dir: {{ kata.home_dir }}
+        home_mount: {{ kata.home_mount }}
+        service: {{ kata.service }}
+        container: {{ kata.container }}
+
+# Dedicated CNI network (bridge + IPAM + portmap) so the dashboard port can be
+# published from the guest to the host. nerdctl writes a proper conflist under
+# /etc/cni/net.d that includes the portmap chain.
+kirocrew-kata-network:
+  cmd.run:
+    - name: nerdctl --namespace {{ kata.namespace }} network create {{ kata.network }} --subnet {{ kata.subnet }}
+    - unless: nerdctl --namespace {{ kata.namespace }} network inspect {{ kata.network }}
+    - require:
+      - sls: containerd.nerdctl
+
+# Pre-pull the image into the containerd namespace so the service starts fast
+# and fails early if the image is unavailable.
+kirocrew-kata-image:
+  cmd.run:
+    - name: nerdctl --namespace {{ kata.namespace }} pull {{ kata.image }}
+    - unless: nerdctl --namespace {{ kata.namespace }} image inspect {{ kata.image }}
+    - require:
+      - sls: kata-containers.kata-containers
+      - sls: containerd.nerdctl
+
+kirocrew-kata-service-file:
+  file.managed:
+    - name: /etc/systemd/system/{{ kata.service }}.service
+    - user: root
+    - group: root
+    - mode: '0644'
+    - contents: |
+        [Unit]
+        Description=KiroCrew (Kata Containers / Cloud Hypervisor)
+        After=containerd.service network-online.target
+        Requires=containerd.service
+        Wants=network-online.target
+
+        [Service]
+        Type=simple
+        # Remove any stale container from a previous run.
+        ExecStartPre=-/usr/local/bin/nerdctl --namespace {{ kata.namespace }} rm --force {{ kata.container }}
+        ExecStart=/usr/local/bin/nerdctl --namespace {{ kata.namespace }} run \
+          --rm \
+          --name {{ kata.container }} \
+          --runtime {{ kata.runtime }} \
+          --network {{ kata.network }} \
+          --publish {{ kata.host_ip }}:{{ kata.port }}:5476 \
+          --volume {{ kata.home_dir }}:{{ kata.home_mount }} \
+          --volume {{ kata.shared_dir }}:{{ kata.guest_mount }} \
+          {{ kata.image }}
+        ExecStop=-/usr/local/bin/nerdctl --namespace {{ kata.namespace }} stop {{ kata.container }}
+        Restart=always
+        RestartSec=5
+        KillMode=mixed
+
+        [Install]
+        WantedBy=multi-user.target
+    - require:
+      - file: kirocrew-kata-shared-directory
+      - file: kirocrew-kata-home-directory
+      - cmd: kirocrew-kata-image
+      - cmd: kirocrew-kata-network
+
+kirocrew-kata:
+  service.running:
+    - name: {{ kata.service }}
+    - enable: true
+    - require:
+      - sls: kata-containers.kata-containers
+      - sls: containerd.nerdctl
+      - file: kirocrew-kata-service-file
+    - watch:
+      - file: kirocrew-kata-service-file

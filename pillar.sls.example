@@ -130,6 +130,7 @@ kiro:
     enabled: false
     service:
       enabled: false
+      # mode: native | docker | kata
       mode: native
       user: your-user
       bin: kirocrew
@@ -137,7 +138,59 @@ kiro:
         image: ghcr.io/kirodotdev/kirocrew:stable
         container: kirocrew
         volume: kirocrew-home
+        # Dashboard published on host_ip:port -> container 5476.
         port: 5476
+        host_ip: 127.0.0.1
+        # systemd unit that manages the container lifecycle.
+        service: kirocrew-docker
+        # Optional host workspace bind-mounted into the container.
+        # Leave unset/null to skip.
+        shared_dir: /home/you/git
+        guest_mount: /workspace
+        # Run in the host user namespace so the container can read/write host
+        # bind-mounts (needed when the daemon uses userns-remap). Set false to
+        # keep userns-remap isolation (host mounts become read-only).
+        userns_host: true
+        uid: 1000
+        gid: 1000
+      # kata mode runs the KiroCrew OCI image inside a Kata Containers micro-VM
+      # (Cloud Hypervisor backend). Requires kata-containers.enabled below.
+      kata:
+        image: ghcr.io/kirodotdev/kirocrew:stable
+        container: kirocrew
+        # Dashboard published on host_ip:port -> container 5476 via CNI portmap.
+        port: 5476
+        host_ip: 127.0.0.1
+        runtime: io.containerd.kata-clh.v2
+        namespace: kirocrew
+        service: kirocrew-kata
+        # Dedicated CNI network for port publishing.
+        network: kirocrew
+        subnet: 10.88.0.0/24
+        # Workspace share (host files available in the guest).
+        shared_dir: /var/lib/kirocrew/shared
+        guest_mount: /workspace
+        # Persistent container home (KiroCrew state + kiro-cli login creds).
+        home_dir: /var/lib/kirocrew/home
+        home_mount: /home/kirocrew
+        home_uid: 1000
+        home_gid: 1000
+
+# Kata Containers with the Cloud Hypervisor (clh) backend. Required for the
+# kirocrew `kata` service mode above. Needs KVM (/dev/kvm).
+kata-containers:
+  kata-containers:
+    enabled: false
+
+# nerdctl (Docker-compatible containerd CLI). Required for the kirocrew `kata`
+# service mode, which uses it for CNI networking and port publishing.
+containerd:
+  nerdctl:
+    enabled: false
+
+cloud-hypervisor:
+  cloud-hypervisor:
+    enabled: false
 
 microsoft:
   azure:

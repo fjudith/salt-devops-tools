@@ -4,7 +4,7 @@
 {% from tpldir ~ "/map.jinja" import kirocrew with context %}
 
 kirocrew:
-  {%- if kirocrew.enabled %}
+  {%- if kirocrew.enabled and kirocrew.service.mode == 'native' %}
   pkg.installed:
     - sources:
       {%- if grains['os_family']|lower in ('debian',) %}
@@ -23,4 +23,6 @@ kirocrew:
   {%- else %}
   pkg.removed:
     - name: kirocrew
+    - require:
+      - cmd: kirocrew-service-uninstall
   {%- endif %}

@@ -2,7 +2,7 @@
 # vim: ft=jinja
 
 {#- Start imports #}
-{% import_yaml tpldir ~ "/defaults.yaml" or {} as defaults %}
+{% import_yaml "kiro/crew/defaults.yaml" or {} as defaults %}
 
 {#- Merge in salt pillar #}
 {% set kirocrew = salt['pillar.get']('kiro:crew', default=defaults['kirocrew'], merge=True) %}

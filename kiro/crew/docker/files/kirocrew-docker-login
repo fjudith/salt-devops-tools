@@ -1,0 +1,53 @@
+#!/bin/bash
+# -*- coding: utf-8 -*-
+# Managed by Salt (kiro/crew docker mode).
+#
+# One-time interactive helper to authenticate kiro-cli for the KiroCrew Docker
+# service. Credentials are written into the SAME named volume ({{ volume }})
+# that the kirocrew-docker service mounts at /home/kirocrew, so the login is
+# visible to the service and survives container restarts.
+#
+# Usage: sudo kirocrew-docker-login
+set -euo pipefail
+
+IMAGE="{{ image }}"
+VOLUME="{{ volume }}"
+HOME_MOUNT="/home/kirocrew"
+SERVICE="{{ service }}"
+LOGIN_CONTAINER="{{ container }}-login"
+
+if [ "$(id -u)" -ne 0 ]; then
+  echo "This helper must run as root (use sudo)." >&2
+  exit 1
+fi
+
+echo "Stopping ${SERVICE} so the login container can use the home volume..."
+systemctl stop "${SERVICE}" 2>/dev/null || true
+
+# Clean up any leftover login container from a previous attempt.
+docker rm --force "${LOGIN_CONTAINER}" >/dev/null 2>&1 || true
+
+# Ensure the shared home volume exists (the service also creates it).
+docker volume create "${VOLUME}" >/dev/null
+
+echo "Launching interactive login container..."
+echo "The container has no browser, so this uses the device-code flow:"
+echo "  1. A verification URL and code will be printed below."
+echo "  2. Open the URL in a browser ON YOUR HOST and enter the code."
+echo "  3. Once approved, the container writes credentials and exits."
+# Mount the SAME named volume the service uses so credentials are shared. The
+# userns policy MUST match the service so the login writes files with the same
+# uid the service reads them as — otherwise the runtimes disagree on ownership
+# and hit "Permission denied".
+USERNS_ARGS=({{ '--userns=host' if userns_host else '' }})
+docker run --rm -it \
+  --name "${LOGIN_CONTAINER}" \
+  "${USERNS_ARGS[@]}" \
+  -v "${VOLUME}:${HOME_MOUNT}" \
+  --entrypoint kiro-cli \
+  "${IMAGE}" \
+  login --use-device-flow
+
+echo "Login complete. Restarting ${SERVICE}..."
+systemctl start "${SERVICE}"
+echo "Done. Check status with: systemctl status ${SERVICE}"
