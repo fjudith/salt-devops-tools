@@ -49,6 +49,24 @@ cni-default-config:
     - name: /etc/cni/net.d/99-default.conf
 {% endif %}
 
+{%- if common.enabled %}
+{#- The distro packages CNI plugins outside the /opt/cni/bin path that
+    containerd, ctr and nerdctl look in by default. Symlink the standard path
+    to the packaged location so those tools can find the plugins. #}
+{%- set cni_plugin_dirs = {
+      'debian': '/usr/lib/cni',
+      'redhat': '/usr/libexec/cni',
+} %}
+{%- set cni_plugin_dir = cni_plugin_dirs.get(grains['os_family']|lower, '/usr/lib/cni') %}
+cni-plugin-bin-path:
+  file.symlink:
+    - name: /opt/cni/bin
+    - target: {{ cni_plugin_dir }}
+    - force: true
+    - makedirs: true
+    - onlyif: test -d {{ cni_plugin_dir }}
+{% endif %}
+
 {%- if grains['os_family']|lower in ('debian',) %}
 debian-packages:
   pkg.{{ repoState }}:
@@ -68,25 +86,35 @@ redhat-packages:
     - refresh: True
     - allow_updates: True
     - pkgs:
-      {%- for item in commond.redhat %}
+      {%- for item in common.redhat %}
       - {{ item }}
       {% endfor %}
 {% endif %}
 
 {%- if common.virtio.enabled %}
+{#- Only manage modules that exist as loadable .ko files on the running kernel.
+    Built-in modules (modinfo reports "(builtin)") and modules absent from this
+    kernel (e.g. WSL2, cloud-optimized kernels) are skipped, since kmod.present
+    cannot load them and would fail on subsequent runs. #}
 {%- for mod in common.virtio.modules %}
+{%- set modfile = salt['cmd.run']('modinfo -F filename ' ~ mod ~ ' 2>/dev/null', python_shell=True) %}
+{%- if modfile and modfile != '(builtin)' %}
 virtio-module-{{ mod }}:
   kmod.present:
     - name: {{ mod }}
     - persist: True
-{% endfor %}
+{% endif %}
+{%- endfor %}
 {% else %}
 {%- for mod in common.virtio.modules %}
+{%- set modfile = salt['cmd.run']('modinfo -F filename ' ~ mod ~ ' 2>/dev/null', python_shell=True) %}
+{%- if modfile and modfile != '(builtin)' %}
 virtio-module-{{ mod }}:
   kmod.absent:
     - name: {{ mod }}
     - persist: True
-{% endfor %}
+{% endif %}
+{%- endfor %}
 {% endif %}
 
 fs.inotify.max_user_watches:
