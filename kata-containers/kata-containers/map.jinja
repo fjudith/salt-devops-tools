@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{% import_yaml tpldir ~ "/defaults.yaml" or {} as defaults %}
+
+{% set kata_containers = salt['pillar.get']('kata-containers:kata-containers', default=defaults['kata_containers'], merge=True) %}

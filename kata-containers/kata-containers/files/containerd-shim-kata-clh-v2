@@ -1,0 +1,7 @@
+#!/bin/bash
+# -*- coding: utf-8 -*-
+# Managed by Salt (kata-containers formula).
+# Pins the Kata configuration to the Cloud Hypervisor (clh) backend so that
+# both containerd/CRI and the containerd CLIs (ctr, nerdctl) resolve the same
+# hypervisor. See kata-containers docs: how-to/containerd-kata.md
+KATA_CONF_FILE={{ conf_file }} exec {{ install_dir }}/bin/containerd-shim-kata-v2 "$@"

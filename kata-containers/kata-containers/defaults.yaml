@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+kata_containers:
+  enabled: false
+  # renovate: datasource=github-releases depName=kata-containers/kata-containers
+  version: 3.14.0
+  base_url: https://github.com/kata-containers/kata-containers/releases/download
+  # Static tarball is extracted into / and lays files down under /opt/kata/.
+  install_dir: /opt/kata
+  # Cloud Hypervisor is the default VMM backend (clh). Kata ships a matching
+  # configuration-clh.toml alongside the default configuration.toml.
+  hypervisor: clh
+  # containerd runtime handler registered for the Kata + Cloud Hypervisor backend.
+  runtime_name: kata-clh
+  containerd_config: /etc/containerd/config.toml
+  # Shim wrapper that pins KATA_CONF_FILE to the clh config so ctr/nerdctl and
+  # containerd all resolve the Cloud Hypervisor backend.
+  shim_wrapper: /usr/local/bin/containerd-shim-kata-clh-v2
