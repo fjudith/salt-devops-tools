@@ -16,7 +16,7 @@ ira:
     days_remaining: 90
   signing_helper:
     # renovate: datasource=github-releases depName=aws/rolesanywhere-credential-helper
-    version: 1.8.4
+    version: 1.8.5
     base_url: https://rolesanywhere.amazonaws.com/releases
     install_dir: /usr/local/aws-signing-helper
     bin_dir: /usr/local/bin
