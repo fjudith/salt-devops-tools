@@ -143,6 +143,8 @@ kiro:
         host_ip: 127.0.0.1
         # systemd unit that manages the container lifecycle.
         service: kirocrew-docker
+        # Default TTL for dashboard tokens (kirocrew-docker-token).
+        token_ttl: 2h
         # Optional host workspace bind-mounted into the container.
         # Leave unset/null to skip.
         shared_dir: /home/you/git
@@ -164,9 +166,15 @@ kiro:
         runtime: io.containerd.kata-clh.v2
         namespace: kirocrew
         service: kirocrew-kata
-        # Dedicated CNI network for port publishing.
+        # Default TTL for dashboard tokens (kirocrew-kata-token).
+        token_ttl: 2h
+        # Dedicated CNI network + fixed container IP. A systemd socket proxy
+        # on host_ip:port forwards to container_ip:port so WSL2 mirrors the
+        # dashboard to Windows while keeping Kata VM isolation.
         network: kirocrew
         subnet: 10.88.0.0/24
+        container_ip: 10.88.0.10
+        proxy_service: kirocrew-kata-proxy
         # Workspace share (host files available in the guest).
         shared_dir: /var/lib/kirocrew/shared
         guest_mount: /workspace

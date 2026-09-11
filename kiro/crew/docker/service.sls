@@ -72,6 +72,23 @@ kirocrew-docker-login-helper:
         container: {{ docker.container }}
         userns_host: {{ docker.userns_host }}
 
+# Helper that prints a dashboard access URL + token from the running container.
+# Run `sudo kirocrew-docker-token [TTL]`.
+kirocrew-docker-token-helper:
+  file.managed:
+    - name: /usr/local/bin/kirocrew-docker-token
+    - source: salt://kiro/crew/docker/files/kirocrew-docker-token
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: '0755'
+    - context:
+        container: {{ docker.container }}
+        service: {{ docker.service }}
+        port: {{ docker.port }}
+        host_ip: {{ docker.host_ip }}
+        default_ttl: {{ docker.token_ttl }}
+
 kirocrew-docker-service-file:
   file.managed:
     - name: /etc/systemd/system/{{ docker.service }}.service

@@ -28,6 +28,10 @@ kirocrew-docker-login-helper-teardown:
   file.absent:
     - name: /usr/local/bin/kirocrew-docker-login
 
+kirocrew-docker-token-helper-teardown:
+  file.absent:
+    - name: /usr/local/bin/kirocrew-docker-token
+
 kirocrew-docker-seccomp-teardown:
   file.absent:
     - name: {{ docker.seccomp_profile }}

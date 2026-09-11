@@ -38,6 +38,19 @@ Both helpers stop the service, run `kiro-cli login --use-device-flow` (prints a
 verification URL + code to open in a browser on your host), then restart the
 service.
 
+## Dashboard token
+
+The dashboard requires an access token in the URL (`?token=...`). Each container
+mode ships a helper that mints one from the running container and prints a
+ready-to-open URL:
+
+- `docker` mode: `sudo kirocrew-docker-token [TTL]`
+- `kata` mode: `sudo kirocrew-kata-token [TTL]`
+
+`TTL` is optional (default `2h`, e.g. `30m`, `8h`). The printed URL uses the
+host address the dashboard is published on (`host_ip:port`), so it works from a
+browser on the host and, on WSL2, from Windows via localhost forwarding.
+
 ## Kata mode
 
 `kata` mode runs the KiroCrew OCI image inside a lightweight virtual machine

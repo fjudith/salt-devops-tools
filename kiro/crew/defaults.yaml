@@ -17,6 +17,8 @@ kirocrew:
       host_ip: 127.0.0.1
       # systemd unit that manages the container lifecycle.
       service: kirocrew-docker
+      # Default TTL for dashboard tokens minted by kirocrew-docker-token.
+      token_ttl: 2h
       # Optional host workspace directory bind-mounted into the container.
       # Leave shared_dir null to skip the mount. Must NOT be /home/kirocrew,
       # which is the home volume.
@@ -38,7 +40,7 @@ kirocrew:
       image: ghcr.io/kirodotdev/kirocrew:stable
       container: kirocrew
       # Dashboard port inside the container (KiroCrew binds 0.0.0.0:5476) and
-      # the host address it is published on via CNI portmap.
+      # the host address it is published on.
       port: 5476
       host_ip: 127.0.0.1
       # containerd runtime handler registered by the kata-containers formula.
@@ -46,11 +48,20 @@ kirocrew:
       # containerd namespace the workstation service runs the container in.
       namespace: kirocrew
       service: kirocrew-kata
+      # Default TTL for dashboard tokens minted by kirocrew-kata-token.
+      token_ttl: 2h
       # Dedicated CNI network for the KiroCrew container. nerdctl creates it
-      # (bridge + IPAM + portmap) so the dashboard port can be published from
-      # the guest to the host. Requires the containerd.nerdctl formula.
+      # (bridge + IPAM). The container gets a fixed IP so a host-side systemd
+      # socket proxy can forward to it. Requires the containerd.nerdctl formula.
       network: kirocrew
       subnet: 10.88.0.0/24
+      container_ip: 10.88.0.10
+      # A CNI portmap publish (nerdctl -p) is DNAT-only: it has no listening
+      # socket, so WSL2's localhost-forwarding does not mirror it to Windows.
+      # Instead a systemd .socket unit opens a real listener on host_ip:port and
+      # systemd-socket-proxyd forwards to container_ip:port. WSL2 detects that
+      # socket and forwards it to Windows, while Kata VM isolation is preserved.
+      proxy_service: kirocrew-kata-proxy
       # Host directory shared into the guest (over virtio-fs by Kata), and the
       # path it is mounted at inside the guest. Must NOT shadow the container
       # home (/home/kirocrew), which the entrypoint needs to write to.
