@@ -40,6 +40,24 @@ kirocrew-kata-login-helper:
         service: {{ kata.service }}
         container: {{ kata.container }}
 
+# Helper that prints a dashboard access URL + token from the running container.
+# Run `sudo kirocrew-kata-token [TTL]`.
+kirocrew-kata-token-helper:
+  file.managed:
+    - name: /usr/local/bin/kirocrew-kata-token
+    - source: salt://kiro/crew/kata/files/kirocrew-kata-token
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: '0755'
+    - context:
+        namespace: {{ kata.namespace }}
+        container: {{ kata.container }}
+        service: {{ kata.service }}
+        port: {{ kata.port }}
+        host_ip: {{ kata.host_ip }}
+        default_ttl: {{ kata.token_ttl }}
+
 # Dedicated CNI network (bridge + IPAM + portmap) so the dashboard port can be
 # published from the guest to the host. nerdctl writes a proper conflist under
 # /etc/cni/net.d that includes the portmap chain.
@@ -82,7 +100,7 @@ kirocrew-kata-service-file:
           --name {{ kata.container }} \
           --runtime {{ kata.runtime }} \
           --network {{ kata.network }} \
-          --publish {{ kata.host_ip }}:{{ kata.port }}:5476 \
+          --ip {{ kata.container_ip }} \
           --volume {{ kata.home_dir }}:{{ kata.home_mount }} \
           --volume {{ kata.shared_dir }}:{{ kata.guest_mount }} \
           {{ kata.image }}
@@ -109,3 +127,54 @@ kirocrew-kata:
       - file: kirocrew-kata-service-file
     - watch:
       - file: kirocrew-kata-service-file
+
+# --- Host-side port forwarding so WSL2 mirrors the dashboard to Windows ---
+# A systemd .socket opens a REAL listening socket on host_ip:port (which WSL2's
+# localhost-forwarding detects and mirrors to Windows), and systemd-socket-
+# proxyd forwards accepted connections into the Kata container at its fixed IP.
+# This gives Windows access while keeping full Kata VM isolation.
+
+kirocrew-kata-proxy-socket-file:
+  file.managed:
+    - name: /etc/systemd/system/{{ kata.proxy_service }}.socket
+    - user: root
+    - group: root
+    - mode: '0644'
+    - contents: |
+        [Unit]
+        Description=KiroCrew Kata dashboard proxy socket
+
+        [Socket]
+        ListenStream={{ kata.host_ip }}:{{ kata.port }}
+
+        [Install]
+        WantedBy=sockets.target
+
+kirocrew-kata-proxy-service-file:
+  file.managed:
+    - name: /etc/systemd/system/{{ kata.proxy_service }}.service
+    - user: root
+    - group: root
+    - mode: '0644'
+    - contents: |
+        [Unit]
+        Description=KiroCrew Kata dashboard proxy
+        Requires={{ kata.proxy_service }}.socket
+        After={{ kata.proxy_service }}.socket {{ kata.service }}.service
+        BindsTo={{ kata.service }}.service
+
+        [Service]
+        ExecStart=/lib/systemd/systemd-socket-proxyd {{ kata.container_ip }}:{{ kata.port }}
+    - require:
+      - file: kirocrew-kata-proxy-socket-file
+
+kirocrew-kata-proxy-socket:
+  service.running:
+    - name: {{ kata.proxy_service }}.socket
+    - enable: true
+    - require:
+      - service: kirocrew-kata
+      - file: kirocrew-kata-proxy-service-file
+    - watch:
+      - file: kirocrew-kata-proxy-socket-file
+      - file: kirocrew-kata-proxy-service-file

@@ -1,0 +1,41 @@
+#!/bin/bash
+# -*- coding: utf-8 -*-
+# Managed by Salt (kiro/crew kata mode).
+#
+# Print a KiroCrew dashboard access URL with a fresh auth token, generated
+# inside the running Kata container. Paste the printed URL into your browser
+# (reachable on the host via the systemd socket proxy, and from Windows via
+# WSL2 localhost forwarding).
+#
+# Usage: sudo kirocrew-kata-token [TTL]
+#   TTL  optional token lifetime (e.g. 2h, 30m). Default: {{ default_ttl }}.
+set -euo pipefail
+
+NAMESPACE="{{ namespace }}"
+CONTAINER="{{ container }}"
+PORT="{{ port }}"
+HOST_IP="{{ host_ip }}"
+TTL="${1:-{{ default_ttl }}}"
+
+if ! nerdctl --namespace "${NAMESPACE}" ps --format '{{ '{{' }}.Names{{ '}}' }}' | grep -qx "${CONTAINER}"; then
+  echo "Container '${CONTAINER}' is not running. Start it with:" >&2
+  echo "  sudo systemctl start {{ service }}" >&2
+  exit 1
+fi
+
+# kirocrew token prints a URL like http://localhost:PORT?token=...
+url="$(nerdctl --namespace "${NAMESPACE}" exec "${CONTAINER}" kirocrew token --port "${PORT}" --ttl "${TTL}" \
+  | grep -oE 'https?://[^[:space:]]+' | tail -1)"
+
+if [ -z "${url}" ]; then
+  echo "Failed to obtain a token from the container." >&2
+  exit 1
+fi
+
+# Rewrite the host to the address the proxy publishes so the link is reachable
+# from a browser (including via WSL2 -> Windows localhost forwarding).
+url="${url/#http:\/\/localhost/http://${HOST_IP}}"
+url="${url/#http:\/\/0.0.0.0/http://${HOST_IP}}"
+
+echo "Open this URL in your browser (valid for ${TTL}):"
+echo "${url}"

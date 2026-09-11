@@ -5,6 +5,20 @@
 
 {% set kata = kirocrew.service.kata %}
 
+kirocrew-kata-proxy-socket-dead:
+  service.dead:
+    - name: {{ kata.proxy_service }}.socket
+    - enable: false
+    - onlyif: systemctl is-enabled --quiet {{ kata.proxy_service }}.socket || systemctl is-active --quiet {{ kata.proxy_service }}.socket
+
+kirocrew-kata-proxy-files-teardown:
+  file.absent:
+    - names:
+      - /etc/systemd/system/{{ kata.proxy_service }}.socket
+      - /etc/systemd/system/{{ kata.proxy_service }}.service
+    - require:
+      - service: kirocrew-kata-proxy-socket-dead
+
 kirocrew-kata:
   service.dead:
     - name: {{ kata.service }}
@@ -29,3 +43,7 @@ kirocrew-kata-service-file-teardown:
 kirocrew-kata-login-helper-teardown:
   file.absent:
     - name: /usr/local/bin/kirocrew-kata-login
+
+kirocrew-kata-token-helper-teardown:
+  file.absent:
+    - name: /usr/local/bin/kirocrew-kata-token
