@@ -1,5 +1,5 @@
 crossplane:
   enabled: false
   # renovate: datasource=github-releases depName=crossplane/crossplane
-  version: 2.1.3
+  version: 2.1.8
   
