@@ -24,6 +24,11 @@
   ],
   "packageRules": [
     {
+      "description": "Automerge patch updates (minor and major stay manual)",
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
+    },
+    {
       "description": "Group all Docker Engine components into a single PR",
       "matchFileNames": ["docker/defaults.yaml"],
       "groupName": "docker engine"
