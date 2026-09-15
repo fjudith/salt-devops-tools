@@ -1,7 +1,7 @@
 go:
   enabled: false
   # renovate: datasource=golang-version depName=golang
-  version: 1.26.1
+  version: 1.26.8
   platform: linux
   architecture: amd64
   checksum: 031f088e5d955bab8657ede27ad4e3bc5b7c1ba281f05f245bcc304f327c987a
