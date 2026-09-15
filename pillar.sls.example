@@ -143,6 +143,14 @@ kiro:
         host_ip: 127.0.0.1
         # systemd unit that manages the container lifecycle.
         service: kirocrew-docker
+        # CPU / memory bounds. null omits the flag. Keep memory.max >= 4g.
+        resources:
+          cpu:
+            max: 4          # docker run --cpus (hard ceiling, cores)
+            min: null       # docker run --cpu-shares (soft weight)
+          memory:
+            max: 4g         # docker run --memory (hard limit)
+            min: 2g         # docker run --memory-reservation (soft floor)
         # Default TTL for dashboard tokens (kirocrew-docker-token).
         token_ttl: 2h
         # Optional host workspace bind-mounted into the container.
@@ -166,6 +174,15 @@ kiro:
         runtime: io.containerd.kata-clh.v2
         namespace: kirocrew
         service: kirocrew-kata
+        # CPU / memory bounds. null omits the flag. With the Kata clh backend
+        # cpu.max and memory.max size the micro-VM. Keep memory.max >= 4g.
+        resources:
+          cpu:
+            max: 4          # nerdctl run --cpus (hard ceiling / VM vCPUs)
+            min: null       # nerdctl run --cpu-shares (soft weight)
+          memory:
+            max: 4g         # nerdctl run --memory (hard limit / guest RAM)
+            min: 2g         # nerdctl run --memory-reservation (soft floor)
         # Default TTL for dashboard tokens (kirocrew-kata-token).
         token_ttl: 2h
         # Dedicated CNI network + fixed container IP. A systemd socket proxy

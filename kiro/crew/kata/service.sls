@@ -99,6 +99,18 @@ kirocrew-kata-service-file:
           --rm \
           --name {{ kata.container }} \
           --runtime {{ kata.runtime }} \
+          {%- if kata.resources.cpu.max is not none %}
+          --cpus {{ kata.resources.cpu.max }} \
+          {%- endif %}
+          {%- if kata.resources.cpu.min is not none %}
+          --cpu-shares {{ kata.resources.cpu.min }} \
+          {%- endif %}
+          {%- if kata.resources.memory.max is not none %}
+          --memory {{ kata.resources.memory.max }} \
+          {%- endif %}
+          {%- if kata.resources.memory.min is not none %}
+          --memory-reservation {{ kata.resources.memory.min }} \
+          {%- endif %}
           --network {{ kata.network }} \
           --ip {{ kata.container_ip }} \
           --volume {{ kata.home_dir }}:{{ kata.home_mount }} \
