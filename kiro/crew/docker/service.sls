@@ -112,6 +112,18 @@ kirocrew-docker-service-file:
           {%- if docker.userns_host %}
           --userns=host \
           {%- endif %}
+          {%- if docker.resources.cpu.max is not none %}
+          --cpus {{ docker.resources.cpu.max }} \
+          {%- endif %}
+          {%- if docker.resources.cpu.min is not none %}
+          --cpu-shares {{ docker.resources.cpu.min }} \
+          {%- endif %}
+          {%- if docker.resources.memory.max is not none %}
+          --memory {{ docker.resources.memory.max }} \
+          {%- endif %}
+          {%- if docker.resources.memory.min is not none %}
+          --memory-reservation {{ docker.resources.memory.min }} \
+          {%- endif %}
           --publish {{ docker.host_ip }}:{{ docker.port }}:5476 \
           --volume {{ docker.volume }}:/home/kirocrew \
           {%- if docker.shared_dir %}

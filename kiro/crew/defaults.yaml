@@ -17,6 +17,23 @@ kirocrew:
       host_ip: 127.0.0.1
       # systemd unit that manages the container lifecycle.
       service: kirocrew-docker
+      # CPU and memory bounds for the KiroCrew container. Any value left null
+      # omits its flag from `docker run`. KiroCrew agent sessions (kiro-cli +
+      # tooling) can exhaust small limits; keep memory.max at or above 4g.
+      resources:
+        cpu:
+          # Hard CPU ceiling in cores (docker run --cpus). null = unbounded.
+          max: null
+          # Relative CPU weight under contention (docker run --cpu-shares).
+          # Soft floor only; docker/runc has no hard "minimum cores". null =
+          # default (1024).
+          min: null
+        memory:
+          # Hard memory limit (docker run --memory). Keep >= 4g.
+          max: 4g
+          # Soft memory reservation / floor (docker run --memory-reservation).
+          # null = no reservation.
+          min: null
       # Default TTL for dashboard tokens minted by kirocrew-docker-token.
       token_ttl: 2h
       # Optional host workspace directory bind-mounted into the container.
@@ -48,6 +65,26 @@ kirocrew:
       # containerd namespace the workstation service runs the container in.
       namespace: kirocrew
       service: kirocrew-kata
+      # CPU and memory bounds for the KiroCrew container. Any value left null
+      # omits its flag from `nerdctl run`. With the Kata clh backend, cpu.max
+      # and memory.max also size the micro-VM (vCPUs and guest RAM). KiroCrew
+      # agent sessions (kiro-cli + tooling) can exhaust small limits; keep
+      # memory.max at or above 4g.
+      resources:
+        cpu:
+          # Hard CPU ceiling in cores (nerdctl run --cpus); sizes VM vCPUs.
+          # null = unbounded.
+          max: null
+          # Relative CPU weight under contention (nerdctl run --cpu-shares).
+          # Soft floor only; there is no hard "minimum cores". null = default.
+          min: null
+        memory:
+          # Hard memory limit (nerdctl run --memory); sizes guest RAM.
+          # Keep >= 4g.
+          max: 4g
+          # Soft memory reservation / floor (nerdctl run --memory-reservation).
+          # null = no reservation.
+          min: null
       # Default TTL for dashboard tokens minted by kirocrew-kata-token.
       token_ttl: 2h
       # Dedicated CNI network for the KiroCrew container. nerdctl creates it
