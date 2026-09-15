@@ -2,6 +2,7 @@
 # vim: ft=yaml
 kirocrew:
   enabled: true
+  # renovate: datasource=github-releases depName=kirodotdev/KiroCrew versioning=semver
   version: 0.6.0
   base_url: https://github.com/kirodotdev/KiroCrew/releases/download
   service:
