@@ -2,7 +2,7 @@
 # vim: ft=yaml
 kirocrew:
   enabled: true
-  version: 0.4.1
+  version: 0.6.0
   base_url: https://github.com/kirodotdev/KiroCrew/releases/download
   service:
     enabled: false
