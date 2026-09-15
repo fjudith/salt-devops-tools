@@ -20,7 +20,11 @@ nerdctl-archive:
   archive.extracted:
     - name: /usr/local/nerdctl/{{ nerdctl.version }}
     - source: {{ nerdctl.base_url }}/v{{ nerdctl.version }}/{{ tarball }}
-    - source_hash: sha256={{ nerdctl.source_hash[arch] }}
+    - source_hash: {{ nerdctl.base_url }}/v{{ nerdctl.version }}/SHA256SUMS
+    - skip_verify: false
+    - user: root
+    - group: root
+    - archive_format: tar
     - enforce_toplevel: false
     - keep_source: true
     - unless: test -x {{ nerdctl.install_dir }}/nerdctl && {{ nerdctl.install_dir }}/nerdctl --version | grep -q "{{ nerdctl.version }}"
@@ -32,4 +36,10 @@ nerdctl-bin:
     - force: true
     - require:
       - archive: nerdctl-archive
+
+nerdctl-completion:
+  cmd.run:
+    - name: {{ nerdctl.install_dir }}/nerdctl completion bash | tee /etc/bash_completion.d/nerdctl
+    - require:
+      - file: nerdctl-bin
 {% endif %}
