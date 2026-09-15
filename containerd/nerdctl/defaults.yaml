@@ -4,7 +4,7 @@
 nerdctl:
   enabled: false
   # renovate: datasource=github-releases depName=containerd/nerdctl
-  version: 2.1.4
+  version: 2.1.6
   base_url: https://github.com/containerd/nerdctl/releases/download
   install_dir: /usr/local/bin
   # Published SHA256 of the nerdctl-<version>-linux-<arch>.tar.gz assets.
