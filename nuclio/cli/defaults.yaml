@@ -1,5 +1,5 @@
 nuctl:
   enabled: false
   # renovate: datasource=github-releases depName=nuclio/nuclio
-  version: 1.10.8
+  version: 1.10.10
   
