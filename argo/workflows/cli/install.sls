@@ -21,7 +21,7 @@ argo-archive:
   file.managed:
     - name: /usr/local/argo/{{ argo.version }}/argo-linux-{{ bin_arch }}.gz
     - source: https://github.com/argoproj/argo-workflows/releases/download/v{{ argo.version }}/argo-linux-{{ bin_arch }}.gz
-    - source_hash: https://github.com/argoproj/argo-workflows/releases/download/v{{ argo.version }}/argo-linux-{{ bin_arch }}.gz.sha256
+    - source_hash: https://github.com/argoproj/argo-workflows/releases/download/v{{ argo.version }}/argo-workflows-cli-checksums.txt
     - makedirs: True
     - user: root
     - group: root
