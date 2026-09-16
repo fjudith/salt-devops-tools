@@ -21,7 +21,7 @@ argocd-binary:
   file.managed:
     - name: /usr/local/argocd/{{ argocd.version }}/argocd
     - source: https://github.com/argoproj/argo-cd/releases/download/v{{ argocd.version }}/argocd-linux-{{ bin_arch }}
-    - source_hash: https://github.com/argoproj/argo-cd/releases/download/v{{ argocd.version }}/argocd-linux-{{ bin_arch }}.sha256
+    - source_hash: https://github.com/argoproj/argo-cd/releases/download/v{{ argocd.version }}/argocd-{{ argocd.version }}-checksums.txt
     - makedirs: true
     - user: root
     - group: root

@@ -21,7 +21,7 @@ glab-archive:
   archive.extracted:
     - name: /usr/local/glab/{{ glab.version }}
     - source: https://gitlab.com/gitlab-org/cli/-/releases/v{{ glab.version }}/downloads/glab_{{ glab.version }}_linux_{{ bin_arch }}.tar.gz
-    - source_hash: https://gitlab.com/gitlab-org/cli/-/releases/v{{ glab.version }}/downloads/glab_{{ glab.version }}_linux_{{ bin_arch }}.tar.gz.sha256
+    - source_hash: https://gitlab.com/gitlab-org/cli/-/releases/v{{ glab.version }}/downloads/checksums.txt
     - skip_verify: false
     - user: root
     - group: root
