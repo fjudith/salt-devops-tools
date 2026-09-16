@@ -3,10 +3,24 @@
 
 {% from tpldir ~ "/map.jinja" import pulumi with context %}
 
+{#- Detect architecture #}
+{% set arch = salt['grains.get']('cpuarch') %}
+{% if arch == 'x86_64' %}
+  {% set bin_arch = 'x64' %}
+{% elif arch in ('aarch64', 'arm64') %}
+  {% set bin_arch = 'arm64' %}
+{% endif %}
+
+{% if bin_arch is not defined %}
+pulumi-unsupported-architecture:
+  test.fail_without_changes:
+    - name: "pulumi supports x86_64 and aarch64 only (detected: {{ arch }})"
+{% else %}
+
 pulumi-archive:
   archive.extracted:
     - name: /usr/local/pulumi/{{ pulumi.version }}
-    - source: https://github.com/pulumi/pulumi/releases/download/v{{ pulumi.version }}/pulumi-v{{ pulumi.version }}-linux-x64.tar.gz
+    - source: https://github.com/pulumi/pulumi/releases/download/v{{ pulumi.version }}/pulumi-v{{ pulumi.version }}-linux-{{ bin_arch }}.tar.gz
     - source_hash: https://github.com/pulumi/pulumi/releases/download/v{{ pulumi.version }}/SHA512SUMS
     - skip_verify: true
     - user: root
@@ -75,3 +89,4 @@ pulumi-watch:
   file.symlink:
     - name: /usr/local/bin/pulumi-watch
     - target: /usr/local/pulumi/{{ pulumi.version }}/pulumi-watch
+{% endif %}

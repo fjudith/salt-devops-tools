@@ -3,7 +3,9 @@ go:
   # renovate: datasource=golang-version depName=golang
   version: 1.26.8
   platform: linux
-  architecture: amd64
+  # null = detect from the minion's cpuarch grain (amd64 / arm64).
+  # Set explicitly to override (e.g. cross-provisioning).
+  architecture: null
   checksum: 031f088e5d955bab8657ede27ad4e3bc5b7c1ba281f05f245bcc304f327c987a
   
   

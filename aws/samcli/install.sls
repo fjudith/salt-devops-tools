@@ -3,6 +3,15 @@
 
 {% from tpldir ~ "/map.jinja" import samcli with context %}
 
+{#- Detect architecture. Upstream publishes no linux arm64 build for the
+    pinned version, so fail loudly instead of constructing a 404 URL. #}
+{% set arch = salt['grains.get']('cpuarch') %}
+{% if arch != 'x86_64' %}
+samcli-unsupported-architecture:
+  test.fail_without_changes:
+    - name: "aws-sam-cli: upstream ships no linux arm64 build for the pinned version (detected: {{ arch }})"
+{% else %}
+
 samcli:
   archive.extracted:
     - name: /tmp/samcli
@@ -21,3 +30,4 @@ samcli:
     - unless: cmp -s /usr/local/aws-sam-cli/current/bin/sam /tmp/samcli/dist/sam
   file.absent:
     - name: /tmp/samcli
+{% endif %}
