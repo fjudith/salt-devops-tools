@@ -1,4 +1,4 @@
 hubble:
   enabled: false
   # renovate: datasource=github-releases depName=cilium/hubble
-  version: 1.17.5
+  version: 1.19.4
