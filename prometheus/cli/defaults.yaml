@@ -1,5 +1,5 @@
 prometheus:
   enabled: false
   # renovate: datasource=github-releases depName=prometheus/prometheus
-  version: 3.4.0
+  version: 3.4.2
   
