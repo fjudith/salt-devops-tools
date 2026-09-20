@@ -1,5 +1,5 @@
 argocd:
   enabled: false
   # renovate: datasource=github-releases depName=argoproj/argo-cd
-  version: 2.4.28
+  version: 2.14.21
   
