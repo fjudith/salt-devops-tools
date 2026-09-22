@@ -1,7 +1,7 @@
 go:
   enabled: false
   # renovate: datasource=golang-version depName=golang
-  version: 1.26.8
+  version: 1.27.1
   platform: linux
   # null = detect from the minion's cpuarch grain (amd64 / arm64).
   # Set explicitly to override (e.g. cross-provisioning).
