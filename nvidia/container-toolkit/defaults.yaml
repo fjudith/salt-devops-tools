@@ -1,0 +1,21 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+container_toolkit:
+  enabled: false
+  # renovate: datasource=github-releases depName=NVIDIA/nvidia-container-toolkit
+  version: 1.17.8
+  # NVIDIA container-toolkit apt/yum repository (the "stable" channel covers all
+  # recent distros via a single deb/rpm list).
+  base_url: https://nvidia.github.io/libnvidia-container
+  keyring: /etc/apt/keyrings/nvidia-container-toolkit-keyring.gpg
+  gpg_key: https://nvidia.github.io/libnvidia-container/gpgkey
+  # Register the `nvidia` runtime with containerd so nerdctl/ctr can request
+  # GPUs. Docker's `nvidia` runtime is registered declaratively in
+  # docker/files/daemon.json (docker.nvidia_runtime), NOT via nvidia-ctk, to
+  # avoid two managers fighting over /etc/docker/daemon.json.
+  configure_containerd: true
+  containerd_config: /etc/containerd/config.toml
+  # NOTE: the NVIDIA kernel driver (nvidia-driver-xxx) is intentionally OUT OF
+  # SCOPE. This state installs only the container integration layer and assumes
+  # a working driver is already present on the host.

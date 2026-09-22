@@ -117,6 +117,31 @@ virtio-module-{{ mod }}:
 {%- endfor %}
 {% endif %}
 
+{%- if common.vfio.enabled %}
+{#- Same builtin/absent guard as virtio: only manage modules that exist as
+    loadable .ko files on the running kernel. Built-in or absent modules (e.g.
+    on WSL2) are skipped. #}
+{%- for mod in common.vfio.modules %}
+{%- set modfile = salt['cmd.run']('modinfo -F filename ' ~ mod ~ ' 2>/dev/null', python_shell=True) %}
+{%- if modfile and modfile != '(builtin)' %}
+vfio-module-{{ mod }}:
+  kmod.present:
+    - name: {{ mod }}
+    - persist: True
+{% endif %}
+{%- endfor %}
+{% else %}
+{%- for mod in common.vfio.modules %}
+{%- set modfile = salt['cmd.run']('modinfo -F filename ' ~ mod ~ ' 2>/dev/null', python_shell=True) %}
+{%- if modfile and modfile != '(builtin)' %}
+vfio-module-{{ mod }}:
+  kmod.absent:
+    - name: {{ mod }}
+    - persist: True
+{% endif %}
+{%- endfor %}
+{% endif %}
+
 fs.inotify.max_user_watches:
   sysctl.present:
     - value: 1048576

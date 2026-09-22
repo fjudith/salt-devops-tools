@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # vim: ft=jinja
 
-{#- Start imports #}
-{% import_yaml tpldir ~ "/defaults.yaml" or {} as defaults %}
+{#- Start imports. Absolute path (not tpldir) so this resolves correctly when
+    imported from the docker/ and kata/ subdirectory states too. #}
+{% import_yaml "vllm/defaults.yaml" or {} as defaults %}
 
 {#- Merge in salt pillar #}
 {% set vllm = salt['pillar.get']('vllm', default=defaults['vllm'], merge=True) %}

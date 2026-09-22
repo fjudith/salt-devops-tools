@@ -33,6 +33,18 @@ common:
       - virtio_balloon
       - virtio_console
       - virtio_rng
+  # VFIO groundwork for PCI device passthrough (e.g. a GPU into a Kata micro-VM).
+  # Disabled by default: VFIO is niche and unwanted on most workstations and is
+  # unavailable on WSL2. Loading these modules is only half the story --- IOMMU
+  # must also be enabled on the kernel cmdline (intel_iommu=on / amd_iommu=on)
+  # and the target device bound to vfio-pci. Those bootloader/host concerns are
+  # OUT OF SCOPE here. No formula consumes these modules yet.
+  vfio:
+    enabled: false
+    modules:
+      - vfio
+      - vfio_pci
+      - vfio_iommu_type1
   pip:
     - httpie
     - pre-commit

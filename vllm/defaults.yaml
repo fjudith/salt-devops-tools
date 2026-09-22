@@ -3,5 +3,97 @@
 
 vllm:
   enabled: false
-  mode: gpu
+  # renovate: datasource=pypi depName=vllm
   version: latest
+
+  # Delivery axis (mirrors the kiro.crew service.mode pattern):
+  #   native -> pip-install the vllm package on the host (flavor picks the
+  #             torch build). This is the historical behaviour.
+  #   docker -> run the vllm/vllm-openai OCI image via `docker run` as a
+  #             systemd service exposing the OpenAI-compatible API.
+  #   kata   -> run the same image via nerdctl in the Kata Containers (Cloud
+  #             Hypervisor) runtime for VM-level isolation. CPU-only for now:
+  #             GPU passthrough into a Kata micro-VM (VFIO) is future work.
+  # When mode is docker or kata, the native pip install is torn down (and vice
+  # versa) so exactly one delivery mode is active.
+  service:
+    enabled: false
+    mode: native
+
+  # Native (pip) flavor selector. Only used when service.mode == native.
+  #   gpu -> CUDA build (torch cu129 index)
+  #   cpu -> CPU-only build (torch cpu index)
+  #   tpu -> tpu-inference package (Google TPU)
+  flavor: gpu
+
+  docker:
+    # renovate: datasource=docker depName=vllm/vllm-openai
+    image: vllm/vllm-openai:latest
+    container: vllm
+    # HuggingFace model repo to serve. REQUIRED for docker mode; the state
+    # fails with a clear message if left null.
+    model: null
+    # OpenAI-compatible API published on host_ip:port -> container 8000.
+    port: 8000
+    host_ip: 127.0.0.1
+    # Optional API key clients must present (--api-key / VLLM_API_KEY).
+    api_key: null
+    # Optional HuggingFace token for gated models (HUGGING_FACE_HUB_TOKEN).
+    hf_token: null
+    # GPUs exposed to the container (docker run --gpus). Requires the
+    # nvidia/container-toolkit formula and docker.nvidia_runtime = true.
+    # Set null to run CPU-only (no --gpus flag emitted).
+    gpus: all
+    # systemd unit that manages the container lifecycle.
+    service: vllm-docker
+    # Persistent HuggingFace cache volume (model downloads are large) mounted
+    # at /root/.cache/huggingface inside the container.
+    cache_volume: vllm-hf-cache
+    # CPU / memory bounds. null omits the flag.
+    resources:
+      cpu:
+        max: null       # docker run --cpus
+        min: null       # docker run --cpu-shares
+      memory:
+        max: null       # docker run --memory
+        min: null       # docker run --memory-reservation
+    # Extra args appended to the vLLM server command (e.g. --max-model-len).
+    extra_args: []
+
+  kata:
+    # renovate: datasource=docker depName=vllm/vllm-openai
+    image: vllm/vllm-openai:latest
+    container: vllm
+    # HuggingFace model repo to serve. REQUIRED for kata mode.
+    model: null
+    # OpenAI-compatible API published on host_ip:port via a systemd socket
+    # proxy that forwards to the container's fixed CNI IP (so WSL2 mirrors it).
+    port: 8000
+    host_ip: 127.0.0.1
+    api_key: null
+    hf_token: null
+    # containerd runtime handler registered by the kata-containers formula.
+    runtime: io.containerd.kata-clh.v2
+    # containerd namespace the service runs the container in.
+    namespace: vllm
+    service: vllm-kata
+    # CPU / memory bounds. With the Kata clh backend cpu.max and memory.max
+    # also size the micro-VM (vCPUs and guest RAM). null omits the flag.
+    resources:
+      cpu:
+        max: null       # nerdctl run --cpus (VM vCPUs)
+        min: null       # nerdctl run --cpu-shares
+      memory:
+        max: null       # nerdctl run --memory (guest RAM)
+        min: null       # nerdctl run --memory-reservation
+    # Dedicated CNI network + fixed container IP. A systemd socket proxy on
+    # host_ip:port forwards to container_ip:port so WSL2 mirrors the API to
+    # Windows while keeping Kata VM isolation. Requires containerd.nerdctl.
+    network: vllm
+    subnet: 10.89.0.0/24
+    container_ip: 10.89.0.10
+    proxy_service: vllm-kata-proxy
+    # Persistent HuggingFace cache dir bind-mounted into the guest.
+    cache_dir: /var/lib/vllm/hf-cache
+    cache_mount: /root/.cache/huggingface
+    extra_args: []
