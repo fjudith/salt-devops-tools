@@ -59,6 +59,7 @@ base:
     - cloud-hypervisor.cloud-hypervisor
     - kata-containers.kata-containers
     - containerd.nerdctl
+    - nvidia.container-toolkit
     - opencost.cli
     - multica.cli
     - rclone.cli

@@ -8,6 +8,7 @@ docker-daemon-dir:
 /etc/docker/daemon.json:
     file.managed:
     - source: salt://docker/files/daemon.json
+    - template: jinja
     - user: root
     - group: root
     - mode: "0644"

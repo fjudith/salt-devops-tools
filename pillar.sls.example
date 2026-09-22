@@ -6,7 +6,81 @@ common:
 
 vllm:
   enabled: false
-  mode: gpu
+  version: latest
+  service:
+    enabled: false
+    # mode: native | docker | kata (mutually exclusive delivery modes)
+    mode: native
+  # Native (pip) flavor. Only used when service.mode == native.
+  # gpu -> CUDA build | cpu -> CPU-only build | tpu -> tpu-inference
+  flavor: gpu
+  # docker mode: run the vllm/vllm-openai image as a systemd service.
+  docker:
+    image: vllm/vllm-openai:latest
+    container: vllm
+    # REQUIRED for docker mode: HuggingFace model repo to serve.
+    model: null
+    # OpenAI API published on host_ip:port -> container 8000.
+    port: 8000
+    host_ip: 127.0.0.1
+    api_key: null
+    hf_token: null
+    # GPUs exposed (docker run --gpus). Requires nvidia.container_toolkit below
+    # and docker.nvidia_runtime = true. Set null for CPU-only.
+    gpus: all
+    service: vllm-docker
+    cache_volume: vllm-hf-cache
+    resources:
+      cpu:
+        max: null
+        min: null
+      memory:
+        max: null
+        min: null
+    extra_args: []
+  # kata mode: run the same image in a Kata micro-VM (Cloud Hypervisor).
+  # CPU-only for now. Requires kata-containers and containerd.nerdctl below.
+  kata:
+    image: vllm/vllm-openai:latest
+    container: vllm
+    # REQUIRED for kata mode: HuggingFace model repo to serve.
+    model: null
+    port: 8000
+    host_ip: 127.0.0.1
+    api_key: null
+    hf_token: null
+    runtime: io.containerd.kata-clh.v2
+    namespace: vllm
+    service: vllm-kata
+    resources:
+      cpu:
+        max: null
+        min: null
+      memory:
+        max: null
+        min: null
+    network: vllm
+    subnet: 10.89.0.0/24
+    container_ip: 10.89.0.10
+    proxy_service: vllm-kata-proxy
+    cache_dir: /var/lib/vllm/hf-cache
+    cache_mount: /root/.cache/huggingface
+    extra_args: []
+
+# Docker daemon. Set nvidia_runtime: true to register the `nvidia` runtime in
+# daemon.json so `docker run --gpus` works (needed for vLLM docker mode on GPU).
+# Requires nvidia.container_toolkit below. NOTE: daemon.json ships
+# "userns-remap": "default", which can conflict with GPU device injection in
+# some setups; disabling it may be required (host-specific).
+docker:
+  nvidia_runtime: false
+
+# NVIDIA Container Toolkit. Required for GPU access in vLLM docker mode.
+# Installs only the container integration layer; the NVIDIA kernel driver is
+# assumed already present on the host (out of scope here).
+nvidia:
+  container_toolkit:
+    enabled: false
 
 gotask:
   cli:

@@ -15,6 +15,15 @@ docker:
   use_upstream_repo: true
   proxy: false
 
+  # Register the `nvidia` runtime in daemon.json so `docker run --runtime nvidia`
+  # / `--gpus` can reach the GPU. Requires the nvidia/container-toolkit formula.
+  # Declarative here (rather than via `nvidia-ctk runtime configure`) so the
+  # docker formula stays the single manager of daemon.json.
+  # NOTE: "userns-remap": "default" (below, in files/daemon.json) can conflict
+  # with GPU device injection in some docker+nvidia setups. If GPU containers
+  # fail under userns-remap, disabling it may be required (host-specific).
+  nvidia_runtime: false
+
   pkgs:
     - iptables
     - ca-certificates

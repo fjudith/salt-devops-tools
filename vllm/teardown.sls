@@ -4,7 +4,7 @@
 {% from tpldir ~ "/map.jinja" import vllm with context %}
 
 {% set packages = ['vllm'] %}
-{% if vllm.mode == 'tpu' %}
+{% if vllm.flavor == 'tpu' %}
   {% set packages = ['tpu-inference', 'vllm'] %}
 {% endif %}
 
