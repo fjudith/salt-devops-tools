@@ -349,6 +349,10 @@ agentgateway:
       days_remaining: 30
     region: us-east-1
 
+agno:
+  agentos:
+    enabled: false
+
 oh-my-pi:
   cli:
     enabled: false
