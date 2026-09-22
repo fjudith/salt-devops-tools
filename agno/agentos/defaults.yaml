@@ -1,0 +1,9 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+agno:
+  agentos:
+    enabled: false
+    # renovate: datasource=pypi depName=agno
+    version: 2.8.7
+    extras:
+      - os

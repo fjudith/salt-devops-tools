@@ -67,5 +67,6 @@ base:
     - kiro.crew
     - nvm.cli
     - agentgateway
+    - agno.agentos
     - oh-my-pi.cli
     - vllm
