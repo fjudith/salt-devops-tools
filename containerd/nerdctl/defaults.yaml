@@ -4,6 +4,6 @@
 nerdctl:
   enabled: false
   # renovate: datasource=github-releases depName=containerd/nerdctl
-  version: 2.1.6
+  version: 2.4.0
   base_url: https://github.com/containerd/nerdctl/releases/download
   install_dir: /usr/local/bin

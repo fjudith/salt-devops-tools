@@ -1,5 +1,5 @@
 githubcli:
   enabled: true
   # renovate: datasource=github-releases depName=cli/cli
-  version: 2.38.0
+  version: 2.101.0
   

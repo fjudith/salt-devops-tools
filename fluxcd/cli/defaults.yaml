@@ -1,5 +1,5 @@
 fluxcd:
   enabled: false
   # renovate: datasource=github-releases depName=fluxcd/flux2
-  version: 2.7.5
+  version: 2.9.5
   

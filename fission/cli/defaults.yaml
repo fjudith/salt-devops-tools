@@ -1,5 +1,5 @@
 fission:
   enabled: false
   # renovate: datasource=github-releases depName=fission/fission
-  version: 1.17.0
+  version: 1.27.0
   
