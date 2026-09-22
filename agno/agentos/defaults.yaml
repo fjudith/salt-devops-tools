@@ -4,6 +4,6 @@ agno:
   agentos:
     enabled: false
     # renovate: datasource=pypi depName=agno
-    version: 2.8.5
+    version: 2.8.7
     extras:
       - os
