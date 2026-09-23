@@ -4,7 +4,7 @@
 container_toolkit:
   enabled: false
   # renovate: datasource=github-releases depName=NVIDIA/nvidia-container-toolkit
-  version: 1.17.8
+  version: 1.17.9
   # NVIDIA container-toolkit apt/yum repository (the "stable" channel covers all
   # recent distros via a single deb/rpm list).
   base_url: https://nvidia.github.io/libnvidia-container
