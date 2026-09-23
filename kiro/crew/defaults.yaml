@@ -37,14 +37,25 @@ kirocrew:
           min: null
       # Default TTL for dashboard tokens minted by kirocrew-docker-token.
       token_ttl: 2h
-      # Optional host workspace directory bind-mounted into the container.
-      # Leave shared_dir null to skip the mount. Must NOT be /home/kirocrew,
-      # which is the home volume.
-      shared_dir: null
-      guest_mount: /workspace
+      # Host directories bind-mounted into the container. Each entry is a dict:
+      #   source     host path (created on the host if missing; for read-write
+      #              mounts it is chowned to uid/gid when userns_host is set).
+      #   target     path inside the container. Must NOT be /home/kirocrew.
+      #   read_only  optional bool (default false). Use true for credentials.
+      # Example workspace + AWS credential mounts (pillar overrides this list):
+      #   mounts:
+      #     - source: /home/you/git
+      #       target: /workspace
+      #     - source: /home/you/.aws
+      #       target: /home/kirocrew/.aws
+      #       read_only: true
+      # SECURITY: the KiroCrew entrypoint deliberately masks ~/.aws by default;
+      # mounting it in hands your AWS credentials to the agent.
+      mounts: []
       # Run the container in the host user namespace (uid inside == uid on the
-      # host). Required for read/write access to host bind-mounts like
-      # shared_dir when the daemon uses userns-remap. Set false to keep
+      # host). Required for read/write access to host bind-mounts (the
+      # read-write entries in `mounts`) when the daemon uses userns-remap. Set
+      # false to keep
       # Docker's userns-remap isolation (host bind-mounts become read-only to
       # the remapped uid). uid/gid are the container user the files map to.
       userns_host: true
@@ -100,11 +111,25 @@ kirocrew:
       # systemd-socket-proxyd forwards to container_ip:port. WSL2 detects that
       # socket and forwards it to Windows, while Kata VM isolation is preserved.
       proxy_service: kirocrew-kata-proxy
-      # Host directory shared into the guest (over virtio-fs by Kata), and the
-      # path it is mounted at inside the guest. Must NOT shadow the container
-      # home (/home/kirocrew), which the entrypoint needs to write to.
-      shared_dir: /var/lib/kirocrew/shared
-      guest_mount: /workspace
+      # Host directories shared into the guest (over virtio-fs by Kata). Each
+      # entry is a dict:
+      #   source     host path (created on the host if missing).
+      #   target     path inside the guest. Must NOT shadow the container home
+      #              (/home/kirocrew), which the entrypoint needs to write to.
+      #   read_only  optional bool (default false). Use true for credentials.
+      # The default mounts a workspace share. Add an AWS credential mount in
+      # pillar to let the agent use your profiles, e.g.:
+      #   mounts:
+      #     - source: /var/lib/kirocrew/shared
+      #       target: /workspace
+      #     - source: /home/you/.aws
+      #       target: /home/kirocrew/.aws
+      #       read_only: true
+      # SECURITY: the KiroCrew entrypoint deliberately masks ~/.aws by default;
+      # mounting it in hands your AWS credentials to the agent.
+      mounts:
+        - source: /var/lib/kirocrew/shared
+          target: /workspace
       # Persistent home for the container user. Holds KiroCrew state and the
       # kiro-cli login credentials so they survive restarts. Bind-mounted to
       # /home/kirocrew (the guest home) which the entrypoint writes to.

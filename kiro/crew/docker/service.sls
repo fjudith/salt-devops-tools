@@ -41,17 +41,19 @@ kirocrew-docker-home-ownership:
       - cmd: kirocrew-docker-volume
 {% endif %}
 
-{% if docker.shared_dir %}
-# Host workspace directory bind-mounted into the container at guest_mount.
-# Owned by the container uid so it can create entries at the top level. With
-# --userns=host that maps to the same uid on the host.
-kirocrew-docker-shared-directory:
+{% for mount in docker.mounts %}
+{% if not mount.get('read_only', false) %}
+# Read-write bind-mount source, created on the host and owned by the container
+# uid so it can create entries at the top level. With --userns=host that maps
+# to the same uid on the host. Read-only sources (e.g. ~/.aws) are left as-is.
+kirocrew-docker-mount-{{ loop.index0 }}:
   file.directory:
-    - name: {{ docker.shared_dir }}
+    - name: {{ mount.source }}
     - user: {{ docker.uid }}
     - group: {{ docker.gid }}
     - makedirs: true
 {% endif %}
+{% endfor %}
 
 # One-time interactive login helper. kiro-cli login is an interactive OAuth
 # flow, so it cannot run inside a state apply; this drops a helper on PATH that
@@ -126,9 +128,9 @@ kirocrew-docker-service-file:
           {%- endif %}
           --publish {{ docker.host_ip }}:{{ docker.port }}:5476 \
           --volume {{ docker.volume }}:/home/kirocrew \
-          {%- if docker.shared_dir %}
-          --volume {{ docker.shared_dir }}:{{ docker.guest_mount }} \
-          {%- endif %}
+          {%- for mount in docker.mounts %}
+          --volume {{ mount.source }}:{{ mount.target }}{{ ':ro' if mount.get('read_only', false) else '' }} \
+          {%- endfor %}
           --security-opt seccomp={{ docker.seccomp_profile }} \
           {{ docker.image }}
         ExecStop=-/usr/bin/docker stop {{ docker.container }}
@@ -145,9 +147,11 @@ kirocrew-docker-service-file:
       {%- if docker.userns_host %}
       - cmd: kirocrew-docker-home-ownership
       {%- endif %}
-      {%- if docker.shared_dir %}
-      - file: kirocrew-docker-shared-directory
+      {%- for mount in docker.mounts %}
+      {%- if not mount.get('read_only', false) %}
+      - file: kirocrew-docker-mount-{{ loop.index0 }}
       {%- endif %}
+      {%- endfor %}
 
 kirocrew-docker:
   service.running:

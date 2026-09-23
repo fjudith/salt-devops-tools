@@ -40,9 +40,15 @@ kiro:
         port: 5476
         host_ip: 127.0.0.1
         service: kirocrew-docker
-        # Optional host workspace bind-mounted into the container.
-        shared_dir: /home/you/git
-        guest_mount: /workspace
+        # Host directories bind-mounted into the container. Each entry is a
+        # dict of source/target, with an optional read_only flag. Read-write
+        # sources are created on the host and chowned to uid/gid. See Mounts.
+        mounts:
+          - source: /home/you/git
+            target: /workspace
+          - source: /home/you/.aws
+            target: /home/kirocrew/.aws
+            read_only: true
         # Run in the host user namespace (see userns note below).
         userns_host: true
         uid: 1000
@@ -74,9 +80,12 @@ This applies, in order:
    (`/home/kirocrew` inside the container), created only if absent.
 4. **Home ownership** — when `userns_host` is true, the volume is chowned to
    `uid:gid` on the host so the container user can write it.
-5. **Helper scripts** — `kirocrew-docker-login` and `kirocrew-docker-token` are
+5. **Mount sources** — each read-write entry in `mounts` has its `source`
+   directory created on the host (chowned to `uid:gid` when `userns_host` is
+   true). Read-only sources are left as-is. See [Mounts](#mounts).
+6. **Helper scripts** — `kirocrew-docker-login` and `kirocrew-docker-token` are
    dropped on `PATH`.
-6. **systemd unit** — `/etc/systemd/system/kirocrew-docker.service` is written
+7. **systemd unit** — `/etc/systemd/system/kirocrew-docker.service` is written
    (`Type=simple`, `Restart=always`) and the service is enabled and started.
 
 Applying docker mode also tears down any `native` and `kata` mode artifacts.
@@ -168,12 +177,43 @@ KiroCrew agent sessions can exhaust small limits, so keep `memory.max` at or
 above `4g`. In docker mode these are cgroup limits on a host-kernel container
 (unlike kata mode, where they size a micro-VM).
 
+## Mounts
+
+`service.docker.mounts` is a list of host directories bind-mounted into the
+container. Each entry is a dict:
+
+| Key         | Required | Meaning                                                       |
+|-------------|----------|---------------------------------------------------------------|
+| `source`    | yes      | Host path. Read-write sources are created on the host and, when `userns_host` is true, chowned to `uid:gid`. |
+| `target`    | yes      | Path inside the container. Must **not** be `/home/kirocrew` (the home volume). |
+| `read_only` | no       | Default `false`. When `true`, the mount is added with `:ro` and the source is not created or chowned. |
+
+```yaml
+mounts:
+  # Workspace: read-write so the agent can create and edit files.
+  - source: /home/you/git
+    target: /workspace
+  # AWS credentials: read-only so the agent can use your profiles.
+  - source: /home/you/.aws
+    target: /home/kirocrew/.aws
+    read_only: true
+```
+
+> **Security:** the KiroCrew entrypoint deliberately masks credential paths
+> like `~/.aws` and `~/.ssh` by default. Adding a mount for `~/.aws` overrides
+> that and hands your AWS credentials to the agent. Mount it `read_only: true`
+> so the agent can use, but not modify, your credentials.
+
+The default `mounts` is empty, so no host directories are shared unless you
+configure them in pillar.
+
 ## userns-remap note
 
 `userns_host: true` runs the container in the host user namespace, so its
 `uid`/`gid` map directly to the same ids on the host. This is required for
-read/write access to host bind-mounts (like `shared_dir`) when the Docker
-daemon uses userns-remap. Set it to `false` to keep userns-remap isolation, in
+read/write access to host bind-mounts (the read-write entries in `mounts`) when
+the Docker daemon uses userns-remap. Set it to `false` to keep userns-remap
+isolation, in
 which case host bind-mounts become read-only to the remapped uid. The login
 helper mirrors this setting so the login and the service agree on file
 ownership.

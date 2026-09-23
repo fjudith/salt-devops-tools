@@ -5,12 +5,18 @@
 
 {% set kata = kirocrew.service.kata %}
 
-kirocrew-kata-shared-directory:
+{% for mount in kata.mounts %}
+{% if not mount.get('read_only', false) %}
+# Read-write bind-mount source, created on the host and shared into the guest
+# over virtio-fs. Read-only sources (e.g. ~/.aws) are left as-is.
+kirocrew-kata-mount-{{ loop.index0 }}:
   file.directory:
-    - name: {{ kata.shared_dir }}
+    - name: {{ mount.source }}
     - user: root
     - group: root
     - mode: '0755'
+{% endif %}
+{% endfor %}
 
 # Persistent home for the container's kirocrew user (uid/gid {{ kata.home_uid }}).
 # Holds KiroCrew state and kiro-cli login credentials so they survive restarts.
@@ -114,7 +120,9 @@ kirocrew-kata-service-file:
           --network {{ kata.network }} \
           --ip {{ kata.container_ip }} \
           --volume {{ kata.home_dir }}:{{ kata.home_mount }} \
-          --volume {{ kata.shared_dir }}:{{ kata.guest_mount }} \
+          {%- for mount in kata.mounts %}
+          --volume {{ mount.source }}:{{ mount.target }}{{ ':ro' if mount.get('read_only', false) else '' }} \
+          {%- endfor %}
           {{ kata.image }}
         ExecStop=-/usr/local/bin/nerdctl --namespace {{ kata.namespace }} stop {{ kata.container }}
         Restart=always
@@ -124,7 +132,11 @@ kirocrew-kata-service-file:
         [Install]
         WantedBy=multi-user.target
     - require:
-      - file: kirocrew-kata-shared-directory
+      {%- for mount in kata.mounts %}
+      {%- if not mount.get('read_only', false) %}
+      - file: kirocrew-kata-mount-{{ loop.index0 }}
+      {%- endif %}
+      {%- endfor %}
       - file: kirocrew-kata-home-directory
       - cmd: kirocrew-kata-image
       - cmd: kirocrew-kata-network
