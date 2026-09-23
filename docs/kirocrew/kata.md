@@ -61,9 +61,15 @@ kiro:
         subnet: 10.88.0.0/24
         container_ip: 10.88.0.10
         proxy_service: kirocrew-kata-proxy
-        # Workspace share: host files made available in the guest.
-        shared_dir: /home/you/git
-        guest_mount: /workspace
+        # Host directories shared into the guest (over virtio-fs). Each entry
+        # is a dict of source/target, with an optional read_only flag. See
+        # Mounts. Must not target /home/kirocrew (the home mount).
+        mounts:
+          - source: /home/you/git
+            target: /workspace
+          - source: /home/you/.aws
+            target: /home/kirocrew/.aws
+            read_only: true
         # Persistent container home: KiroCrew state + kiro-cli login creds.
         home_dir: /var/lib/kirocrew/home
         home_mount: /home/kirocrew
@@ -93,8 +99,10 @@ sudo salt-call --local state.apply kiro.crew
 
 This applies, in order:
 
-1. **Shared + home directories** — created on the host with the right
-   ownership (`home_dir` as `home_uid:home_gid`).
+1. **Mount + home directories** — the `home_dir` is created with
+   `home_uid:home_gid` ownership, and each read-write entry in `mounts` has its
+   `source` created on the host. Read-only sources are left as-is. See
+   [Mounts](#mounts).
 2. **Helper scripts** — `kirocrew-kata-login` and `kirocrew-kata-token` are
    dropped on `PATH`.
 3. **CNI network** — `nerdctl network create` for the dedicated bridge with a
@@ -163,7 +171,8 @@ sudo salt-call --local state.apply kiro.crew
 
 Teardown stops the proxy socket and the service, removes the proxy units, kills
 and removes the container via `ctr` in the `kirocrew` namespace, and removes the
-service unit. The persistent `home_dir` and `shared_dir` are left in place.
+service unit. The persistent `home_dir` and any mount `source` directories are
+left in place.
 
 ## Resources (CPU / memory)
 
@@ -181,6 +190,40 @@ that much CPU and free RAM, or the VM will not boot.
 `*.min` values are soft: neither `--cpu-shares` nor `--memory-reservation`
 preallocates capacity. Keep `memory.max` at or above `4g`.
 
+## Mounts
+
+`service.kata.mounts` is a list of host directories shared into the guest over
+virtio-fs. Each entry is a dict:
+
+| Key         | Required | Meaning                                                       |
+|-------------|----------|---------------------------------------------------------------|
+| `source`    | yes      | Host path. Read-write sources are created on the host.        |
+| `target`    | yes      | Path inside the guest. Must **not** be `/home/kirocrew` (the home mount). |
+| `read_only` | no       | Default `false`. When `true`, the mount is added with `:ro` and the source is not created. |
+
+```yaml
+mounts:
+  # Workspace: read-write so the agent can create and edit files.
+  - source: /home/you/git
+    target: /workspace
+  # AWS credentials: read-only so the agent can use your profiles.
+  - source: /home/you/.aws
+    target: /home/kirocrew/.aws
+    read_only: true
+```
+
+The default `mounts` shares a single workspace directory
+(`/var/lib/kirocrew/shared` → `/workspace`); overriding `mounts` in pillar
+replaces that list entirely.
+
+> **Security:** the KiroCrew entrypoint deliberately masks credential paths
+> like `~/.aws` and `~/.ssh` by default. Adding a mount for `~/.aws` overrides
+> that and hands your AWS credentials to the agent. Mount it `read_only: true`.
+> Note that on WSL2 the Kata micro-VM has no outbound network (see
+> [Networking on WSL2](#networking-on-wsl2)), so AWS calls from inside the
+> guest will not reach the network even with the credentials mounted; use
+> [docker mode](docker.md) if the agent needs live AWS access.
+
 ## How it fits together
 
 ```
@@ -190,7 +233,7 @@ kirocrew-kata.service (systemd)
      └─ containerd
           └─ containerd-shim-kata-clh-v2   (KATA_CONF_FILE=configuration-clh.toml)
                └─ cloud-hypervisor          (boots the micro-VM on KVM)
-                    ├─ virtiofsd            (shares home_dir + shared_dir into guest)
+                    ├─ virtiofsd            (shares home_dir + mounts into guest)
                     └─ Kata micro-VM        (guest kernel + kirocrew container :5476)
 
 kirocrew-kata-proxy.socket (systemd, listens on host_ip:port)

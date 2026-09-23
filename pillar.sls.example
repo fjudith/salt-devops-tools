@@ -227,10 +227,18 @@ kiro:
             min: 2g         # docker run --memory-reservation (soft floor)
         # Default TTL for dashboard tokens (kirocrew-docker-token).
         token_ttl: 2h
-        # Optional host workspace bind-mounted into the container.
-        # Leave unset/null to skip.
-        shared_dir: /home/you/git
-        guest_mount: /workspace
+        # Host directories bind-mounted into the container. Each entry is a
+        # dict of source/target with an optional read_only flag. Read-write
+        # sources are created on the host and chowned to uid/gid. Default is an
+        # empty list (no host mounts). SECURITY: mounting ~/.aws overrides the
+        # entrypoint's default masking and hands AWS creds to the agent; mount
+        # it read_only.
+        mounts:
+          - source: /home/you/git
+            target: /workspace
+          - source: /home/you/.aws
+            target: /home/kirocrew/.aws
+            read_only: true
         # Run in the host user namespace so the container can read/write host
         # bind-mounts (needed when the daemon uses userns-remap). Set false to
         # keep userns-remap isolation (host mounts become read-only).
@@ -266,9 +274,16 @@ kiro:
         subnet: 10.88.0.0/24
         container_ip: 10.88.0.10
         proxy_service: kirocrew-kata-proxy
-        # Workspace share (host files available in the guest).
-        shared_dir: /var/lib/kirocrew/shared
-        guest_mount: /workspace
+        # Host directories shared into the guest (virtio-fs). Each entry is a
+        # dict of source/target with an optional read_only flag. Overriding
+        # this list replaces the default workspace share. SECURITY: mounting
+        # ~/.aws hands AWS creds to the agent; mount it read_only.
+        mounts:
+          - source: /var/lib/kirocrew/shared
+            target: /workspace
+          - source: /home/you/.aws
+            target: /home/kirocrew/.aws
+            read_only: true
         # Persistent container home (KiroCrew state + kiro-cli login creds).
         home_dir: /var/lib/kirocrew/home
         home_mount: /home/kirocrew

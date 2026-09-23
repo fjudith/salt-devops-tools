@@ -169,9 +169,15 @@ kiro:
       enabled: true
       mode: kata
       kata:
-        # Workspace share: host files made available in the guest.
-        shared_dir: /home/you/git
-        guest_mount: /workspace
+        # Host directories shared into the guest. Each entry is a dict of
+        # source/target with an optional read_only flag; overriding this list
+        # in pillar replaces the default workspace share entirely.
+        mounts:
+          - source: /home/you/git
+            target: /workspace
+          - source: /home/you/.aws        # read-only credential mount
+            target: /home/kirocrew/.aws
+            read_only: true
         # Persistent container home: KiroCrew state + kiro-cli login creds.
         home_dir: /var/lib/kirocrew/home
         home_mount: /home/kirocrew
@@ -200,7 +206,7 @@ kirocrew-kata.service (systemd)
      └─ containerd
           └─ containerd-shim-kata-clh-v2   (KATA_CONF_FILE=configuration-clh.toml)
                └─ cloud-hypervisor          (boots the micro-VM on KVM)
-                    ├─ virtiofsd            (shares home_dir + shared_dir into guest)
+                    ├─ virtiofsd            (shares home_dir + mounts into guest)
                     └─ Kata micro-VM        (guest kernel + kirocrew container :5476)
 
 kirocrew-kata-proxy.socket (systemd, listens on host_ip:port)
