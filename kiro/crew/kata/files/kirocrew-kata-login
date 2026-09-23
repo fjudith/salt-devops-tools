@@ -48,7 +48,7 @@ docker run --rm -it \
   --name "${LOGIN_CONTAINER}" \
   --userns=host \
   -v "${HOME_DIR}:${HOME_MOUNT}" \
-  --entrypoint kiro-cli \
+  --entrypoint /usr/local/bin/kiro-cli \
   "${IMAGE}" \
   login --use-device-flow
 

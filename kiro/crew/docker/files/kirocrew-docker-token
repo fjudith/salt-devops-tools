@@ -21,7 +21,7 @@ if ! docker ps --format '{{ '{{' }}.Names{{ '}}' }}' | grep -qx "${CONTAINER}"; 
 fi
 
 # kirocrew token prints a URL like http://localhost:PORT?token=...
-url="$(docker exec "${CONTAINER}" kirocrew token --port "${PORT}" --ttl "${TTL}" \
+url="$(docker exec "${CONTAINER}" /usr/local/bin/kirocrew token --port "${PORT}" --ttl "${TTL}" \
   | grep -oE 'https?://[^[:space:]]+' | tail -1)"
 
 if [ -z "${url}" ]; then
