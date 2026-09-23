@@ -9,5 +9,9 @@ plugins:
 nav:
   - Home: index.md
   - WSL2 Setup: WSL2.md
+  - KiroCrew:
+      - Native mode: kirocrew/native.md
+      - Docker mode: kirocrew/docker.md
+      - Kata mode: kirocrew/kata.md
 
 docs_dir: docs

@@ -24,7 +24,7 @@ if ! nerdctl --namespace "${NAMESPACE}" ps --format '{{ '{{' }}.Names{{ '}}' }}'
 fi
 
 # kirocrew token prints a URL like http://localhost:PORT?token=...
-url="$(nerdctl --namespace "${NAMESPACE}" exec "${CONTAINER}" kirocrew token --port "${PORT}" --ttl "${TTL}" \
+url="$(nerdctl --namespace "${NAMESPACE}" exec "${CONTAINER}" /usr/local/bin/kirocrew token --port "${PORT}" --ttl "${TTL}" \
   | grep -oE 'https?://[^[:space:]]+' | tail -1)"
 
 if [ -z "${url}" ]; then
