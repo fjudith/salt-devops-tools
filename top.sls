@@ -70,3 +70,4 @@ base:
     - agno.agentos
     - oh-my-pi.cli
     - vllm
+    - onnx.tts

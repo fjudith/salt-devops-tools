@@ -239,6 +239,13 @@ kiro:
           - source: /home/you/.aws
             target: /home/kirocrew/.aws
             read_only: true
+          # Expose ONNX TTS voices (see onnx.tts below) to the agent at
+          # ~/piper/ (the kirocrew user's home). Mount read_only: the models
+          # are static artifacts. Requires onnx.tts.enabled and matching
+          # models_dir; run onnx.tts before this so the source dir exists.
+          # - source: /usr/local/share/onnx-tts
+          #   target: /home/kirocrew/piper
+          #   read_only: true
         # Run in the host user namespace so the container can read/write host
         # bind-mounts (needed when the daemon uses userns-remap). Set false to
         # keep userns-remap isolation (host mounts become read-only).
@@ -284,6 +291,13 @@ kiro:
           - source: /home/you/.aws
             target: /home/kirocrew/.aws
             read_only: true
+          # Expose ONNX TTS voices (see onnx.tts below) to the agent at
+          # ~/piper/ (the kirocrew user's home). Mount read_only: the models
+          # are static artifacts. Requires onnx.tts.enabled and matching
+          # models_dir; run onnx.tts before this so the source dir exists.
+          # - source: /usr/local/share/onnx-tts
+          #   target: /home/kirocrew/piper
+          #   read_only: true
         # Persistent container home (KiroCrew state + kiro-cli login creds).
         home_dir: /var/lib/kirocrew/home
         home_mount: /home/kirocrew
@@ -445,3 +459,15 @@ agno:
 oh-my-pi:
   cli:
     enabled: false
+
+# ONNX text-to-speech models. Downloads Piper-style voice models (an .onnx
+# model file paired with an .onnx.json config) into models_dir/<voice-name>/.
+# Populate `voices` with the voices you want; each needs model_url + config_url.
+onnx:
+  tts:
+    enabled: false
+    models_dir: /usr/local/share/onnx-tts
+    voices: {}
+      # en_US-lessac-medium:
+      #   model_url: https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx
+      #   config_url: https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx.json

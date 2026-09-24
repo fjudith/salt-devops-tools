@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+onnx:
+  tts:
+    enabled: false
+    # Base directory where ONNX text-to-speech models are stored.
+    # Each voice is placed under <models_dir>/<voice-name>/.
+    models_dir: /usr/local/share/onnx-tts
+    user: root
+    group: root
+    # Piper voice models are distributed on Hugging Face as an .onnx model
+    # file paired with an .onnx.json config file. Each entry defines one voice:
+    #   model_url    : URL to the <voice>.onnx file (required)
+    #   config_url   : URL to the <voice>.onnx.json file (required)
+    #   model_hash   : source_hash for the .onnx file (URL to a *.sha256 file,
+    #                  or an inline "sha256=<digest>"). Optional but recommended.
+    #   config_hash  : source_hash for the .onnx.json file. Optional.
+    # Override this map from pillar to select the voices you want.
+    voices: {}
+      # en_US-lessac-medium:
+      #   model_url: https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx
+      #   config_url: https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx.json
+      #   model_hash: https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx?download=true
