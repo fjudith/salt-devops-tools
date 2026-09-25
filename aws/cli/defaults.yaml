@@ -1,5 +1,5 @@
 awscliv2:
   enabled: false
   # renovate: datasource=github-tags depName=aws/aws-cli
-  version: 2.36.50
+  version: 2.37.4
   
