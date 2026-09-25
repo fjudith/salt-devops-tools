@@ -4,7 +4,7 @@
 kata_containers:
   enabled: false
   # renovate: datasource=github-releases depName=kata-containers/kata-containers
-  version: 3.14.0
+  version: 3.32.0
   base_url: https://github.com/kata-containers/kata-containers/releases/download
   # Static tarball is extracted into / and lays files down under /opt/kata/.
   install_dir: /opt/kata
