@@ -79,7 +79,7 @@ Native mode follows the package version in pillar
 ```yaml
 kiro:
   crew:
-    version: 0.7.0
+    version: 0.7.1
 ```
 
 ```bash

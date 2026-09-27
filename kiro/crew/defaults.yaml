@@ -3,7 +3,7 @@
 kirocrew:
   enabled: true
   # renovate: datasource=github-releases depName=kirodotdev/KiroCrew versioning=semver
-  version: 0.6.0
+  version: 0.7.1
   base_url: https://github.com/kirodotdev/KiroCrew/releases/download
   service:
     enabled: false
@@ -11,7 +11,7 @@ kirocrew:
     user: null
     bin: kirocrew
     docker:
-      image: ghcr.io/kirodotdev/kirocrew:stable
+      image: ghcr.io/kirodotdev/kirocrew:0.7.1
       container: kirocrew
       volume: kirocrew-home
       port: 5476
