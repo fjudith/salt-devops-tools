@@ -10,6 +10,21 @@ kirocrew:
     mode: native
     user: null
     bin: kirocrew
+    # Local Piper text-to-speech (TTS) for voice replies. Fully offline: a
+    # neural voice model (.onnx + .onnx.json) is downloaded into the persistent
+    # home and KiroCrew's `voice_reply` config is pointed at it. Applies to the
+    # docker and kata container modes (the model lands in the home the container
+    # uses); native mode has no managed home so voice is left untouched there.
+    voice:
+      enabled: false
+      # KiroCrew voice_reply provider. `piper` = local neural TTS.
+      provider: piper
+      # Piper voice name from rhasspy/piper-voices. Downloaded via
+      # `python3 -m piper.download_voices <voice>` inside the container image.
+      voice: en_US-lessac-medium
+      # Directory (inside the container home) the voice files are placed in and
+      # referenced from. Resolved under the mode's home mount at runtime.
+      model_dir: .kiro/crew/voices
     docker:
       image: ghcr.io/kirodotdev/kirocrew:stable
       container: kirocrew
