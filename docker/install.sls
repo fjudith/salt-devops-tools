@@ -23,7 +23,7 @@ docker-ce-cli:
 containerd.io:
   {%- if docker.containerd.enabled %}
   pkg.installed:
-    - version: '{{ docker.containerd.version }}-1'
+    - version: '{{ docker.containerd.version }}-1~ubuntu.{{ grains["osrelease"] }}~{{ grains["oscodename"] }}'
   {%- else %}}
   pkg.absent:
   {%- endif %}
