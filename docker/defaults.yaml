@@ -32,24 +32,24 @@ docker:
   daemon:
     enabled: true
     # renovate: datasource=github-releases depName=moby/moby
-    version: 28.3.3
-  
+    version: 29.8.1
+
   cli:
     enabled: true
     # renovate: datasource=github-releases depName=docker/cli
-    version: 28.3.1
-  
+    version: 29.8.1
+
   containerd:
     enabled: true
     # renovate: datasource=github-releases depName=containerd/containerd
-    version: 1.7.35
-  
+    version: 2.3.6
+
   buildx_plugin:
     enabled: true
     # renovate: datasource=github-releases depName=docker/buildx
-    version: 0.25.0
-  
+    version: 0.37.1
+
   compose_plugin:
     enabled: true
     # renovate: datasource=github-releases depName=docker/compose
-    version: 2.38.2
+    version: 5.5.1
