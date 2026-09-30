@@ -105,6 +105,9 @@ kirocrew-kata-service-file:
           --rm \
           --name {{ kata.container }} \
           --runtime {{ kata.runtime }} \
+          {%- if kata.get('cgroup_manager') %}
+          --cgroup-manager {{ kata.cgroup_manager }} \
+          {%- endif %}
           {%- if kata.resources.cpu.max is not none %}
           --cpus {{ kata.resources.cpu.max }} \
           {%- endif %}
@@ -125,6 +128,12 @@ kirocrew-kata-service-file:
           {%- endfor %}
           {{ kata.image }}
         ExecStop=-/usr/local/bin/nerdctl --namespace {{ kata.namespace }} stop {{ kata.container }}
+        # Release the fixed-IP host-local IPAM reservation. If nerdctl's cleanup
+        # times out on shutdown it can leave a stale lease for {{ kata.container_ip }}
+        # under the CNI store, which makes the next start fail with
+        # "requested IP address ... is not available in range set". Removing it
+        # here keeps the fixed IP allocatable on the next run.
+        ExecStopPost=-/bin/rm -f /var/lib/cni/networks/{{ kata.network }}/{{ kata.container_ip }}
         Restart=always
         RestartSec=5
         KillMode=mixed

@@ -89,6 +89,11 @@ kirocrew:
       host_ip: 127.0.0.1
       # containerd runtime handler registered by the kata-containers formula.
       runtime: io.containerd.kata-clh.v2
+      # cgroup manager nerdctl uses for the container. nerdctl defaults to
+      # `systemd`, but the Kata (clh) runtime does not honor a systemd cgroup
+      # manager and nerdctl warns then falls back to cgroupfs. Setting this to
+      # `cgroupfs` makes the choice explicit and silences that warning.
+      cgroup_manager: cgroupfs
       # containerd namespace the workstation service runs the container in.
       namespace: kirocrew
       service: kirocrew-kata
