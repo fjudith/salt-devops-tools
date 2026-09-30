@@ -296,9 +296,13 @@ kata-containers:
   kata-containers:
     enabled: false
 
-# nerdctl (Docker-compatible containerd CLI). Required for the kirocrew `kata`
+# containerd runtime (containerd.io package from the Docker repository). The
+# docker daemon depends on it; keep enabled when docker is used.
+# nerdctl (Docker-compatible containerd CLI) is required for the kirocrew `kata`
 # service mode, which uses it for CNI networking and port publishing.
 containerd:
+  containerd:
+    enabled: true
   nerdctl:
     enabled: false
 

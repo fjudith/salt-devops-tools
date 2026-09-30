@@ -1,0 +1,7 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+containerd:
+  enabled: true
+  # renovate: datasource=github-releases depName=containerd/containerd
+  version: 2.3.6

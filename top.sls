@@ -3,7 +3,12 @@ base:
     - common
     - scorecard.cli
     - go-task.cli
+    - cloud-hypervisor.cloud-hypervisor
+    - containerd.containerd
+    - containerd.nerdctl
     - docker
+    - kata-containers.kata-containers
+    - nvidia.container-toolkit
     - aws.cli
     - aws.nuke
     - aws.samcli
@@ -56,10 +61,6 @@ base:
     - crossplane.cli
     - terraform-docs.cli
     - terragrunt.cli
-    - cloud-hypervisor.cloud-hypervisor
-    - kata-containers.kata-containers
-    - containerd.nerdctl
-    - nvidia.container-toolkit
     - opencost.cli
     - multica.cli
     - rclone.cli

@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{% import_yaml tpldir ~ "/defaults.yaml" or {} as defaults %}
+
+{% set containerd = salt['pillar.get']('containerd:containerd', default=defaults['containerd'], merge=True) %}
