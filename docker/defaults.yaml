@@ -39,11 +39,6 @@ docker:
     # renovate: datasource=github-releases depName=docker/cli
     version: 29.8.1
 
-  containerd:
-    enabled: true
-    # renovate: datasource=github-releases depName=containerd/containerd
-    version: 2.3.6
-
   buildx_plugin:
     enabled: true
     # renovate: datasource=github-releases depName=docker/buildx

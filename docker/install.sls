@@ -3,11 +3,17 @@
 
 {%- from tpldir ~ "/map.jinja" import docker with context %}
 
+# The containerd.io package is managed by the standalone containerd.containerd
+# state. The docker daemon depends on it, so it is installed first.
+include:
+  - containerd.containerd
 
 docker-ce:
   {%- if docker.daemon.enabled %}
   pkg.installed:
     - version: '5:{{ docker.daemon.version }}-1~ubuntu.{{ grains["osrelease"] }}~{{ grains["oscodename"] }}'
+    - require:
+      - sls: containerd.containerd
   {%- else %}}
   pkg.absent:
   {%- endif %}
@@ -16,14 +22,6 @@ docker-ce-cli:
   {%- if docker.cli.enabled %}
   pkg.installed:
     - version: '5:{{ docker.cli.version }}-1~ubuntu.{{ grains["osrelease"] }}~{{ grains["oscodename"] }}'
-  {%- else %}}
-  pkg.absent:
-  {%- endif %}
-
-containerd.io:
-  {%- if docker.containerd.enabled %}
-  pkg.installed:
-    - version: '{{ docker.containerd.version }}-1~ubuntu.{{ grains["osrelease"] }}~{{ grains["oscodename"] }}'
   {%- else %}}
   pkg.absent:
   {%- endif %}
