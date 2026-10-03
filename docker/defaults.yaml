@@ -47,4 +47,4 @@ docker:
   compose_plugin:
     enabled: true
     # renovate: datasource=github-releases depName=docker/compose
-    version: 5.5.1
+    version: 5.6.0
