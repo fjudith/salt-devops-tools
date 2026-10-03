@@ -1,5 +1,5 @@
 bom:
   enabled: false
   # renovate: datasource=github-releases depName=kubernetes-sigs/bom
-  version: 0.6.0
+  version: 0.8.0
   
