@@ -42,7 +42,7 @@ docker:
   buildx_plugin:
     enabled: true
     # renovate: datasource=github-releases depName=docker/buildx
-    version: 0.37.1
+    version: 0.37.2
 
   compose_plugin:
     enabled: true
