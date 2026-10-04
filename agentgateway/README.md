@@ -9,6 +9,7 @@ Installs and configures [Agentgateway](https://agentgateway.dev/) — an AI-nati
 | `init.sls` | Entry point — routes to install/config or teardown |
 | `install.sls` | Downloads the binary and symlinks to `/usr/local/bin` |
 | `config.sls` | Creates user/group, config file, systemd service unit |
+| `runtimes.sls` | Installs `uv`/`uvx` and Node.js LTS under `/opt/agentgateway` for stdio MCP servers |
 | `aws-iam-roles-anywhere.sls` | Issues X.509 certificate and runs credential server |
 | `teardown.sls` | Stops service, removes binary, user, and group |
 
@@ -43,7 +44,46 @@ Or ensure both are listed in `top.sls` with `aws.iamrolesanywhere.ca` appearing 
 /etc/systemd/system/agentgateway.service               # Main service unit
 /etc/systemd/system/agentgateway-credentials.service   # Credential server sidecar
 /usr/local/bin/agentgateway                            # Binary symlink
+
+/opt/agentgateway/                      # MCP runtime tree (owned by root)
+├── uv/
+│   ├── uv -> <version>/uv              # Stable symlink (on service PATH)
+│   ├── uvx -> <version>/uvx            # Stable symlink (on service PATH)
+│   └── <version>/                      # uv release tarball (uv + uvx)
+├── node/
+│   ├── bin -> <version>/bin            # Stable symlink (on service PATH)
+│   └── <version>/                      # Node.js LTS tarball (node, npm, npx)
+└── cache/                              # Writable runtime cache (owned by agentgateway)
+    ├── uv/                             # UV_CACHE_DIR
+    ├── uv/python/                      # UV_PYTHON_INSTALL_DIR
+    ├── npm/                            # npm_config_cache
+    └── xdg/                            # XDG_CACHE_HOME
 ```
+
+## MCP Runtimes (uvx / npx)
+
+agentgateway launches stdio MCP servers via `uvx <pkg>` (Python, from `uv`) and
+`npx <pkg>` (Node.js). The service runs as a locked-down `nologin` system user
+with `ProtectHome=read-only`, so Node (from nvm) and user-level Python are not
+reachable. The `runtimes.sls` state installs both runtimes system-wide under
+`/opt/agentgateway`:
+
+- **uv** — official `astral-sh/uv` release tarball placed in
+  `/opt/agentgateway/uv/<version>`, with stable `uv`/`uvx` symlinks in
+  `/opt/agentgateway/uv`. `uvx` manages its own Python, so no separate Python
+  runtime is installed (`UV_PYTHON_INSTALL_DIR` points into the writable cache).
+- **Node.js LTS** — official `nodejs.org` standalone tarball placed in
+  `/opt/agentgateway/node/<version>`, with a stable `bin` symlink giving
+  `node`/`npm`/`npx`.
+
+The systemd unit sets `PATH=/opt/agentgateway/uv:/opt/agentgateway/node/bin:...`
+and the cache env (`UV_CACHE_DIR`, `UV_PYTHON_INSTALL_DIR`, `npm_config_cache`,
+`XDG_CACHE_HOME`) under `/opt/agentgateway/cache`, which is added to
+`ReadWritePaths` (all other hardening stays intact). `uvx`/`npx` fetch MCP
+server packages from PyPI/npm on first run, so the host needs outbound internet.
+
+Each runtime has an independent `enabled` toggle and a pillar-overridable
+version (`agentgateway.runtimes.uv` / `agentgateway.runtimes.node`).
 
 ## Pillar Configuration
 
@@ -53,6 +93,15 @@ agentgateway:
   version: 1.4.1
   user: agentgateway
   group: agentgateway
+  runtime_dir: /opt/agentgateway
+  cache_dir: /opt/agentgateway/cache
+  runtimes:
+    uv:
+      enabled: true
+      version: 0.12.23
+    node:
+      enabled: true
+      version: 24.21.0
   config:
     admin_addr: 0.0.0.0:15000
     stats_addr: 0.0.0.0:15020

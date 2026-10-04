@@ -13,6 +13,11 @@ User={{ user }}
 Group={{ group }}
 ExecStart={{ bin_dir }}/agentgateway -f /home/{{ user }}/.config/agentgateway/config.yaml
 Environment=HOME=/home/{{ user }}
+Environment=PATH={{ uv_bin }}:{{ node_bin }}:/usr/local/bin:/usr/bin:/bin
+Environment=UV_CACHE_DIR={{ cache_dir }}/uv
+Environment=UV_PYTHON_INSTALL_DIR={{ cache_dir }}/uv/python
+Environment=npm_config_cache={{ cache_dir }}/npm
+Environment=XDG_CACHE_HOME={{ cache_dir }}/xdg
 {% if credential_server_port is defined and credential_server_port -%}
 Environment=AWS_EC2_METADATA_SERVICE_ENDPOINT=http://127.0.0.1:{{ credential_server_port }}
 {% endif -%}
@@ -25,6 +30,7 @@ NoNewPrivileges=true
 ProtectSystem=strict
 ProtectHome=read-only
 ReadWritePaths=/home/{{ user }}/.config/agentgateway
+ReadWritePaths={{ cache_dir }}
 PrivateTmp=true
 
 [Install]

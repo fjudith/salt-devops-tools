@@ -22,6 +22,10 @@ agentgateway-teardown-install-dir:
   file.absent:
     - name: {{ agentgateway.install_dir }}
 
+agentgateway-teardown-runtime-dir:
+  file.absent:
+    - name: {{ agentgateway.runtime_dir }}
+
 agentgateway-teardown-user:
   user.absent:
     - name: {{ agentgateway.user }}

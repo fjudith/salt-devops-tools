@@ -428,6 +428,15 @@ nvm:
 
 agentgateway:
   enabled: false
+  runtime_dir: /opt/agentgateway
+  cache_dir: /opt/agentgateway/cache
+  runtimes:
+    uv:
+      enabled: true
+      version: 0.12.23
+    node:
+      enabled: true
+      version: 24.21.0
   iam_roles_anywhere:
     enabled: false
     profile_name: agentgateway

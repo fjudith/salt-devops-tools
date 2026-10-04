@@ -57,6 +57,9 @@ agentgateway-service-unit:
         user: {{ agentgateway.user }}
         group: {{ agentgateway.group }}
         bin_dir: {{ agentgateway.bin_dir }}
+        uv_bin: {{ agentgateway.runtime_dir }}/uv
+        node_bin: {{ agentgateway.runtime_dir }}/node/bin
+        cache_dir: {{ agentgateway.cache_dir }}
         credential_server_port: {{ agentgateway.iam_roles_anywhere.credential_server_port if agentgateway.iam_roles_anywhere.enabled else '' }}
 
 agentgateway-service:
