@@ -322,6 +322,9 @@ google:
   cloud:
     cli:
       enabled: false
+  antigravity:
+    cli:
+      enabled: false
 
 hetzner:
   cli:

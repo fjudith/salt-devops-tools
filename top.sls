@@ -70,4 +70,5 @@ base:
     - agentgateway
     - agno.agentos
     - oh-my-pi.cli
+    - google.antigravity.cli
     - vllm
