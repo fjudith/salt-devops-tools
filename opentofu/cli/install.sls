@@ -11,3 +11,7 @@
 tofu:
   pkg.{{ pkgState }}:
     - version: {{ opentofu.version }}
+    {%- if opentofu.enabled and grains['os_family']|lower in ('debian', 'redhat') %}
+    - require:
+      - pkgrepo: opentofu-repo
+    {%- endif %}

@@ -11,18 +11,36 @@
 {%- if grains['os_family']|lower in ('debian',) %}
 {% set url = 'https://packages.opentofu.org/opentofu/tofu/any/' %}
 
+{% if opentofu.enabled %}
+opentofu-keyrings:
+  file.directory:
+    - name: /etc/apt/keyrings
+    - user: root
+    - group: root
+    - mode: 0755
+
+{% endif %}
+
 opentofu-repo:
+  {% if opentofu.enabled %}
   cmd.run:
     - name: |
         curl -fsSL https://get.opentofu.org/opentofu.gpg \
-        | sudo tee /etc/apt/keyrings/opentofu.gpg \
+        | tee /etc/apt/keyrings/opentofu.gpg \
         > /dev/null \
         && curl -fsSL https://packages.opentofu.org/opentofu/tofu/gpgkey \
-        | sudo gpg --yes --no-tty --batch --dearmor -o /etc/apt/keyrings/opentofu-repo.gpg \
-        > /dev/null
+        | gpg --yes --no-tty --batch --dearmor -o /etc/apt/keyrings/opentofu-repo.gpg \
+        > /dev/null \
+        && chmod a+r /etc/apt/keyrings/opentofu.gpg /etc/apt/keyrings/opentofu-repo.gpg
+    - require:
+      - file: opentofu-keyrings
+    - unless: test -r /etc/apt/keyrings/opentofu.gpg && test -r /etc/apt/keyrings/opentofu-repo.gpg
+  {% endif %}
   pkgrepo.{{ repoState }}:
+    {% if opentofu.enabled %}
     - require:
       - cmd: opentofu-repo
+    {% endif %}
     - humanname: {{ grains["os"] }} {{ grains["oscodename"] | capitalize }} OpenTofu Package Repository
     - name: |
         deb [signed-by=/etc/apt/keyrings/opentofu.gpg,/etc/apt/keyrings/opentofu-repo.gpg] {{ url }} any main
@@ -41,7 +59,7 @@ opentofu-repo:
 
 opentofu-repo:
   pkgrepo.{{ repoState }}:
-    - name: opentofy
+    - name: opentofu
     - humanname: {{ grains["os"] }} {{ grains["oscodename"] | capitalize }} OpenTofu Package Repository
     - base_url: {{ url }}
     - enabled: 1
