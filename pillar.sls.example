@@ -465,3 +465,7 @@ oh-my-pi:
 codegraph:
   cli:
     enabled: false
+
+prek:
+  cli:
+    enabled: true

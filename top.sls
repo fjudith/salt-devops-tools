@@ -72,4 +72,5 @@ base:
     - oh-my-pi.cli
     - google.antigravity.cli
     - codegraph.cli
+    - prek.cli
     - vllm
