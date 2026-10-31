@@ -1,0 +1,56 @@
+---
+# Manually drain open Renovate PRs with merge-renovate-prs.sh: merge clean PRs,
+# update branches that fell behind main, skip conflicting or blocked ones.
+name: Merge Renovate PRs
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Only report what would be merged; make no changes
+        type: boolean
+        default: true
+      method:
+        description: Merge method
+        type: choice
+        options:
+          - squash
+          - merge
+          - rebase
+        default: squash
+      rounds:
+        description: Max drain rounds
+        type: number
+        default: 10
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: merge-renovate-prs
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Merge Renovate PRs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          # Inputs go through env (not inline ${{ }}) to avoid shell injection.
+          DRY_RUN: ${{ inputs.dry_run }}
+          METHOD: ${{ inputs.method }}
+          ROUNDS: ${{ inputs.rounds }}
+        run: |
+          args=(--yes --method "$METHOD" --rounds "$ROUNDS")
+          if [ "$DRY_RUN" = "true" ]; then
+            args+=(--dry-run)
+          fi
+          ./merge-renovate-prs.sh "${args[@]}"
