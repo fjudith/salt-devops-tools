@@ -159,7 +159,7 @@ cilium:
   cli:
     enabled: false
   hubble:
-    enabled: fasle
+    enabled: false
 
 kyverno:
   cli:

@@ -8,7 +8,7 @@
 crossplane-binary:
   file.managed:
     - name: /usr/local/crossplane/{{ crossplane.version }}/crossplane
-    - source: https://releases.crossplane.io/stable/v{{ crossplane.version }}/bin/linux_{{grains["osarch"]}}/crank
+    - source: https://cli.crossplane.io/stable/v{{ crossplane.version }}/bin/linux_{{grains["osarch"]}}/crossplane
     - skip_verify: true
     - makedirs: true
     - user: root
@@ -25,5 +25,6 @@ crossplane:
 crossplane-completion:
   cmd.run:
     - require:
+      - file: crossplane-binary
       - file: crossplane
     - name: /usr/local/bin/crossplane completions > /etc/bash_completion.d/crossplane

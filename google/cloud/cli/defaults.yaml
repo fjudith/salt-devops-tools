@@ -1,4 +1,4 @@
 gcloud:
   enabled: false
-  # renovate: datasource=github-tags depName=GoogleCloudPlatform/cloud-sdk-docker
-  version: 405.0.1
+  # renovate: datasource=docker depName=gcr.io/google.com/cloudsdktool/google-cloud-cli versioning=docker
+  version: 591.0.0
