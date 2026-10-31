@@ -461,3 +461,7 @@ agno:
 oh-my-pi:
   cli:
     enabled: false
+
+codegraph:
+  cli:
+    enabled: false

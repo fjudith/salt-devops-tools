@@ -71,4 +71,5 @@ base:
     - agno.agentos
     - oh-my-pi.cli
     - google.antigravity.cli
+    - codegraph.cli
     - vllm
