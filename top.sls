@@ -72,3 +72,4 @@ base:
     - oh-my-pi.cli
     - google.antigravity.cli
     - vllm
+    - colbymchenry.codegraph
