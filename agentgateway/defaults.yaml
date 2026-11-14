@@ -15,7 +15,7 @@ agentgateway:
     uv:
       enabled: true
       # renovate: datasource=github-releases depName=astral-sh/uv
-      version: 0.13.6
+      version: 0.13.8
       base_url: https://github.com/astral-sh/uv/releases/download
     node:
       enabled: true
