@@ -48,3 +48,33 @@ docker:
     enabled: true
     # renovate: datasource=github-releases depName=docker/compose
     version: 5.6.0
+  model_plugin:
+    enabled: false
+    # renovate: datasource=github-releases depName=docker/model-runner
+    version: 1.2.9
+  sbx:
+    enabled: false
+    # No Renovate annotation: no upstream GitHub repo with stable release tags
+    # matching the docker-sbx apt version (docker/sbx-releases only lists pre-releases/nightlies).
+    version: 0.51.0
+  secrets_engine:
+    enabled: false
+    # renovate: datasource=github-releases depName=docker/secrets-engine
+    version: 0.11.2
+  secrets_engine_plugins:
+    enabled: false
+    # Must match secrets_engine.version (apt pins an exact docker-secrets-engine dependency).
+    # renovate: datasource=github-releases depName=docker/secrets-engine
+    version: 0.11.2
+  cagent:
+    enabled: false
+    # No Renovate annotation: docker/cagent latest release (v1.161.x) is far ahead
+    # of the version published in the Docker apt repo (1.23.3), so bumps would not install.
+    version: 1.23.3
+  scout_plugin:
+    enabled: false
+    # renovate: datasource=github-releases depName=docker/scout-cli
+    version: v1.29.0
+    base_url: https://github.com/docker/scout-cli/releases/download
+    install_dir: /usr/local/docker-scout
+    plugin_dir: /usr/local/lib/docker/cli-plugins

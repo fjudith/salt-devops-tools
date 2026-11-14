@@ -74,6 +74,18 @@ vllm:
 # some setups; disabling it may be required (host-specific).
 docker:
   nvidia_runtime: false
+  scout_plugin:
+    enabled: false
+  model_plugin:
+    enabled: false
+  sbx:
+    enabled: false
+  secrets_engine:
+    enabled: false
+  secrets_engine_plugins:
+    enabled: false
+  cagent:
+    enabled: false
 
 # NVIDIA Container Toolkit. Required for GPU access in vLLM docker mode.
 # Installs only the container integration layer; the NVIDIA kernel driver is
