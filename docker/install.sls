@@ -41,3 +41,38 @@ docker-compose-plugin:
   {%- else %}}
   pkg.absent:
   {%- endif %}
+docker-model-plugin:
+  {%- if docker.model_plugin.enabled %}
+  pkg.installed:
+    - version: '{{ docker.model_plugin.version }}-1~ubuntu.{{ grains["osrelease"] }}~{{ grains["oscodename"] }}'
+  {%- else %}
+  pkg.absent
+  {%- endif %}
+docker-sbx:
+  {%- if docker.sbx.enabled %}
+  pkg.installed:
+    - version: '{{ docker.sbx.version }}-1~ubuntu.{{ grains["osrelease"] }}~{{ grains["oscodename"] }}'
+  {%- else %}
+  pkg.absent
+  {%- endif %}
+docker-secrets-engine:
+  {%- if docker.secrets_engine.enabled %}
+  pkg.installed:
+    - version: '{{ docker.secrets_engine.version }}~ubuntu.{{ grains["osrelease"] }}~{{ grains["oscodename"] }}'
+  {%- else %}
+  pkg.absent
+  {%- endif %}
+docker-secrets-engine-plugins:
+  {%- if docker.secrets_engine_plugins.enabled %}
+  pkg.installed:
+    - version: '{{ docker.secrets_engine_plugins.version }}~ubuntu.{{ grains["osrelease"] }}~{{ grains["oscodename"] }}'
+  {%- else %}
+  pkg.absent
+  {%- endif %}
+cagent:
+  {%- if docker.cagent.enabled %}
+  pkg.installed:
+    - version: '{{ docker.cagent.version }}-1~ubuntu.{{ grains["osrelease"] }}~{{ grains["oscodename"] }}'
+  {%- else %}
+  pkg.absent
+  {%- endif %}
