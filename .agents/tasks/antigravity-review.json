@@ -1,0 +1,12 @@
+{
+  "verdict": "APPROVED",
+  "findings": [
+    {
+      "label": "Tarball layout assumption",
+      "confidence": "possible",
+      "blocking": false,
+      "detail": "install.sls assumes the tarball's 'antigravity' binary sits at the archive root ($TMPDIR/antigravity). If a future release nests it under a subdir, the install step fails loudly rather than installing a wrong file. Non-blocking; already noted in the plan's known-gaps and self-correcting."
+    }
+  ],
+  "reviewDoc": "/srv/salt/.agents/tasks/antigravity-review.md"
+}

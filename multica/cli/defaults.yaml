@@ -1,7 +1,7 @@
 multica:
   enabled: false
   # renovate: datasource=github-releases depName=multica-ai/multica
-  version: 0.4.44
+  version: 0.9.0
   service:
     enabled: true
     user: root
