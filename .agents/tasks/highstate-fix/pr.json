@@ -1,0 +1,7 @@
+{
+  "url": "https://github.com/fjudith/salt-devops-tools/pull/125",
+  "number": 125,
+  "title": "fix: resolve highstate failures",
+  "branch": "fix/highstate-issues",
+  "base": "main"
+}
