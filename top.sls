@@ -74,3 +74,4 @@ base:
     - codegraph.cli
     - prek.cli
     - vllm
+    - goose.cli

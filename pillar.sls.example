@@ -481,3 +481,6 @@ codegraph:
 prek:
   cli:
     enabled: true
+goose:
+  cli:
+    enabled: false
