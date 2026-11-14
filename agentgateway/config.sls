@@ -42,9 +42,34 @@ agentgateway-config-file:
         admin_addr: {{ agentgateway.config.admin_addr }}
         stats_addr: {{ agentgateway.config.stats_addr }}
         readiness_addr: {{ agentgateway.config.readiness_addr }}
+        model_catalog_file: {{ agentgateway.config.model_catalog_file }}
     - require:
       - file: agentgateway-config-dir
 
+agentgateway-catalog-script:
+  file.managed:
+    - name: {{ agentgateway.install_dir }}/refresh-model-catalog.py
+    - source: salt://agentgateway/files/refresh-model-catalog.py
+    - user: root
+    - group: root
+    - mode: '0755'
+agentgateway-catalog:
+  cmd.run:
+    - name: {{ agentgateway.install_dir }}/refresh-model-catalog.py {{ agentgateway.config.model_catalog_file }}
+    - runas: {{ agentgateway.user }}
+    - stateful: true
+    - require:
+      - file: agentgateway-catalog-script
+      - file: agentgateway-config-dir
+agentgateway-config-catalog-source:
+  file.line:
+    - name: /home/{{ agentgateway.user }}/.config/agentgateway/config.yaml
+    - mode: ensure
+    - after: '^\s+readinessAddr:.*'
+    - content: '  modelCatalog: [{file: {{ agentgateway.config.model_catalog_file }}}]'
+    - require:
+      - file: agentgateway-config-file
+      - cmd: agentgateway-catalog
 agentgateway-service-unit:
   file.managed:
     - name: /etc/systemd/system/agentgateway.service
@@ -69,6 +94,7 @@ agentgateway-service:
     - watch:
       - file: agentgateway-service-unit
       - file: agentgateway-config-file
+      - file: agentgateway-config-catalog-source
       - file: /usr/local/bin/agentgateway
     - require:
       - file: agentgateway-service-unit

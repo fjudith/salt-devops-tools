@@ -2,3 +2,4 @@ config:
   adminAddr: "{{ admin_addr }}"
   statsAddr: "{{ stats_addr }}"
   readinessAddr: "{{ readiness_addr }}"
+  modelCatalog: [{file: {{ model_catalog_file }}}]

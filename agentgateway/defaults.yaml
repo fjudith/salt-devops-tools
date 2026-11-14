@@ -26,6 +26,8 @@ agentgateway:
     admin_addr: 0.0.0.0:15000
     stats_addr: 0.0.0.0:15020
     readiness_addr: 0.0.0.0:15021
+    # Sanitized copy of https://agentgateway.dev/model-catalog (see files/refresh-model-catalog.py)
+    model_catalog_file: /home/agentgateway/.config/agentgateway/model-catalog.json
   iam_roles_anywhere:
     enabled: false
     profile_name: agentgateway
