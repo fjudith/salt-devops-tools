@@ -72,7 +72,7 @@ docker:
     # of the version published in the Docker apt repo (1.23.3), so bumps would not install.
     version: 1.23.3
   scout_plugin:
-    enabled: false
+    enabled: true
     # renovate: datasource=github-releases depName=docker/scout-cli
     version: v1.29.0
     base_url: https://github.com/docker/scout-cli/releases/download

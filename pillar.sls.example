@@ -75,7 +75,7 @@ vllm:
 docker:
   nvidia_runtime: false
   scout_plugin:
-    enabled: false
+    enabled: true
   model_plugin:
     enabled: false
   sbx:

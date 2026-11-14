@@ -38,18 +38,18 @@ sudo usermod -aG docker $USER
 | Docker Sandboxes (sbx) | Docker sbx | No | `sbx` |
 | Secrets Engine | Per-user service that gives access to stored credentials, with a `docker-pass` command | No | `secrets_engine` and `secrets_engine_plugins` |
 | cagent | Multi-agent AI runtime | No | `cagent` |
-| Docker Scout | Image security and supply chain analysis (`docker scout`) | No | `scout_plugin` |
+| Docker Scout | Image security and supply chain analysis (`docker scout`) | Yes | `scout_plugin` |
 
 ## Turn a tool on or off
 
-Edit `/srv/pillar/devops.sls`. This example enables Scout and Model Runner:
+Edit `/srv/pillar/devops.sls`. This example enables Model Runner and turns off Docker Scout, which is on by default:
 
 ```yaml
 docker:
-  scout_plugin:
-    enabled: true
   model_plugin:
     enabled: true
+  scout_plugin:
+    enabled: false
 ```
 
 Apply it again:
@@ -61,7 +61,6 @@ sudo salt-call --local state.apply docker
 Then check the tools. If a command does not print help, the tool is not installed:
 
 ```bash
-docker scout --help
 docker model --help
 ```
 
