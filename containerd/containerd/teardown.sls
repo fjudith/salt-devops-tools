@@ -4,4 +4,4 @@
 {%- from tpldir ~ "/map.jinja" import containerd with context %}
 
 containerd.io:
-  pkg.absent
+  pkg.removed: []

@@ -20,7 +20,7 @@ docker-scout-unsupported-architecture:
 {%- set download_url = scout.base_url ~ '/' ~ scout.version ~ '/' ~ asset %}
 {%- set version_dir = scout.install_dir ~ '/versions/' ~ scout.version %}
 # No hard require on docker-ce-cli: it does not exist in the state tree when
-# docker.cli.enabled is false (pkg.absent still defines it, but the plugin is
+# docker.cli.enabled is false (pkg.removed still defines it, but the plugin is
 # just a file and works whenever the CLI is present).
 docker-scout-archive:
   archive.extracted:
