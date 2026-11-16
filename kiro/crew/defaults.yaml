@@ -131,6 +131,11 @@ kirocrew:
       # systemd-socket-proxyd forwards to container_ip:port. WSL2 detects that
       # socket and forwards it to Windows, while Kata VM isolation is preserved.
       proxy_service: kirocrew-kata-proxy
+      # Ports that get their own systemd socket unit (socket activation via
+      # systemd-socket-proxyd, like the dashboard port). Each unit pair is named
+      # <proxy_service>-<port>.
+      socket_ports:
+        - 50100
       # Host directories shared into the guest (over virtio-fs by Kata). Each
       # entry is a dict:
       #   source     host path (created on the host if missing).

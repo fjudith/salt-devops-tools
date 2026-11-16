@@ -5,6 +5,20 @@
 
 {% set kata = kirocrew.service.kata %}
 
+{% for sport in kata.get('socket_ports', []) %}
+kirocrew-kata-proxy-{{ sport }}-socket-dead:
+  service.dead:
+    - name: {{ kata.proxy_service }}-{{ sport }}.socket
+    - enable: false
+    - onlyif: systemctl is-enabled --quiet {{ kata.proxy_service }}-{{ sport }}.socket || systemctl is-active --quiet {{ kata.proxy_service }}-{{ sport }}.socket
+kirocrew-kata-proxy-{{ sport }}-files-teardown:
+  file.absent:
+    - names:
+      - /etc/systemd/system/{{ kata.proxy_service }}-{{ sport }}.socket
+      - /etc/systemd/system/{{ kata.proxy_service }}-{{ sport }}.service
+    - require:
+      - service: kirocrew-kata-proxy-{{ sport }}-socket-dead
+{% endfor %}
 kirocrew-kata-proxy-socket-dead:
   service.dead:
     - name: {{ kata.proxy_service }}.socket
