@@ -1,101 +1,67 @@
 # -*- coding: utf-8 -*-
 # vim: ft=jinja
-
 {% from tpldir ~ "/map.jinja" import kirocli with context %}
-
 {#- Detect architecture #}
 {% set arch = salt['grains.get']('cpuarch') %}
-{% if arch == 'x86_64' %}
+{% if arch in ('x86_64', 'amd64') %}
   {% set kiro_arch = 'x86_64' %}
-{% elif arch in ['aarch64', 'arm64'] %}
+{% elif arch in ('aarch64', 'arm64') %}
   {% set kiro_arch = 'aarch64' %}
 {% endif %}
-
+{% if kiro_arch is not defined %}
+kirocli-unsupported-architecture:
+  test.fail_without_changes:
+    - name: "kiro-cli supports x86_64 and aarch64 only (detected: {{ arch }})"
+{% else %}
 {#- Determine libc variant (musl vs gnu) #}
-{% set os_family = salt['grains.get']('os_family') %}
-{% if os_family == 'Alpine' %}
-  {% set libc = 'musl' %}
-{% else %}
-  {% set libc = 'gnu' %}
-{% endif %}
-
-{#- Construct download filename and URL #}
-{% if libc == 'musl' %}
-  {% set filename = 'kirocli-' ~ kiro_arch ~ '-linux-musl.zip' %}
-{% else %}
-  {% set filename = 'kirocli-' ~ kiro_arch ~ '-linux.zip' %}
-{% endif %}
-
-{% set download_url = kirocli.base_url ~ '/' ~ kirocli.channel ~ '/latest/' ~ filename %}
-{% set manifest_url = kirocli.base_url ~ '/' ~ kirocli.channel ~ '/latest/manifest.json' %}
-
+{% set libc = 'musl' if salt['grains.get']('os_family') == 'Alpine' else 'gnu' %}
+{% set filename = 'kirocli-' ~ kiro_arch ~ '-linux' ~ ('-musl' if libc == 'musl' else '') ~ '.zip' %}
+{#- Versioned URL: a version bump changes the URL, so Salt's download cache is not reused #}
+{% set download_url = kirocli.base_url ~ '/' ~ kirocli.channel ~ '/' ~ kirocli.version ~ '/' ~ filename %}
+{% set version_dir = kirocli.install_dir ~ '/versions/' ~ kirocli.version %}
+{% set sha256 = kirocli.get('sha256', {}).get(kiro_arch ~ '-' ~ libc) %}
 kirocli-dependencies:
   pkg.installed:
     - pkgs:
-      - curl
       - unzip
-
-kirocli-install-dir:
-  file.directory:
-    - name: {{ kirocli.install_dir }}
-    - user: root
-    - group: root
-    - mode: '0755'
-    - makedirs: true
-
-kirocli-download:
-  file.managed:
-    - name: /tmp/{{ filename }}
-    - source: {{ download_url }}
-    - skip_verify: true
-    - user: root
-    - group: root
-    - mode: '0644'
-    - unless: test -x {{ kirocli.bin_dir }}/kiro-cli
-
 kirocli-archive:
   archive.extracted:
-    - name: {{ kirocli.install_dir }}
-    - source: /tmp/{{ filename }}
+    - name: {{ version_dir }}
+    - source: {{ download_url }}
+    {%- if sha256 %}
+    - source_hash: sha256={{ sha256 }}
+    {%- else %}
+    - skip_verify: true
+    {%- endif %}
     - user: root
     - group: root
     - archive_format: zip
     - enforce_toplevel: false
-    - overwrite: true
     - require:
-      - file: kirocli-install-dir
-      - file: kirocli-download
-    - unless: test -x {{ kirocli.bin_dir }}/kiro-cli
-
-kirocli-install:
-  cmd.run:
-    - name: {{ kirocli.install_dir }}/kirocli/install.sh
-    - cwd: {{ kirocli.install_dir }}
-    - runas: root
-    - env:
-      - KIRO_CLI_SKIP_SETUP: '1'
-    - require:
-      - archive: kirocli-archive
-    - unless: test -x {{ kirocli.bin_dir }}/kiro-cli
-
+      - pkg: kirocli-dependencies
+    - unless: test -x {{ version_dir }}/kirocli/bin/kiro-cli
 kirocli-symlink:
   file.symlink:
     - name: {{ kirocli.bin_dir }}/kiro-cli
-    - target: {{ kirocli.install_dir }}/kirocli/kiro-cli
+    - target: {{ version_dir }}/kirocli/bin/kiro-cli
     - force: true
     - require:
-      - cmd: kirocli-install
-
-kirocli-chat-symlink:
-  file.symlink:
-    - name: {{ kirocli.bin_dir }}/kiro-cli-chat
-    - target: {{ kirocli.install_dir }}/kirocli/kiro-cli-chat
-    - force: true
-    - require:
-      - cmd: kirocli-install
-
-kirocli-cleanup:
+      - archive: kirocli-archive
+{#- Legacy 2.x artifacts: kiro-cli-chat/-term no longer exist in 3.x, and the old
+    flat layout lived directly under install_dir/kirocli #}
+kirocli-legacy-chat-symlink:
   file.absent:
-    - name: /tmp/{{ filename }}
+    - name: {{ kirocli.bin_dir }}/kiro-cli-chat
     - require:
-      - cmd: kirocli-install
+      - file: kirocli-symlink
+kirocli-legacy-term-symlink:
+  file.absent:
+    - name: {{ kirocli.bin_dir }}/kiro-cli-term
+    - require:
+      - file: kirocli-symlink
+kirocli-legacy-install-dir:
+  file.absent:
+    - name: {{ kirocli.install_dir }}/kirocli
+    - require:
+      - file: kirocli-symlink
+{% endif %}
