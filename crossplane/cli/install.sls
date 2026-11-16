@@ -28,3 +28,4 @@ crossplane-completion:
       - file: crossplane-binary
       - file: crossplane
     - name: /usr/local/bin/crossplane completions > /etc/bash_completion.d/crossplane
+    - unless: test -s /etc/bash_completion.d/crossplane && test "$(stat -c %Y /etc/bash_completion.d/crossplane)" -ge "$(stat -c %Y /usr/local/bin/crossplane)"

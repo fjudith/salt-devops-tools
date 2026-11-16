@@ -39,4 +39,5 @@ eksctl-completion:
     - require:
       - file: eksctl
     - name: /usr/local/bin/eksctl completion bash > /etc/bash_completion.d/eksctl
+    - unless: test -s /etc/bash_completion.d/eksctl && test "$(stat -c %Y /etc/bash_completion.d/eksctl)" -ge "$(stat -c %Y /usr/local/bin/eksctl)"
 {% endif %}

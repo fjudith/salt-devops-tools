@@ -39,4 +39,5 @@ glab-completion:
     - require:
       - file: glab
     - name: /usr/local/bin/glab completion -s bash > /etc/bash_completion.d/glab
+    - unless: test -s /etc/bash_completion.d/glab && test "$(stat -c %Y /etc/bash_completion.d/glab)" -ge "$(stat -c %Y /usr/local/bin/glab)"
 {% endif %}

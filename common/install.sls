@@ -97,7 +97,7 @@ redhat-packages:
     kernel (e.g. WSL2, cloud-optimized kernels) are skipped, since kmod.present
     cannot load them and would fail on subsequent runs. #}
 {%- for mod in common.virtio.modules %}
-{%- set modfile = salt['cmd.run']('modinfo -F filename ' ~ mod ~ ' 2>/dev/null', python_shell=True) %}
+{%- set modfile = salt['cmd.run']('modinfo -F filename ' ~ mod ~ ' 2>/dev/null', python_shell=True, ignore_retcode=True) %}
 {%- if modfile and modfile != '(builtin)' %}
 virtio-module-{{ mod }}:
   kmod.present:
@@ -107,7 +107,7 @@ virtio-module-{{ mod }}:
 {%- endfor %}
 {% else %}
 {%- for mod in common.virtio.modules %}
-{%- set modfile = salt['cmd.run']('modinfo -F filename ' ~ mod ~ ' 2>/dev/null', python_shell=True) %}
+{%- set modfile = salt['cmd.run']('modinfo -F filename ' ~ mod ~ ' 2>/dev/null', python_shell=True, ignore_retcode=True) %}
 {%- if modfile and modfile != '(builtin)' %}
 virtio-module-{{ mod }}:
   kmod.absent:
@@ -122,7 +122,7 @@ virtio-module-{{ mod }}:
     loadable .ko files on the running kernel. Built-in or absent modules (e.g.
     on WSL2) are skipped. #}
 {%- for mod in common.vfio.modules %}
-{%- set modfile = salt['cmd.run']('modinfo -F filename ' ~ mod ~ ' 2>/dev/null', python_shell=True) %}
+{%- set modfile = salt['cmd.run']('modinfo -F filename ' ~ mod ~ ' 2>/dev/null', python_shell=True, ignore_retcode=True) %}
 {%- if modfile and modfile != '(builtin)' %}
 vfio-module-{{ mod }}:
   kmod.present:
@@ -132,7 +132,7 @@ vfio-module-{{ mod }}:
 {%- endfor %}
 {% else %}
 {%- for mod in common.vfio.modules %}
-{%- set modfile = salt['cmd.run']('modinfo -F filename ' ~ mod ~ ' 2>/dev/null', python_shell=True) %}
+{%- set modfile = salt['cmd.run']('modinfo -F filename ' ~ mod ~ ' 2>/dev/null', python_shell=True, ignore_retcode=True) %}
 {%- if modfile and modfile != '(builtin)' %}
 vfio-module-{{ mod }}:
   kmod.absent:

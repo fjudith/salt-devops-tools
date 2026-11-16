@@ -16,7 +16,7 @@
       "customType": "regex",
       "managerFilePatterns": ["/(^|/)defaults\\.yaml$/"],
       "matchStrings": [
-        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(?:\\s+versioning=(?<versioning>\\S+))?(?:\\s+extractVersion=(?<extractVersion>\\S+))?[^\\n]*\\r?\\n\\s*(?:minor_version:[^\\n]*\\r?\\n\\s*)?version:\\s*['\"]?(?<currentValue>[^'\"\\s]+)['\"]?"
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(?:\\s+registryUrl=(?<registryUrl>\\S+))?(?:\\s+versioning=(?<versioning>\\S+))?(?:\\s+extractVersion=(?<extractVersion>\\S+))?[^\\n]*\\r?\\n\\s*(?:minor_version:[^\\n]*\\r?\\n\\s*)?version:\\s*['\"]?(?<currentValue>[^'\"\\s]+)['\"]?"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver-coerced{{/if}}",
       "extractVersionTemplate": "{{#if extractVersion}}{{{extractVersion}}}{{else}}^v?(?<version>.+)${{/if}}"

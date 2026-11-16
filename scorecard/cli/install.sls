@@ -39,4 +39,5 @@ scorecard-completion:
     - require:
       - file: scorecard
     - name: /usr/local/bin/scorecard completion bash | tee /etc/bash_completion.d/scorecard
+    - unless: test -s /etc/bash_completion.d/scorecard && test "$(stat -c %Y /etc/bash_completion.d/scorecard)" -ge "$(stat -c %Y /usr/local/bin/scorecard)"
 {% endif %}

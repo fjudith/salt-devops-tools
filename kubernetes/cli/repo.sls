@@ -15,6 +15,7 @@ kubernetes-repo:
     - name: |
         curl -fsSL https://pkgs.k8s.io/core:/stable:/v{{ kubectl.minor_version }}/deb/Release.key \
         | gpg --yes --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+    - unless: test -s /etc/apt/keyrings/kubernetes-archive-keyring.gpg && grep -qs 'core:/stable:/v{{ kubectl.minor_version }}/' /etc/apt/sources.list.d/kubernetes.list
   pkgrepo.{{ repoState }}:
     - require:
       - cmd: kubernetes-repo

@@ -11,7 +11,7 @@
 odbc-dependencies:
   pkg.installed:
     - pkgs:
-      {%- if grains['os_family']|lower in ('debian',) %}   
+      {%- if grains['os_family']|lower in ('debian',) %}
       - build-essential
       - ca-certificates
       - python3-dev
@@ -25,7 +25,7 @@ odbc-dependencies:
 odbc:
   pkg.{{ pkgState }}:
     - pkgs:
-      {%- if grains['os_family']|lower in ('debian',) %}   
+      {%- if grains['os_family']|lower in ('debian',) %}
       - freetds-dev
       - unixodbc-dev
       - tdsodbc
@@ -35,11 +35,19 @@ odbc:
       {%- endif %}
 
 mssql:
+  {#- Debian: pass ACCEPT_EULA to the apt transaction only (no state change on every run).
+      RedHat: aptpkg's `env` has no yum equivalent, so keep environ.setenv there. #}
+  {%- if grains['os_family']|lower in ('redhat',) %}
   environ.setenv:
     - name: ACCEPT_EULA
     - value: Y
     - update_minion: true
+  {%- endif %}
   pkg.{{ pkgState }}:
+    {%- if pkgState == 'installed' and grains['os_family']|lower in ('debian',) %}
+    - env:
+      - ACCEPT_EULA: 'Y'
+    {%- endif %}
     - require:
       - pkg: odbc
     - pkgs:

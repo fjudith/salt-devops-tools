@@ -38,6 +38,7 @@ argo-permissions:
     - user: root
     - group: root
     - mode: 755
+    - replace: False
 
 argo:
   file.symlink:

@@ -32,6 +32,7 @@ kata-containers-zstd:
 kata-containers-kvm-check:
   cmd.run:
     - name: test -e /dev/kvm
+    - unless: test -e /dev/kvm
     - failhard: false
 
 kata-containers-archive:

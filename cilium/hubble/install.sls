@@ -39,4 +39,5 @@ hubble-completion:
     - require:
       - file: hubble
     - name: /usr/local/bin/hubble completion bash | tee /etc/bash_completion.d/hubble
+    - unless: test -s /etc/bash_completion.d/hubble && test "$(stat -c %Y /etc/bash_completion.d/hubble)" -ge "$(stat -c %Y /usr/local/bin/hubble)"
 {% endif %}

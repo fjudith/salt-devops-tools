@@ -39,4 +39,5 @@ oslo-completion:
     - require:
       - file: oslo
     - name: /usr/local/bin/oslo completion bash | tee /etc/bash_completion.d/oslo
+    - unless: test -s /etc/bash_completion.d/oslo && test "$(stat -c %Y /etc/bash_completion.d/oslo)" -ge "$(stat -c %Y /usr/local/bin/oslo)"
 {% endif %}

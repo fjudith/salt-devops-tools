@@ -39,4 +39,5 @@ cilium-completion:
     - require:
       - file: cilium
     - name: /usr/local/bin/cilium completion bash | tee /etc/bash_completion.d/cilium
+    - unless: test -s /etc/bash_completion.d/cilium && test "$(stat -c %Y /etc/bash_completion.d/cilium)" -ge "$(stat -c %Y /usr/local/bin/cilium)"
 {% endif %}

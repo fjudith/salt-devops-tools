@@ -39,4 +39,5 @@ kyverno-completion:
     - require:
       - file: kyverno
     - name: /usr/local/bin/kyverno completion bash > /etc/bash_completion.d/kyverno
+    - unless: test -s /etc/bash_completion.d/kyverno && test "$(stat -c %Y /etc/bash_completion.d/kyverno)" -ge "$(stat -c %Y /usr/local/bin/kyverno)"
 {% endif %}

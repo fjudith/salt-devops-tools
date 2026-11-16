@@ -16,6 +16,7 @@ hashicorp-repo:
     - name: |
         curl -fsSL https://apt.releases.hashicorp.com/gpg \
         | gpg --yes --dearmor -o /etc/apt/keyrings/hashicorp-archive-keyring.gpg
+    - unless: test -s /etc/apt/keyrings/hashicorp-archive-keyring.gpg
   pkgrepo.{{ repoState }}:
     - require:
       - cmd: hashicorp-repo

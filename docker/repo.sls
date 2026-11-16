@@ -14,6 +14,7 @@ docker-repo:
     - name: |
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
         | gpg --yes --dearmor -o /etc/apt/keyrings/docker-archive-keyring.gpg
+    - unless: test -s /etc/apt/keyrings/docker-archive-keyring.gpg
   pkgrepo.{{ repo_state }}:
     - require:
       - cmd: docker-repo

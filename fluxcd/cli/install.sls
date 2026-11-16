@@ -39,4 +39,5 @@ fluxcd-completion:
     - require:
       - file: fluxcd
     - name: /usr/local/bin/flux completion bash > /etc/bash_completion.d/flux
+    - unless: test -s /etc/bash_completion.d/flux && test "$(stat -c %Y /etc/bash_completion.d/flux)" -ge "$(stat -c %Y /usr/local/bin/flux)"
 {% endif %}

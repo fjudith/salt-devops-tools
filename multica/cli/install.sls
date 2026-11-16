@@ -40,4 +40,5 @@ multica-completion:
     - require:
       - file: multica
     - name: /usr/local/bin/multica completion bash > /etc/bash_completion.d/multica
+    - unless: test -s /etc/bash_completion.d/multica && test "$(stat -c %Y /etc/bash_completion.d/multica)" -ge "$(stat -c %Y /usr/local/bin/multica)"
 {% endif %}

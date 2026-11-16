@@ -31,26 +31,26 @@ docker:
 
   daemon:
     enabled: true
-    # renovate: datasource=github-releases depName=moby/moby
+    # renovate: datasource=deb depName=docker-ce registryUrl=https://download.docker.com/linux/ubuntu?suite=noble&components=stable&binaryArch=amd64 versioning=deb extractVersion=^(?:\d+:)?(?<version>\d+(?:\.\d+)+)(?:-\d+)?~.*$
     version: 29.8.1
 
   cli:
     enabled: true
-    # renovate: datasource=github-releases depName=docker/cli
+    # renovate: datasource=deb depName=docker-ce-cli registryUrl=https://download.docker.com/linux/ubuntu?suite=noble&components=stable&binaryArch=amd64 versioning=deb extractVersion=^(?:\d+:)?(?<version>\d+(?:\.\d+)+)(?:-\d+)?~.*$
     version: 29.8.1
 
   buildx_plugin:
     enabled: true
-    # renovate: datasource=github-releases depName=docker/buildx
-    version: 0.38.2
+    # renovate: datasource=deb depName=docker-buildx-plugin registryUrl=https://download.docker.com/linux/ubuntu?suite=noble&components=stable&binaryArch=amd64 versioning=deb extractVersion=^(?:\d+:)?(?<version>\d+(?:\.\d+)+)(?:-\d+)?~.*$
+    version: 0.39.0
 
   compose_plugin:
     enabled: true
-    # renovate: datasource=github-releases depName=docker/compose
+    # renovate: datasource=deb depName=docker-compose-plugin registryUrl=https://download.docker.com/linux/ubuntu?suite=noble&components=stable&binaryArch=amd64 versioning=deb extractVersion=^(?:\d+:)?(?<version>\d+(?:\.\d+)+)(?:-\d+)?~.*$
     version: 5.6.1
   model_plugin:
     enabled: false
-    # renovate: datasource=github-releases depName=docker/model-runner
+    # renovate: datasource=deb depName=docker-model-plugin registryUrl=https://download.docker.com/linux/ubuntu?suite=noble&components=stable&binaryArch=amd64 versioning=deb extractVersion=^(?:\d+:)?(?<version>\d+(?:\.\d+)+)(?:-\d+)?~.*$
     version: 1.2.9
   sbx:
     enabled: false
@@ -59,12 +59,12 @@ docker:
     version: 0.51.0
   secrets_engine:
     enabled: false
-    # renovate: datasource=github-releases depName=docker/secrets-engine
+    # renovate: datasource=deb depName=docker-secrets-engine registryUrl=https://download.docker.com/linux/ubuntu?suite=noble&components=stable&binaryArch=amd64 versioning=deb extractVersion=^(?:\d+:)?(?<version>\d+(?:\.\d+)+)(?:-\d+)?~.*$
     version: 0.11.2
   secrets_engine_plugins:
     enabled: false
     # Must match secrets_engine.version (apt pins an exact docker-secrets-engine dependency).
-    # renovate: datasource=github-releases depName=docker/secrets-engine
+    # renovate: datasource=deb depName=docker-secrets-engine-plugins registryUrl=https://download.docker.com/linux/ubuntu?suite=noble&components=stable&binaryArch=amd64 versioning=deb extractVersion=^(?:\d+:)?(?<version>\d+(?:\.\d+)+)(?:-\d+)?~.*$
     version: 0.11.2
   cagent:
     enabled: false

@@ -16,6 +16,7 @@ msprod-repo:
     - name: |
         curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
         | gpg --yes --dearmor -o /etc/apt/keyrings/microsoft-sql-archive-keyring.gpg
+    - unless: test -s /etc/apt/keyrings/microsoft-sql-archive-keyring.gpg
   pkgrepo.{{ repoState }}:
     - require:
       - cmd: msprod-repo

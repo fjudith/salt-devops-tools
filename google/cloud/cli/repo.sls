@@ -16,6 +16,7 @@ gcloud-repo:
     - name: |
         curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg \
         | gpg --yes --dearmor -o /etc/apt/keyrings/cloud-google-keyring.gpg
+    - unless: test -s /etc/apt/keyrings/cloud-google-keyring.gpg
   pkgrepo.{{ repoState }}:
     - humanname: {{ grains["os"] }} {{ grains["oscodename"] | capitalize }} Google Cloud SDK Package Repository
     - name: deb [arch={{ grains["osarch"] }} signed-by=/etc/apt/keyrings/cloud-google-keyring.gpg] {{ url }}

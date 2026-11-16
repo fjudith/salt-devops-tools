@@ -11,4 +11,8 @@
 githubcli-packages:
   pkg.{{ pkgState }}:
     - pkgs:
+        {%- if githubcli.enabled %}
+        - gh: '{{ githubcli.version }}'
+        {%- else %}
         - gh
+        {%- endif %}

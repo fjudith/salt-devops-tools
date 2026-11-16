@@ -39,4 +39,5 @@ gotask-completion:
     - require:
       - file: gotask
     - name: /usr/local/bin/task --completion bash | tee /etc/bash_completion.d/task
+    - unless: test -s /etc/bash_completion.d/task && test "$(stat -c %Y /etc/bash_completion.d/task)" -ge "$(stat -c %Y /usr/local/bin/task)"
 {% endif %}
