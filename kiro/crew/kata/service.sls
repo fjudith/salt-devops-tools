@@ -211,3 +211,46 @@ kirocrew-kata-proxy-socket:
     - watch:
       - file: kirocrew-kata-proxy-socket-file
       - file: kirocrew-kata-proxy-service-file
+{% for sport in kata.get('socket_ports', []) %}
+# Dedicated socket-activated proxy for port {{ sport }}, same mechanism as the
+# dashboard proxy.
+kirocrew-kata-proxy-{{ sport }}-socket-file:
+  file.managed:
+    - name: /etc/systemd/system/{{ kata.proxy_service }}-{{ sport }}.socket
+    - user: root
+    - group: root
+    - mode: '0644'
+    - contents: |
+        [Unit]
+        Description=KiroCrew Kata proxy socket (port {{ sport }})
+        [Socket]
+        ListenStream={{ kata.host_ip }}:{{ sport }}
+        [Install]
+        WantedBy=sockets.target
+kirocrew-kata-proxy-{{ sport }}-service-file:
+  file.managed:
+    - name: /etc/systemd/system/{{ kata.proxy_service }}-{{ sport }}.service
+    - user: root
+    - group: root
+    - mode: '0644'
+    - contents: |
+        [Unit]
+        Description=KiroCrew Kata proxy (port {{ sport }})
+        Requires={{ kata.proxy_service }}-{{ sport }}.socket
+        After={{ kata.proxy_service }}-{{ sport }}.socket {{ kata.service }}.service
+        BindsTo={{ kata.service }}.service
+        [Service]
+        ExecStart=/lib/systemd/systemd-socket-proxyd {{ kata.container_ip }}:{{ sport }}
+    - require:
+      - file: kirocrew-kata-proxy-{{ sport }}-socket-file
+kirocrew-kata-proxy-{{ sport }}-socket:
+  service.running:
+    - name: {{ kata.proxy_service }}-{{ sport }}.socket
+    - enable: true
+    - require:
+      - service: kirocrew-kata
+      - file: kirocrew-kata-proxy-{{ sport }}-service-file
+    - watch:
+      - file: kirocrew-kata-proxy-{{ sport }}-socket-file
+      - file: kirocrew-kata-proxy-{{ sport }}-service-file
+{% endfor %}
