@@ -3,7 +3,7 @@
 prek:
   enabled: true
   # renovate: datasource=github-releases depName=j178/prek
-  version: 0.5.9
+  version: 0.5.10
   base_url: https://github.com/j178/prek/releases/download
   install_dir: /usr/local/prek
   bin_dir: /usr/local/bin
