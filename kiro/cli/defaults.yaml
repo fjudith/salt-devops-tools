@@ -3,6 +3,16 @@
 kirocli:
   enabled: true
   channel: stable
+  # kiro-cli has no GitHub releases, so Renovate cannot bump it: update
+  # `version` and `sha256` by hand from
+  # https://prod.download.cli.kiro.dev/stable/latest/manifest.json
+  version: 3.3.0
   base_url: https://prod.download.cli.kiro.dev
   install_dir: /usr/local/kirocli
   bin_dir: /usr/local/bin
+  # sha256 of the zip for `version`, keyed by <arch>-<libc>
+  sha256:
+    x86_64-gnu: 018e7d19124ebf5088bc33b12dcafa5c7e8de745ae491df024afebcd19f36b62
+    x86_64-musl: 75b89c01bc2aa72014ef2bec6171aed0f0554271f52eb0ebd35c74769246799f
+    aarch64-gnu: 5e85a1fcc107f4cd72cbbf1f8e69463bf9673814014c0056636d8433150b18d4
+    aarch64-musl: 0218b5440cbdb11418887ad3f7a7cf00054effd47979fd6b0ca37cfc5d8a2d20
