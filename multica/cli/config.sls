@@ -16,7 +16,11 @@ multica-service-unit:
         group: {{ multica.service.group }}
         home: {{ multica.service.home }}
 
-{% if multica.service.enabled %}
+{#- The daemon needs `multica login` (<home>/.multica/config.json, owned by the
+    service user). The file is never managed here: it is only checked. Without
+    it the service is kept stopped instead of crash-looping. #}
+{% set login_cfg = multica.service.home ~ '/.multica/config.json' %}
+{% if multica.service.enabled and salt['file.file_exists'](login_cfg) %}
 multica-service:
   service.running:
     - name: multica
@@ -28,6 +32,11 @@ multica-service:
       - file: multica-service-unit
       - file: multica
 {% else %}
+{% if multica.service.enabled %}
+multica-login-missing:
+  test.show_notification:
+    - text: "{{ login_cfg }} not found: run `multica login` as {{ multica.service.user }}, then re-apply to start the multica service."
+{% endif %}
 multica-service:
   service.dead:
     - name: multica

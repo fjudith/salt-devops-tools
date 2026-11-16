@@ -16,6 +16,7 @@ trivy-repo:
     - name: |
         curl -fsSL https://aquasecurity.github.io/trivy-repo/deb/public.key \
         | gpg --yes --dearmor -o /etc/apt/keyrings/trivy-archive-keyring.gpg
+    - unless: test -s /etc/apt/keyrings/trivy-archive-keyring.gpg
   pkgrepo.{{ repoState }}:
     - require:
       - cmd: trivy-repo

@@ -23,17 +23,13 @@ go-unsupported-architecture:
 go:
   archive.extracted:
     - name: /usr/local/go/{{ go.version }}
-    - source: {{ url }} 
+    - source: {{ url }}
     - skip_verify: true
     - user: root
     - group: root
     - archive_format: tar
     - enforce_toplevel: false
     - unless: /usr/local/go/{{ go.version }}
-  environ.setenv:
-    - name: GOPATH
-    - value: /usr/local/go/{{ go.version }}/go
-    - update_minion: true
   file.symlink:
     - name: /usr/local/bin/go
     - target:  /usr/local/go/{{ go.version }}/go/bin/go

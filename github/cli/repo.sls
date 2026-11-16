@@ -20,6 +20,7 @@ githubcli-repo:
         && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
     - user: root
     - group: root
+    - unless: test -s /etc/apt/keyrings/githubcli-archive-keyring.gpg
   pkgrepo.{{ repoState }}:
     - resuire:
       - file: githubcli-repo

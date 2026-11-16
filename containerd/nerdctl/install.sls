@@ -40,6 +40,7 @@ nerdctl-bin:
 nerdctl-completion:
   cmd.run:
     - name: {{ nerdctl.install_dir }}/nerdctl completion bash | tee /etc/bash_completion.d/nerdctl
+    - unless: test -s /etc/bash_completion.d/nerdctl && test "$(stat -c %Y /etc/bash_completion.d/nerdctl)" -ge "$(stat -c %Y {{ nerdctl.install_dir }}/nerdctl)"
     - require:
       - file: nerdctl-bin
 {% endif %}

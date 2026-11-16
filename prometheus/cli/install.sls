@@ -43,11 +43,13 @@ prometheus-completion:
   cmd.run:
     - require:
       - file: prometheus
-    - name: /usr/local/bin/prometheus completion bash | tee /etc/bash_completion.d/prometheus
+    - name: /usr/local/bin/prometheus --completion-script-bash | tee /etc/bash_completion.d/prometheus
+    - unless: test -s /etc/bash_completion.d/prometheus && test "$(stat -c %Y /etc/bash_completion.d/prometheus)" -ge "$(stat -c %Y /usr/local/bin/prometheus)"
 
 promtool-completion:
   cmd.run:
     - require:
       - file: promtool
-    - name: /usr/local/bin/promtool completion bash | tee /etc/bash_completion.d/promtool
+    - name: /usr/local/bin/promtool --completion-script-bash | tee /etc/bash_completion.d/promtool
+    - unless: test -s /etc/bash_completion.d/promtool && test "$(stat -c %Y /etc/bash_completion.d/promtool)" -ge "$(stat -c %Y /usr/local/bin/promtool)"
 {% endif %}

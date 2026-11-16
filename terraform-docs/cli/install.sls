@@ -39,4 +39,5 @@ terraform-docs-completion:
     - require:
       - file: terraform-docs
     - name: /usr/local/bin/terraform-docs completion bash | tee /etc/bash_completion.d/terraform-docs
+    - unless: test -s /etc/bash_completion.d/terraform-docs && test "$(stat -c %Y /etc/bash_completion.d/terraform-docs)" -ge "$(stat -c %Y /usr/local/bin/terraform-docs)"
 {% endif %}
