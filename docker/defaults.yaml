@@ -32,17 +32,17 @@ docker:
   daemon:
     enabled: true
     # renovate: datasource=deb depName=docker-ce registryUrl=https://download.docker.com/linux/ubuntu?suite=noble&components=stable&binaryArch=amd64 versioning=deb extractVersion=^(?:\d+:)?(?<version>\d+(?:\.\d+)+)(?:-\d+)?~.*$
-    version: 29.8.1
+    version: 29.8.2
 
   cli:
     enabled: true
     # renovate: datasource=deb depName=docker-ce-cli registryUrl=https://download.docker.com/linux/ubuntu?suite=noble&components=stable&binaryArch=amd64 versioning=deb extractVersion=^(?:\d+:)?(?<version>\d+(?:\.\d+)+)(?:-\d+)?~.*$
-    version: 29.8.1
+    version: 29.8.2
 
   buildx_plugin:
     enabled: true
     # renovate: datasource=deb depName=docker-buildx-plugin registryUrl=https://download.docker.com/linux/ubuntu?suite=noble&components=stable&binaryArch=amd64 versioning=deb extractVersion=^(?:\d+:)?(?<version>\d+(?:\.\d+)+)(?:-\d+)?~.*$
-    version: 0.39.0
+    version: 0.39.1
 
   compose_plugin:
     enabled: true
