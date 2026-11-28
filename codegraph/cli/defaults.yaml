@@ -3,7 +3,7 @@
 codegraph:
   enabled: false
   # renovate: datasource=github-releases depName=colbymchenry/codegraph
-  version: v1.6.2
+  version: 1.6.5
   base_url: https://github.com/colbymchenry/codegraph/releases/download
   install_dir: /usr/local/codegraph
   bin_dir: /usr/local/bin
