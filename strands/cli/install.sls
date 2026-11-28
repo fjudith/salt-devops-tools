@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # vim: ft=jinja
 {% from tpldir ~ "/map.jinja" import strands with context %}
+include:
+  - strands.common
 {% set c = strands.cli %}
 {% set arch = salt['grains.get']('cpuarch') %}
 {% if arch in ('x86_64', 'amd64') %}

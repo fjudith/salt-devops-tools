@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim: ft=jinja
 {#- Start imports #}
-{% import_yaml "strands/defaults.yaml" or {} as shared %}
+{% from "strands/common/map.jinja" import shared %}
 {% import_yaml tpldir ~ "/defaults.yaml" or {} as defaults %}
 {% set base = salt['slsutil.merge'](shared, defaults) %}
 {#- Merge in salt pillar #}

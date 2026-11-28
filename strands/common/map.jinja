@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+{#- Shared settings (root_dir, venv_dir); imported by harness, evals and cli map.jinja #}
+{% import_yaml "strands/common/defaults.yaml" or {} as shared %}
+{#- Merge in salt pillar #}
+{% set strands = salt['pillar.get']('strands', default=shared['strands'], merge=True) %}
