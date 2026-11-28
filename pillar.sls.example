@@ -470,6 +470,25 @@ agno:
   agentos:
     enabled: false
 
+strands:
+  # harness and evals share one venv, /opt/strands/venv (root_dir / venv_dir
+  # can be overridden once under `strands:` and apply to both and to cli).
+  # Use: /opt/strands/venv/bin/python -c 'import strands_harness, strands_evals'
+  #  or: source /opt/strands/venv/bin/activate
+  # Disabling one of them uninstalls only its package; dependencies it pulled in
+  # (e.g. strands-agents) may stay in the venv as orphans until both are off,
+  # which deletes the whole venv.
+  harness:
+    enabled: false   # PyPI strands-harness in the shared venv
+  evals:
+    enabled: false   # PyPI strands-agents-evals (import strands_evals) in the shared venv
+  cli:
+    enabled: false   # @strands-agents/cli (own Node under /opt/strands), `strands`
+  box:
+    enabled: false   # strands-agents/box sandbox, `box`
+    # Ubuntu 24.04: AppArmor may block unprivileged user namespaces
+    # ("denying setgroups"); these states do not create AppArmor profiles.
+
 oh-my-pi:
   cli:
     enabled: false

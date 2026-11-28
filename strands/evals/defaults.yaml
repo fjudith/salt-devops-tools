@@ -1,0 +1,7 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+strands:
+  evals:
+    enabled: false
+    # renovate: datasource=pypi depName=strands-agents-evals
+    version: 1.13.1
