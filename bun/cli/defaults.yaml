@@ -1,0 +1,11 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+bun:
+  enabled: true
+  # renovate: datasource=github-releases depName=oven-sh/bun extractVersion=^bun-v(?<version>.+)$
+  version: 1.4.5
+  base_url: https://github.com/oven-sh/bun/releases/download
+  install_dir: /usr/local/bun
+  bin_dir: /usr/local/bin
+  # auto: use the baseline build on x86_64 CPUs without avx2; default|baseline force a build.
+  variant: auto

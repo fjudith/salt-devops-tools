@@ -79,3 +79,5 @@ base:
     - prek.cli
     - vllm
     - goose.cli
+    - uv.cli
+    - bun.cli
