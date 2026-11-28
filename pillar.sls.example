@@ -506,6 +506,12 @@ prek:
 goose:
   cli:
     enabled: false
+# AI-DLC workflows (awslabs/aidlc-workflows) installed system-wide in
+# /usr/local/aidlc (layout unsupported upstream; upgrade via Salt/Renovate, not
+# `aidlc update`). Run `aidlc config --harness <h>` per project.
+aidlc:
+  cli:
+    enabled: false
 # uv and bun are enabled by default.
 # Migration note for an existing user-level uv: the states never touch home
 # directories, so ~/.local/bin/uv can shadow /usr/local/bin/uv. Remove it with
