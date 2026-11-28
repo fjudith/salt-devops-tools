@@ -10,4 +10,4 @@ strands:
     bin_dir: /usr/local/bin
     base_url: https://github.com/strands-agents/box/releases/download
     # renovate: datasource=github-releases depName=strands-agents/box
-    version: 0.3.2
+    version: 0.3.3
