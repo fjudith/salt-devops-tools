@@ -1,0 +1,15 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+# AI-DLC workflows (awslabs/aidlc-workflows, MIT-0).
+# The system-wide layout below is NOT supported upstream (the official
+# installer is per-user only): Salt places the binary and the extracted
+# all-harness runtime under <install_dir>/versions/<version>/.
+# Upgrade by bumping `version` (Renovate does it), not with `aidlc update`.
+# `aidlc config --harness <h>` is run per project and writes only there.
+aidlc:
+  enabled: false
+  # renovate: datasource=github-releases depName=awslabs/aidlc-workflows extractVersion=^v(?<version>\d+\.\d+\.\d+)$
+  version: 2.11.5
+  base_url: https://github.com/awslabs/aidlc-workflows/releases/download
+  install_dir: /usr/local/aidlc
+  bin_dir: /usr/local/bin
