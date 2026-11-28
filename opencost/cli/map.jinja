@@ -5,4 +5,4 @@
 {% import_yaml tpldir ~ "/defaults.yaml" or {} as defaults %}
 
 {#- Merge in salt pillar #}
-{% set opencost = salt['pillar.get']('openslo:cli', default=defaults['opencost'], merge=True) %}
+{% set opencost = salt['pillar.get']('opencost:cli', default=defaults['opencost'], merge=True) %}
