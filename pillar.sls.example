@@ -506,3 +506,16 @@ prek:
 goose:
   cli:
     enabled: false
+# uv and bun are enabled by default.
+# Migration note for an existing user-level uv: the states never touch home
+# directories, so ~/.local/bin/uv can shadow /usr/local/bin/uv. Remove it with
+#   rm -f ~/.local/bin/uv ~/.local/bin/uvx && hash -r
+# and keep ~/.local/share/uv. `uv self update` does not apply to the
+# Salt-managed uv; Renovate bumps the pinned version.
+uv:
+  cli:
+    enabled: true
+bun:
+  cli:
+    enabled: true
+    # variant: auto   # auto | default | baseline (auto: baseline on x86_64 without avx2)
