@@ -1,0 +1,13 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+strands:
+  cli:
+    enabled: false
+    bin_dir: /usr/local/bin
+    node:
+      # renovate: datasource=node-version depName=node
+      version: 24.21.0
+      base_url: https://nodejs.org/dist
+    cli:
+      # renovate: datasource=npm depName=@strands-agents/cli
+      version: 0.5.0

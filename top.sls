@@ -69,6 +69,10 @@ base:
     - nvm.cli
     - agentgateway
     - agno.agentos
+    - strands.harness
+    - strands.evals
+    - strands.cli
+    - strands.box
     - oh-my-pi.cli
     - google.antigravity.cli
     - codegraph.cli

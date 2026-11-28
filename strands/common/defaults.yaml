@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+# Shared settings, read by strands.common and (via strands/common/map.jinja) harness, evals and cli.
+strands:
+  root_dir: /opt/strands
+  venv_dir: /opt/strands/venv

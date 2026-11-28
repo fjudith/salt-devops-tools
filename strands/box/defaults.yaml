@@ -1,0 +1,13 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+# Note: on Ubuntu 24.04 AppArmor may block unprivileged user namespaces
+# ("denying setgroups"). These states do not create AppArmor profiles or
+# sysctls; add an AppArmor profile for box yourself if the sandbox fails.
+strands:
+  box:
+    enabled: false
+    install_dir: /usr/local/strands-box
+    bin_dir: /usr/local/bin
+    base_url: https://github.com/strands-agents/box/releases/download
+    # renovate: datasource=github-releases depName=strands-agents/box
+    version: 0.3.2
