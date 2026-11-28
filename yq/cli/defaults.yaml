@@ -1,5 +1,5 @@
 yq:
   enabled: true
   # renovate: datasource=github-releases depName=mikefarah/yq
-  version: 4.46.1
+  version: 4.54.3
   
